@@ -63,7 +63,9 @@ export async function awardBadge(
           revokedAt: null,
           revokedReason: null,
           awardedAt: new Date(),
-          awardedContext: context ?? Prisma.JsonNull,
+          awardedContext: context
+            ? (context as Prisma.InputJsonValue)
+            : Prisma.JsonNull,
           lastEvaluatedAt: new Date(),
         },
         include: { badge: true },
@@ -83,7 +85,9 @@ export async function awardBadge(
     data: {
       userId,
       badgeId: badge.id,
-      awardedContext: context ?? Prisma.JsonNull,
+      awardedContext: context
+        ? (context as Prisma.InputJsonValue)
+        : Prisma.JsonNull,
       lastEvaluatedAt: new Date(),
     },
     include: { badge: true },

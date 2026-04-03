@@ -19,6 +19,43 @@ interface Conversation {
   visitorId: string | null;
 }
 
+// ─── Operating hours ─────────────────────────────────────────────────────────
+
+const SUPPORT_HOURS = {
+  /** 0 = Sunday, 1 = Monday … 5 = Friday, 6 = Saturday */
+  days: [1, 2, 3, 4, 5] as number[],
+  startHour: 9,  // 9 AM
+  endHour: 18,   // 6 PM
+  timezone: 'America/New_York',
+}
+
+function isWithinSupportHours(): boolean {
+  try {
+    const now = new Date()
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: SUPPORT_HOURS.timezone,
+      hour: 'numeric',
+      weekday: 'short',
+      hour12: false,
+    })
+    const parts = formatter.formatToParts(now)
+    const dayStr = parts.find((p) => p.type === 'weekday')?.value ?? ''
+    const hourStr = parts.find((p) => p.type === 'hour')?.value ?? '0'
+    const hour = parseInt(hourStr, 10)
+    const dayMap: Record<string, number> = {
+      Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6,
+    }
+    const day = dayMap[dayStr] ?? now.getDay()
+    return (
+      SUPPORT_HOURS.days.includes(day) &&
+      hour >= SUPPORT_HOURS.startHour &&
+      hour < SUPPORT_HOURS.endHour
+    )
+  } catch {
+    return true // default to online if detection fails
+  }
+}
+
 // ─── Quick-reply options ──────────────────────────────────────────────────────
 
 const QUICK_REPLIES = [
@@ -53,6 +90,7 @@ export function ChatWidget() {
   const [unread, setUnread] = useState(0);
   const [offlineMode, setOfflineMode] = useState(false);
   const [leaveMessageSent, setLeaveMessageSent] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
   const [visitorId] = useState(() =>
     typeof window !== "undefined" ? getOrCreateVisitorId() : ""
   );
@@ -62,6 +100,13 @@ export function ChatWidget() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  // Determine operating hours on mount (client-side only)
+  useEffect(() => {
+    const online = isWithinSupportHours();
+    setIsOnline(online);
+    if (!online) setOfflineMode(true);
+  }, []);
 
   useEffect(() => {
     if (open) scrollToBottom();
@@ -219,9 +264,18 @@ export function ChatWidget() {
             {/* Header */}
             <div className="flex items-center justify-between bg-nimbus-700 px-4 py-3">
               <div>
-                <p className="font-semibold text-white text-sm">Card Nimbus Support</p>
-                <p className="text-xs text-nimbus-200">
-                  {offlineMode ? "Leave us a message" : "We typically reply within minutes"}
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className={`inline-block w-2 h-2 rounded-full flex-shrink-0 ${
+                      isOnline ? "bg-emerald-400" : "bg-amber-400"
+                    }`}
+                  />
+                  <p className="font-semibold text-white text-sm">Card Nimbus Support</p>
+                </div>
+                <p className="text-xs text-nimbus-200 mt-0.5">
+                  {isOnline
+                    ? "We're online — typically reply within minutes"
+                    : "We're online Mon–Fri 9am–6pm ET · Leave a message"}
                 </p>
               </div>
               <div className="flex items-center gap-2">

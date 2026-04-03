@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { search } from '@/services/search.service'
 import { ProductGrid } from '@/components/shop/product-grid'
 import { ProductFilters } from '@/components/shop/product-filters'
+import { ZeroResultState } from '@/components/search/zero-result-state'
 import { ProductCategory, CardCondition } from '@prisma/client'
 
 interface SearchPageProps {
@@ -105,44 +106,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
         {/* Results or zero-state */}
         {hasQuery && total === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 gap-5 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-surface-overlay border border-surface-border flex items-center justify-center">
-              <svg
-                className="w-8 h-8 text-text-muted"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-text-primary font-semibold text-xl">No results found</p>
-              <p className="text-text-secondary text-sm mt-2 max-w-sm">
-                We couldn&apos;t find anything matching{' '}
-                <span className="text-text-primary font-medium">&ldquo;{query}&rdquo;</span>.
-                Try different keywords, check your spelling, or browse the full shop.
-              </p>
-            </div>
-            <div className="flex flex-wrap justify-center gap-3 mt-2">
-              <Link
-                href="/shop"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-nimbus-500 hover:bg-nimbus-400 text-white font-semibold text-sm transition-colors"
-              >
-                Browse All Products
-              </Link>
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-surface-overlay hover:bg-surface-border border border-surface-border text-text-secondary hover:text-text-primary font-medium text-sm transition-colors"
-              >
-                Go to Homepage
-              </Link>
-            </div>
-          </div>
+          <ZeroResultState query={query} />
         ) : hasQuery ? (
           <ProductGrid products={products} />
         ) : (
