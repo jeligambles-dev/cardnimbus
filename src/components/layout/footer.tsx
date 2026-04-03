@@ -3,6 +3,8 @@ import Link from 'next/link'
 const SHOP_LINKS = [
   { label: 'All Products', href: '/shop' },
   { label: 'Marketplace', href: '/marketplace' },
+  { label: 'Raffles', href: '/raffles' },
+  { label: 'Mystery Packs', href: '/mystery' },
   { label: 'Packs', href: '/shop?category=PACK' },
   { label: 'Booster Boxes', href: '/shop?category=BOX' },
   { label: 'Graded Slabs', href: '/shop?category=SLAB' },
@@ -15,6 +17,8 @@ const SHOP_LINKS = [
 
 const HELP_LINKS = [
   { label: 'FAQ', href: '/help/faq' },
+  { label: 'How Raffles Work', href: '/help/raffles' },
+  { label: 'How Mystery Works', href: '/help/mystery' },
   { label: 'Shipping & Returns', href: '/help/shipping' },
   { label: 'Grading Guide', href: '/help/grading' },
   { label: 'Contact Us', href: '/help/contact' },

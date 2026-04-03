@@ -10,6 +10,8 @@ import { SearchBar } from '@/components/search/search-bar'
 const NAV_LINKS = [
   { label: 'Shop', href: '/shop' },
   { label: 'Marketplace', href: '/marketplace' },
+  { label: 'Raffles', href: '/raffles' },
+  { label: 'Mystery', href: '/mystery' },
   { label: 'Packs', href: '/shop?category=PACK' },
   { label: 'Boxes', href: '/shop?category=BOX' },
   { label: 'Slabs', href: '/shop?category=SLAB' },
