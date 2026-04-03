@@ -8,7 +8,7 @@ import { db } from "./db";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
-  session: { strategy: "database" },
+  session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
     error: "/login",
@@ -54,16 +54,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
-      if (session.user) {
+    async jwt({ token, user }) {
+      if (user) {
+        // First sign-in: fetch role from DB and embed in token
         const dbUser = await db.user.findUnique({
           where: { id: user.id },
-          select: { id: true, role: true, name: true, email: true, avatar: true },
+          select: { id: true, role: true },
         });
         if (dbUser) {
-          session.user.id = dbUser.id;
-          (session.user as any).role = dbUser.role;
+          token.id = dbUser.id;
+          token.role = dbUser.role;
         }
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token) {
+        session.user.id = token.id as string;
+        (session.user as any).role = token.role as string;
       }
       return session;
     },
