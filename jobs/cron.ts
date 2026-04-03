@@ -5,6 +5,7 @@ import {
   submissionReminderQueue,
   raffleLifecycleQueue,
   mysteryStockQueue,
+  badgeEvaluationQueue,
 } from "./queues";
 
 async function scheduleCronJobs() {
@@ -78,14 +79,36 @@ async function scheduleCronJobs() {
     }
   );
 
+  // Hourly: dynamic badge evaluation (fast-shipper, top-rated, quick-responder, etc.)
+  await badgeEvaluationQueue.add(
+    "hourly-badge-evaluation",
+    { type: "evaluate_dynamic" },
+    {
+      repeat: { pattern: "0 * * * *" },
+      jobId: "hourly-badge-evaluation",
+    }
+  );
+
+  // Monthly on the 1st at midnight UTC: leaderboard snapshot + Top Seller of Month award
+  await badgeEvaluationQueue.add(
+    "monthly-leaderboard-snapshot",
+    { type: "evaluate_dynamic" },
+    {
+      repeat: { pattern: "0 0 1 * *" },
+      jobId: "monthly-leaderboard-snapshot",
+    }
+  );
+
   console.log("Cron jobs scheduled:");
-  console.log("  - daily-price-sync:        0 3 * * *    (every day at 03:00 UTC)");
-  console.log("  - weekly-full-reindex:     0 4 * * 0    (every Sunday at 04:00 UTC)");
-  console.log("  - hourly-wishlist-alerts:  0 * * * *    (every hour)");
-  console.log("  - submission-reminders:    */15 * * * * (every 15 minutes)");
-  console.log("  - raffle-lifecycle:        * * * * *    (every minute)");
-  console.log("  - expire-reservations:     */5 * * * *  (every 5 minutes)");
-  console.log("  - mystery-stock-alerts:    0 * * * *    (every hour)");
+  console.log("  - daily-price-sync:          0 3 * * *    (every day at 03:00 UTC)");
+  console.log("  - weekly-full-reindex:       0 4 * * 0    (every Sunday at 04:00 UTC)");
+  console.log("  - hourly-wishlist-alerts:    0 * * * *    (every hour)");
+  console.log("  - submission-reminders:      */15 * * * * (every 15 minutes)");
+  console.log("  - raffle-lifecycle:          * * * * *    (every minute)");
+  console.log("  - expire-reservations:       */5 * * * *  (every 5 minutes)");
+  console.log("  - mystery-stock-alerts:      0 * * * *    (every hour)");
+  console.log("  - hourly-badge-evaluation:   0 * * * *    (every hour)");
+  console.log("  - monthly-leaderboard:       0 0 1 * *    (1st of each month at 00:00 UTC)");
 }
 
 scheduleCronJobs().catch((err) => {

@@ -14,3 +14,4 @@ export const wishlistAlertQueue = new Queue("wishlist-alerts", { connection });
 export const submissionReminderQueue = new Queue("submission-reminders", { connection });
 export const raffleLifecycleQueue = new Queue("raffle-lifecycle", { connection });
 export const mysteryStockQueue = new Queue("mystery-stock", { connection });
+export const badgeEvaluationQueue = new Queue("badge-evaluation", { connection });

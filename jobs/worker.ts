@@ -8,6 +8,7 @@ import { handleWishlistAlerts } from "./handlers/wishlist-alerts";
 import { handleSubmissionReminders } from "./handlers/submission-reminders";
 import { handleRaffleLifecycle } from "./handlers/raffle-lifecycle";
 import { handleMysteryStockAlerts } from "./handlers/mystery-stock-alerts";
+import { handleBadgeEvaluation } from "./handlers/badge-evaluation";
 
 // Email worker — higher concurrency since sends are I/O-bound
 const emailWorker = new Worker("email", handleSendEmail, {
@@ -61,6 +62,13 @@ const mysteryStockWorker = new Worker(
   { connection, concurrency: 1 }
 );
 
+// Badge evaluation worker — serial to avoid race conditions on award/revoke
+const badgeEvaluationWorker = new Worker(
+  "badge-evaluation",
+  handleBadgeEvaluation,
+  { connection, concurrency: 1 }
+);
+
 const workers = [
   emailWorker,
   searchWorker,
@@ -70,6 +78,7 @@ const workers = [
   submissionReminderWorker,
   raffleLifecycleWorker,
   mysteryStockWorker,
+  badgeEvaluationWorker,
 ];
 
 // Logging
@@ -100,5 +109,6 @@ console.log(
   "Workers started: email (concurrency=5), search-sync (concurrency=3), " +
     "price-sync (concurrency=1), discord-notify (concurrency=1), " +
     "wishlist-alerts (concurrency=1), submission-reminders (concurrency=1), " +
-    "raffle-lifecycle (concurrency=1), mystery-stock (concurrency=1)"
+    "raffle-lifecycle (concurrency=1), mystery-stock (concurrency=1), " +
+    "badge-evaluation (concurrency=1)"
 );
