@@ -197,6 +197,27 @@ async function main() {
   ]);
 
   console.log(`Products seeded: ${products.map((p) => p.name).join(", ")}`);
+
+  // ── Commission tiers ─────────────────────────────────────────────────────────
+  const tiers = await Promise.all([
+    db.commissionTier.upsert({
+      where: { name: "STANDARD" },
+      update: {},
+      create: { name: "STANDARD", minSales: 0, rate: 0.10 },
+    }),
+    db.commissionTier.upsert({
+      where: { name: "SILVER" },
+      update: {},
+      create: { name: "SILVER", minSales: 50, rate: 0.08 },
+    }),
+    db.commissionTier.upsert({
+      where: { name: "GOLD" },
+      update: {},
+      create: { name: "GOLD", minSales: 200, rate: 0.06 },
+    }),
+  ]);
+
+  console.log(`Commission tiers: ${tiers.map((t) => `${t.name} (${t.rate * 100}%)`).join(", ")}`);
   console.log("Seed complete.");
 }
 

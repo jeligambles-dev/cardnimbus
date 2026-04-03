@@ -9,16 +9,17 @@ datasource db {
 // Auth & Users
 
 model User {
-  id              String    @id @default(cuid())
-  email           String    @unique
-  emailVerified   DateTime?
-  passwordHash    String?
-  name            String?
-  avatar          String?
-  role            Role      @default(BUYER)
-  twoFactorSecret String?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id                String    @id @default(cuid())
+  email             String    @unique
+  emailVerified     DateTime?
+  passwordHash      String?
+  name              String?
+  avatar            String?
+  role              Role      @default(BUYER)
+  twoFactorSecret   String?
+  verificationLevel String    @default("UNVERIFIED")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   sessions                Session[]
   accounts                Account[]
@@ -30,6 +31,17 @@ model User {
   wishlists               Wishlist[]
   notificationEvents      NotificationEvent[]
   notificationPreferences NotificationPreference[]
+
+  // Marketplace relations
+  sellerProfile        SellerProfile?
+  buyerOffers          Offer[]         @relation("BuyerOffers")
+  buyerConversations   Conversation[]  @relation("BuyerConversations")
+  sellerConversations  Conversation[]  @relation("SellerConversations")
+  sentMessages         Message[]
+  reviewsGiven         Review[]        @relation("ReviewsGiven")
+  reviewsReceived      Review[]        @relation("ReviewsReceived")
+  disputesFiled        Dispute[]
+  savedSearches        SavedSearch[]
 
   @@map("users")
 }
@@ -137,6 +149,7 @@ model Card {
   priceHistory CardPriceHistory[]
   submissions  CardSubmission[]
   wishlists    Wishlist[]
+  listings     Listing[]
 
   @@index([normalizedName])
   @@index([setName])
@@ -228,15 +241,20 @@ model Order {
   shippingAddressId String?
   billingAddressId  String?
   notes             String?
+  type              String      @default("STORE")
+  commission        Float       @default(0)
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
 
-  buyer           User       @relation(fields: [buyerId], references: [id])
-  shippingAddress Address?   @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
-  billingAddress  Address?   @relation("BillingAddress", fields: [billingAddressId], references: [id])
+  buyer           User                @relation(fields: [buyerId], references: [id])
+  shippingAddress Address?            @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  billingAddress  Address?            @relation("BillingAddress", fields: [billingAddressId], references: [id])
   items           OrderItem[]
   payments        Payment[]
   shipments       Shipment[]
+  escrow          EscrowTransaction?
+  reviews         Review[]
+  dispute         Dispute?
 
   @@index([buyerId])
   @@index([status])
@@ -258,6 +276,8 @@ model OrderItem {
   id                String         @id @default(cuid())
   orderId           String
   productId         String?
+  listingId         String?
+  sellerId          String?
   quantity          Int
   priceAtPurchase   Float
   titleSnapshot     String
@@ -267,6 +287,7 @@ model OrderItem {
 
   order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product? @relation(fields: [productId], references: [id])
+  listing Listing? @relation(fields: [listingId], references: [id])
 
   @@map("order_items")
 }
@@ -596,4 +617,288 @@ model SearchAnalytics {
   @@index([normalizedQuery])
   @@index([createdAt])
   @@map("search_analytics")
+}
+
+// ──────────────────────────────────────
+// Marketplace — Phase 3
+// ──────────────────────────────────────
+
+enum ListingModerationStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum ListingSaleStatus {
+  INACTIVE
+  ACTIVE
+  RESERVED
+  SOLD
+  EXPIRED
+}
+
+enum OfferStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COUNTERED
+  EXPIRED
+}
+
+enum EscrowStatus {
+  HELD
+  RELEASED
+  DISPUTED
+  REFUNDED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+}
+
+enum ReviewType {
+  BUYER_TO_SELLER
+  SELLER_TO_BUYER
+}
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED_BUYER
+  RESOLVED_SELLER
+  ESCALATED
+}
+
+model CommissionTier {
+  id       String @id @default(cuid())
+  name     String @unique
+  minSales Int
+  rate     Float
+
+  sellers SellerProfile[]
+
+  @@map("commission_tiers")
+}
+
+model SellerProfile {
+  id                 String    @id @default(cuid())
+  userId             String    @unique
+  stripeConnectId    String?
+  paypalEmail        String?
+  tierId             String?
+  tierAssignedAt     DateTime?
+  tierOverrideReason String?
+  totalSales         Int       @default(0)
+  rating             Float?
+  ratingCount        Int       @default(0)
+  bio                String?   @db.Text
+  responseTime       Int?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tier     CommissionTier? @relation(fields: [tierId], references: [id])
+  listings Listing[]
+  payouts  Payout[]
+
+  @@map("seller_profiles")
+}
+
+model Listing {
+  id                          String                   @id @default(cuid())
+  sellerId                    String
+  cardId                      String?
+  title                       String
+  description                 String?                  @db.Text
+  images                      String[]
+  price                       Float
+  suggestedPrice              Float?
+  dealScore                   Float?
+  dealScoreBand               String?
+  marketPriceSourceUpdatedAt  DateTime?
+  condition                   CardCondition?
+  category                    ProductCategory
+  moderationStatus            ListingModerationStatus  @default(DRAFT)
+  saleStatus                  ListingSaleStatus        @default(INACTIVE)
+  moderationNote              String?
+  viewCount                   Int                      @default(0)
+  createdAt                   DateTime                 @default(now())
+  updatedAt                   DateTime                 @updatedAt
+
+  seller        SellerProfile @relation(fields: [sellerId], references: [id])
+  card          Card?         @relation(fields: [cardId], references: [id])
+  offers        Offer[]
+  conversations Conversation[]
+  orderItems    OrderItem[]
+
+  @@index([sellerId])
+  @@index([saleStatus])
+  @@index([moderationStatus])
+  @@index([category])
+  @@map("listings")
+}
+
+model Offer {
+  id        String      @id @default(cuid())
+  listingId String
+  buyerId   String
+  amount    Float
+  message   String?
+  status    OfferStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  listing Listing      @relation(fields: [listingId], references: [id])
+  buyer   User         @relation("BuyerOffers", fields: [buyerId], references: [id])
+  events  OfferEvent[]
+
+  @@index([listingId])
+  @@index([buyerId])
+  @@map("offers")
+}
+
+model OfferEvent {
+  id        String   @id @default(cuid())
+  offerId   String
+  actorId   String
+  type      String
+  amount    Float?
+  message   String?
+  createdAt DateTime @default(now())
+
+  offer Offer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@index([offerId])
+  @@map("offer_events")
+}
+
+model EscrowTransaction {
+  id                    String       @id @default(cuid())
+  orderId               String       @unique
+  amount                Float
+  status                EscrowStatus @default(HELD)
+  stripePaymentIntentId String?      @unique
+  releasedAt            DateTime?
+  createdAt             DateTime     @default(now())
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("escrow_transactions")
+}
+
+model Payout {
+  id               String       @id @default(cuid())
+  sellerId         String
+  orderId          String?
+  grossAmount      Float
+  fee              Float
+  netAmount        Float
+  status           PayoutStatus @default(PENDING)
+  stripeTransferId String?      @unique
+  createdAt        DateTime     @default(now())
+
+  seller SellerProfile @relation(fields: [sellerId], references: [id])
+
+  @@index([sellerId])
+  @@map("payouts")
+}
+
+model Conversation {
+  id            String   @id @default(cuid())
+  listingId     String?
+  buyerId       String
+  sellerId      String
+  lastMessageAt DateTime
+  createdAt     DateTime @default(now())
+
+  listing  Listing?  @relation(fields: [listingId], references: [id])
+  buyer    User      @relation("BuyerConversations", fields: [buyerId], references: [id])
+  seller   User      @relation("SellerConversations", fields: [sellerId], references: [id])
+  messages Message[]
+
+  @@unique([listingId, buyerId, sellerId])
+  @@index([buyerId])
+  @@index([sellerId])
+  @@map("conversations")
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  senderId       String
+  content        String   @db.Text
+  isRead         Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User         @relation(fields: [senderId], references: [id])
+
+  @@index([conversationId])
+  @@map("messages")
+}
+
+model Review {
+  id               String           @id @default(cuid())
+  orderId          String
+  reviewerId       String
+  revieweeId       String
+  rating           Int
+  comment          String?          @db.Text
+  type             ReviewType
+  isVisible        Boolean          @default(true)
+  moderationStatus ModerationStatus @default(PENDING)
+  createdAt        DateTime         @default(now())
+
+  order    Order @relation(fields: [orderId], references: [id])
+  reviewer User  @relation("ReviewsGiven", fields: [reviewerId], references: [id])
+  reviewee User  @relation("ReviewsReceived", fields: [revieweeId], references: [id])
+
+  @@unique([orderId, type])
+  @@index([revieweeId])
+  @@map("reviews")
+}
+
+model Dispute {
+  id          String        @id @default(cuid())
+  orderId     String        @unique
+  filedBy     String
+  reason      String        @db.Text
+  evidence    String[]
+  status      DisputeStatus @default(OPEN)
+  adminNotes  String?
+  resolvedAt  DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+  filer User  @relation(fields: [filedBy], references: [id])
+
+  @@index([status])
+  @@map("disputes")
+}
+
+model SavedSearch {
+  id                String   @id @default(cuid())
+  userId            String
+  query             String
+  filtersJson       Json?
+  alertOnNewResults Boolean  @default(false)
+  createdAt         DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("saved_searches")
 }
