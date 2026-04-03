@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSession, signIn } from 'next-auth/react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -19,11 +20,15 @@ const NAV_LINKS = [
 
 function CartIcon() {
   const itemCount = useCartStore((state) => state.itemCount())
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
+  const count = mounted ? itemCount : 0
 
   return (
     <Link
       href="/cart"
-      aria-label={`Cart (${itemCount} items)`}
+      aria-label={`Cart (${count} items)`}
       className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-surface-border bg-surface-overlay text-text-secondary transition-colors hover:border-nimbus-500/50 hover:text-text-primary"
     >
       <svg
@@ -40,7 +45,7 @@ function CartIcon() {
         />
       </svg>
       <AnimatePresence>
-        {itemCount > 0 && (
+        {count > 0 && (
           <motion.span
             key="badge"
             initial={{ scale: 0, opacity: 0 }}
@@ -49,7 +54,7 @@ function CartIcon() {
             transition={{ type: 'spring', stiffness: 500, damping: 25 }}
             className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white"
           >
-            {itemCount > 99 ? '99+' : itemCount}
+            {count > 99 ? '99+' : count}
           </motion.span>
         )}
       </AnimatePresence>
