@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { ProductCategory, CardCondition } from "@prisma/client";
 
 export interface SearchResult {
-  type: "product" | "card";
+  type: "product" | "card" | "listing";
   id: string;
   title: string;
   subtitle: string;
@@ -48,6 +48,28 @@ function buildProductFilter(options: SearchOptions): string[] {
   return filters;
 }
 
+function buildListingFilter(options: SearchOptions): string[] {
+  const filters: string[] = [
+    'saleStatus = "ACTIVE"',
+    'moderationStatus = "APPROVED"',
+  ];
+
+  if (options.category) {
+    filters.push(`category = "${options.category}"`);
+  }
+  if (options.condition) {
+    filters.push(`condition = "${options.condition}"`);
+  }
+  if (options.minPrice !== undefined) {
+    filters.push(`price >= ${options.minPrice}`);
+  }
+  if (options.maxPrice !== undefined) {
+    filters.push(`price <= ${options.maxPrice}`);
+  }
+
+  return filters;
+}
+
 export async function search(
   query: string,
   options: SearchOptions = {}
@@ -55,11 +77,12 @@ export async function search(
   const limit = options.limit ?? 20;
   const offset = options.offset ?? 0;
 
-  const perIndex = Math.ceil(limit / 2);
+  const perIndex = Math.ceil(limit / 3);
 
   const productFilter = buildProductFilter(options);
+  const listingFilter = buildListingFilter(options);
 
-  const [productResults, cardResults] = await Promise.all([
+  const [productResults, cardResults, listingResults] = await Promise.all([
     meili.index(INDEXES.products).search(query, {
       filter: productFilter,
       limit: perIndex,
@@ -92,6 +115,23 @@ export async function search(
           ],
         })
       : Promise.resolve({ hits: [], estimatedTotalHits: 0 }),
+    meili.index(INDEXES.listings).search(query, {
+      filter: listingFilter,
+      limit: perIndex,
+      offset,
+      attributesToRetrieve: [
+        "id",
+        "title",
+        "description",
+        "images",
+        "price",
+        "condition",
+        "category",
+        "setName",
+        "sellerName",
+        "dealScoreBand",
+      ],
+    }),
   ]);
 
   const productItems: SearchResult[] = productResults.hits.map((hit) => ({
@@ -120,10 +160,26 @@ export async function search(
     url: `/cards/${String(hit.id)}`,
   }));
 
-  const results = [...productItems, ...cardItems].slice(0, limit);
+  const listingItems: SearchResult[] = listingResults.hits.map((hit) => ({
+    type: "listing" as const,
+    id: String(hit.id),
+    title: String(hit.title),
+    subtitle: hit.sellerName
+      ? `Sold by ${String(hit.sellerName)}`
+      : String(hit.setName ?? ""),
+    image: Array.isArray(hit.images) && hit.images.length > 0
+      ? String(hit.images[0])
+      : null,
+    price: typeof hit.price === "number" ? hit.price : null,
+    condition: hit.condition ? String(hit.condition) : null,
+    url: `/marketplace/${String(hit.id)}`,
+  }));
+
+  const results = [...productItems, ...cardItems, ...listingItems].slice(0, limit);
   const total =
     (productResults.estimatedTotalHits ?? 0) +
-    (cardResults.estimatedTotalHits ?? 0);
+    (cardResults.estimatedTotalHits ?? 0) +
+    (listingResults.estimatedTotalHits ?? 0);
 
   return { results, total, limit, offset };
 }
@@ -243,4 +299,42 @@ export async function fullReindex(): Promise<void> {
 
 export async function removeProductFromIndex(productId: string): Promise<void> {
   await meili.index(INDEXES.products).deleteDocument(productId);
+}
+
+export async function syncListingToIndex(listingId: string): Promise<void> {
+  const listing = await db.listing.findUnique({
+    where: { id: listingId },
+    include: {
+      card: true,
+      seller: {
+        include: { user: { select: { name: true } } },
+      },
+    },
+  });
+
+  if (!listing) return;
+
+  const doc = {
+    id: listing.id,
+    title: listing.title,
+    description: listing.description ?? null,
+    images: listing.images,
+    price: listing.price,
+    condition: listing.condition ?? null,
+    category: listing.category,
+    saleStatus: listing.saleStatus,
+    moderationStatus: listing.moderationStatus,
+    dealScore: listing.dealScore ?? null,
+    dealScoreBand: listing.dealScoreBand ?? null,
+    setName: listing.card?.setName ?? null,
+    cardNumber: listing.card?.cardNumber ?? null,
+    sellerName: listing.seller.user.name ?? null,
+    createdAt: listing.createdAt.toISOString(),
+  };
+
+  await meili.index(INDEXES.listings).addDocuments([doc]);
+}
+
+export async function removeListingFromIndex(listingId: string): Promise<void> {
+  await meili.index(INDEXES.listings).deleteDocument(listingId);
 }

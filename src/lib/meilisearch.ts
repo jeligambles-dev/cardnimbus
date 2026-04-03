@@ -8,6 +8,7 @@ export const meili = new Meilisearch({
 export const INDEXES = {
   products: "products",
   cards: "cards",
+  listings: "listings",
 } as const;
 
 export async function setupIndexes(): Promise<void> {
@@ -68,6 +69,38 @@ export async function setupIndexes(): Promise<void> {
   ]);
 
   await cardsIndex.updateRankingRules([
+    "words",
+    "typo",
+    "proximity",
+    "attribute",
+    "sort",
+    "exactness",
+  ]);
+
+  // --- Listings index ---
+  await meili.createIndex(INDEXES.listings, { primaryKey: "id" });
+  const listingsIndex = meili.index(INDEXES.listings);
+
+  await listingsIndex.updateSearchableAttributes([
+    "title",
+    "description",
+    "setName",
+    "cardNumber",
+    "sellerName",
+  ]);
+
+  await listingsIndex.updateFilterableAttributes([
+    "category",
+    "condition",
+    "saleStatus",
+    "moderationStatus",
+    "price",
+    "dealScoreBand",
+  ]);
+
+  await listingsIndex.updateSortableAttributes(["price", "createdAt", "dealScore"]);
+
+  await listingsIndex.updateRankingRules([
     "words",
     "typo",
     "proximity",
