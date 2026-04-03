@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { label: 'Boxes', href: '/shop?category=BOX' },
   { label: 'Slabs', href: '/shop?category=SLAB' },
   { label: 'Singles', href: '/shop?category=SINGLE' },
+  { label: '🔥 Deals', href: '/deals' },
 ]
 
 function CartIcon() {
