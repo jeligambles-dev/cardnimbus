@@ -51,6 +51,9 @@ model User {
   mysteryPulls         MysteryPull[]
   ticketReservations   TicketReservation[]
 
+  // Phase 5 relations
+  userBadges           UserBadge[]
+
   @@map("users")
 }
 
@@ -1277,4 +1280,69 @@ model CannedResponse {
   createdAt DateTime @default(now())
 
   @@map("canned_responses")
+}
+
+// ──────────────────────────────────────
+// Phase 5 — Badges
+// ──────────────────────────────────────
+
+enum BadgeCategory {
+  TRUST
+  PERFORMANCE
+  MILESTONE
+  COMMUNITY
+}
+
+enum BadgeMode {
+  PERMANENT
+  DYNAMIC
+  TIME_BOUND
+}
+
+enum BadgeVisibility {
+  PUBLIC
+  INTERNAL
+}
+
+model Badge {
+  id              String          @id @default(cuid())
+  name            String
+  slug            String          @unique
+  description     String
+  icon            String?
+  category        BadgeCategory
+  badgeMode       BadgeMode
+  displayPriority Int             @default(100)
+  visibility      BadgeVisibility @default(PUBLIC)
+  criteria        Json?
+  groupKey        String?
+  isAutoAwarded   Boolean         @default(true)
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+
+  userBadges UserBadge[]
+
+  @@index([category])
+  @@index([badgeMode])
+  @@map("badges")
+}
+
+model UserBadge {
+  id              String    @id @default(cuid())
+  userId          String
+  badgeId         String
+  awardedAt       DateTime  @default(now())
+  awardedContext  Json?
+  lastEvaluatedAt DateTime?
+  expiresAt       DateTime?
+  isRevoked       Boolean   @default(false)
+  revokedAt       DateTime?
+  revokedReason   String?
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id])
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+  @@map("user_badges")
 }

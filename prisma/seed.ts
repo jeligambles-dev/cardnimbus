@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from "@prisma/client";
+import { PrismaClient, Role, BadgeCategory, BadgeMode, BadgeVisibility } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
 
@@ -218,6 +218,290 @@ async function main() {
   ]);
 
   console.log(`Commission tiers: ${tiers.map((t) => `${t.name} (${t.rate * 100}%)`).join(", ")}`);
+
+  // ── Default badges ───────────────────────────────────────────────────────────
+  const badgeDefinitions = [
+    // Trust (priority 10-19)
+    {
+      slug: "verified-seller",
+      name: "Verified Seller",
+      description: "Identity has been verified by Card Nimbus staff.",
+      category: BadgeCategory.TRUST,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 10,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: false,
+      criteria: { type: "manual", description: "Manually awarded after ID verification" },
+    },
+    {
+      slug: "trusted-seller",
+      name: "Trusted Seller",
+      description: "Consistently high ratings with no disputes over 25+ sales.",
+      category: BadgeCategory.TRUST,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 11,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { minSales: 25, minRating: 4.8, maxDisputeRate: 0 },
+    },
+    {
+      slug: "pro-seller",
+      name: "Pro Seller",
+      description: "High-volume seller with excellent track record.",
+      category: BadgeCategory.TRUST,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 12,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { minSales: 100, minRating: 4.7, maxDisputeRate: 0.01 },
+    },
+    {
+      slug: "id-verified",
+      name: "ID Verified",
+      description: "Government-issued ID has been verified.",
+      category: BadgeCategory.TRUST,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 13,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: false,
+      criteria: { type: "manual", description: "Manually awarded after government ID check" },
+    },
+
+    // Performance (priority 20-29)
+    {
+      slug: "fast-shipper",
+      name: "Fast Shipper",
+      description: "Ships orders within 24 hours at least 90% of the time.",
+      category: BadgeCategory.PERFORMANCE,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 20,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { shipWithin24hRate: 0.9, minSamples: 10 },
+    },
+    {
+      slug: "top-rated",
+      name: "Top Rated",
+      description: "Maintains a 5-star rating across 10+ reviews.",
+      category: BadgeCategory.PERFORMANCE,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 21,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { minRating: 5.0, minReviews: 10 },
+    },
+    {
+      slug: "quick-responder",
+      name: "Quick Responder",
+      description: "Responds to messages within 2 hours on average.",
+      category: BadgeCategory.PERFORMANCE,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 22,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { avgResponseTimeHours: 2, minSamples: 5 },
+    },
+    {
+      slug: "reliable-buyer",
+      name: "Reliable Buyer",
+      description: "Completed 10+ purchases with no cancelled orders.",
+      category: BadgeCategory.PERFORMANCE,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 23,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { minPurchases: 10, maxCancellationRate: 0 },
+    },
+
+    // Milestone (priority 30-49)
+    {
+      slug: "first-sale",
+      name: "First Sale",
+      description: "Completed their first sale on Card Nimbus.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 30,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { event: "sale_completed", count: 1 },
+    },
+    {
+      slug: "first-purchase",
+      name: "First Purchase",
+      description: "Completed their first purchase on Card Nimbus.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 31,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { event: "purchase_completed", count: 1 },
+    },
+    {
+      slug: "10-sales",
+      name: "10 Sales",
+      description: "Reached 10 completed sales.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 32,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      groupKey: "sales_milestone",
+      criteria: { event: "sale_completed", count: 10 },
+    },
+    {
+      slug: "50-sales",
+      name: "50 Sales",
+      description: "Reached 50 completed sales.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 33,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      groupKey: "sales_milestone",
+      criteria: { event: "sale_completed", count: 50 },
+    },
+    {
+      slug: "100-sales",
+      name: "100 Sales",
+      description: "Reached 100 completed sales.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 34,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      groupKey: "sales_milestone",
+      criteria: { event: "sale_completed", count: 100 },
+    },
+    {
+      slug: "500-sales",
+      name: "500 Sales",
+      description: "Reached 500 completed sales.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 35,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      groupKey: "sales_milestone",
+      criteria: { event: "sale_completed", count: 500 },
+    },
+    {
+      slug: "raffle-winner",
+      name: "Raffle Winner",
+      description: "Won a Card Nimbus raffle.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 40,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { event: "raffle_won", count: 1 },
+    },
+    {
+      slug: "lucky-pull",
+      name: "Lucky Pull",
+      description: "Pulled a rare item from a Mystery Collection.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 41,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { event: "mystery_rare_pull", tier: "LEGENDARY" },
+    },
+    {
+      slug: "early-adopter",
+      name: "Early Adopter",
+      description: "Joined Card Nimbus during the early access period.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 42,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: false,
+      criteria: { type: "manual", description: "Awarded to users who joined before public launch" },
+    },
+
+    // Time-Bound (priority 50-59)
+    {
+      slug: "top-seller-of-the-month",
+      name: "Top Seller of the Month",
+      description: "Ranked #1 seller by volume for the calendar month.",
+      category: BadgeCategory.MILESTONE,
+      badgeMode: BadgeMode.TIME_BOUND,
+      displayPriority: 50,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: true,
+      criteria: { event: "monthly_leaderboard_rank", rank: 1, period: "calendar_month" },
+    },
+
+    // Community (priority 60-69)
+    {
+      slug: "community-helper",
+      name: "Community Helper",
+      description: "Recognised for outstanding contributions to the Card Nimbus community.",
+      category: BadgeCategory.COMMUNITY,
+      badgeMode: BadgeMode.PERMANENT,
+      displayPriority: 60,
+      visibility: BadgeVisibility.PUBLIC,
+      isAutoAwarded: false,
+      criteria: { type: "manual", description: "Manually awarded by admin for community contribution" },
+    },
+
+    // Internal (priority 90-99, INTERNAL visibility)
+    {
+      slug: "under-review",
+      name: "Under Review",
+      description: "Account is currently under review by the trust & safety team.",
+      category: BadgeCategory.TRUST,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 90,
+      visibility: BadgeVisibility.INTERNAL,
+      isAutoAwarded: false,
+      criteria: { type: "manual", description: "Set by trust & safety team" },
+    },
+    {
+      slug: "dispute-risk",
+      name: "Dispute Risk",
+      description: "User has an elevated dispute rate.",
+      category: BadgeCategory.TRUST,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 91,
+      visibility: BadgeVisibility.INTERNAL,
+      isAutoAwarded: true,
+      criteria: { minDisputeRate: 0.05, minSamples: 5 },
+    },
+    {
+      slug: "suspicious-velocity",
+      name: "Suspicious Velocity",
+      description: "Unusual transaction velocity detected.",
+      category: BadgeCategory.TRUST,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 92,
+      visibility: BadgeVisibility.INTERNAL,
+      isAutoAwarded: true,
+      criteria: { type: "velocity_check", transactionsPerHour: 10 },
+    },
+    {
+      slug: "farm-suspect",
+      name: "Farm Suspect",
+      description: "Account shows patterns consistent with raffle or bonus farming.",
+      category: BadgeCategory.TRUST,
+      badgeMode: BadgeMode.DYNAMIC,
+      displayPriority: 93,
+      visibility: BadgeVisibility.INTERNAL,
+      isAutoAwarded: true,
+      criteria: { type: "farm_detection", signals: ["multi_account", "ip_reuse", "payment_reuse"] },
+    },
+  ];
+
+  const badges = await Promise.all(
+    badgeDefinitions.map((b) =>
+      db.badge.upsert({
+        where: { slug: b.slug },
+        update: {},
+        create: b,
+      })
+    )
+  );
+
+  console.log(`Badges seeded: ${badges.length} badges`);
   console.log("Seed complete.");
 }
 
