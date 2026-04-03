@@ -43,6 +43,14 @@ model User {
   disputesFiled        Dispute[]
   savedSearches        SavedSearch[]
 
+  // Phase 4 relations
+  raffleTickets        RaffleTicket[]
+  rafflePurchases      RafflePurchase[]
+  raffleWins           Raffle[]            @relation("RaffleWinner")
+  mysteryPurchases     MysteryPurchase[]
+  mysteryPulls         MysteryPull[]
+  ticketReservations   TicketReservation[]
+
   @@map("users")
 }
 
@@ -901,4 +909,372 @@ model SavedSearch {
 
   @@index([userId])
   @@map("saved_searches")
+}
+
+// ──────────────────────────────────────
+// Phase 4 — Raffle
+// ──────────────────────────────────────
+
+enum RaffleStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  FROZEN
+  DRAWING
+  COMPLETED
+  CANCELLED
+  PRIZE_SHIPPED
+}
+
+enum ReservationStatus {
+  RESERVED
+  CONFIRMED
+  EXPIRED
+  VOIDED
+}
+
+enum RafflePurchaseStatus {
+  INITIATED
+  AUTHORIZED
+  CONFIRMED
+  FAILED
+  VOIDED
+  REFUNDED
+}
+
+enum VisibilityMode {
+  PUBLIC_NAMES
+  PARTIAL
+  ANONYMOUS
+}
+
+model Raffle {
+  id                     String         @id @default(cuid())
+  title                  String
+  description            String?        @db.Text
+  prizeImages            String[]
+  prizeValue             Float
+  ticketPrice            Float
+  totalSlots             Int
+  filledSlots            Int            @default(0)
+  maxTicketsPerUser      Int            @default(1)
+  minFillThreshold       Float          @default(0.5)
+  status                 RaffleStatus   @default(DRAFT)
+  drawMethod             String?
+  winnerId               String?
+  winningTicketNumber    Int?
+  drawnAt                DateTime?
+  randomSeed             String?
+  drawReference          String?
+  legalRegionRestriction String?
+  publishedTermsVersion  String?
+  visibilityMode         VisibilityMode @default(PUBLIC_NAMES)
+  cancelReason           String?
+  prizeOrderId           String?
+  startsAt               DateTime
+  endsAt                 DateTime
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+
+  tickets      RaffleTicket[]
+  purchases    RafflePurchase[]
+  reservations TicketReservation[]
+  winner       User?              @relation("RaffleWinner", fields: [winnerId], references: [id])
+
+  @@index([status])
+  @@map("raffles")
+}
+
+model RafflePurchase {
+  id        String               @id @default(cuid())
+  raffleId  String
+  userId    String
+  quantity  Int
+  amount    Float
+  paymentId String?
+  status    RafflePurchaseStatus @default(INITIATED)
+  createdAt DateTime             @default(now())
+
+  raffle  Raffle         @relation(fields: [raffleId], references: [id])
+  user    User           @relation(fields: [userId], references: [id])
+  tickets RaffleTicket[]
+
+  @@index([raffleId])
+  @@index([userId])
+  @@map("raffle_purchases")
+}
+
+model RaffleTicket {
+  id           String   @id @default(cuid())
+  raffleId     String
+  purchaseId   String
+  userId       String
+  ticketNumber Int
+  assignedAt   DateTime @default(now())
+
+  raffle   Raffle         @relation(fields: [raffleId], references: [id])
+  purchase RafflePurchase @relation(fields: [purchaseId], references: [id])
+  user     User           @relation(fields: [userId], references: [id])
+
+  @@unique([raffleId, ticketNumber])
+  @@index([userId])
+  @@map("raffle_tickets")
+}
+
+model TicketReservation {
+  id        String            @id @default(cuid())
+  raffleId  String
+  userId    String
+  quantity  Int
+  status    ReservationStatus @default(RESERVED)
+  expiresAt DateTime
+  createdAt DateTime          @default(now())
+
+  raffle Raffle @relation(fields: [raffleId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([raffleId])
+  @@index([userId])
+  @@map("ticket_reservations")
+}
+
+// ──────────────────────────────────────
+// Phase 4 — Mystery Collection
+// ──────────────────────────────────────
+
+enum MysteryCollectionStatus {
+  DRAFT
+  ACTIVE
+  LOW_STOCK
+  SOLD_OUT
+  ARCHIVED
+}
+
+enum MysteryPurchaseStatus {
+  INITIATED
+  CONFIRMED
+  FAILED
+  REFUNDED
+}
+
+model MysteryCollection {
+  id               String    @id @default(cuid())
+  name             String
+  tier             String
+  price            Float
+  currentVersionId String?
+  isActive         Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  versions  MysteryCollectionVersion[]
+  purchases MysteryPurchase[]
+
+  @@map("mystery_collections")
+}
+
+model MysteryCollectionVersion {
+  id                 String                  @id @default(cuid())
+  collectionId       String
+  version            Int
+  pullRates          Json
+  guaranteedMinValue Float
+  valueLockedAt      DateTime?
+  stockRemaining     Int                     @default(0)
+  status             MysteryCollectionStatus @default(DRAFT)
+  effectiveFrom      DateTime?
+  activatedBy        String?
+  createdAt          DateTime                @default(now())
+
+  collection MysteryCollection @relation(fields: [collectionId], references: [id])
+  poolItems  MysteryPoolItem[]
+  pulls      MysteryPull[]
+  purchases  MysteryPurchase[]
+
+  @@index([collectionId])
+  @@map("mystery_collection_versions")
+}
+
+model MysteryPoolItem {
+  id          String  @id @default(cuid())
+  versionId   String
+  productId   String?
+  cardId      String?
+  tierName    String
+  weight      Float
+  quantity    Int
+  lockedValue Float
+
+  version MysteryCollectionVersion @relation(fields: [versionId], references: [id])
+
+  @@index([versionId])
+  @@map("mystery_pool_items")
+}
+
+model MysteryPurchase {
+  id           String                @id @default(cuid())
+  userId       String
+  collectionId String
+  versionId    String
+  amount       Float
+  paymentId    String?
+  status       MysteryPurchaseStatus @default(INITIATED)
+  pricePaid    Float
+  createdAt    DateTime              @default(now())
+
+  user       User                     @relation(fields: [userId], references: [id])
+  collection MysteryCollection        @relation(fields: [collectionId], references: [id])
+  version    MysteryCollectionVersion @relation(fields: [versionId], references: [id])
+  pull       MysteryPull?
+
+  @@index([userId])
+  @@index([collectionId])
+  @@map("mystery_purchases")
+}
+
+model MysteryPull {
+  id                 String   @id @default(cuid())
+  purchaseId         String   @unique
+  collectionId       String
+  versionId          String
+  userId             String
+  tierRolled         String
+  poolItemId         String
+  revealedItemName   String
+  revealedItemImage  String?
+  revealedItemValue  Float
+  pulledAt           DateTime @default(now())
+
+  purchase MysteryPurchase          @relation(fields: [purchaseId], references: [id])
+  version  MysteryCollectionVersion @relation(fields: [versionId], references: [id])
+  user     User                     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("mystery_pulls")
+}
+
+// ──────────────────────────────────────
+// Phase 4 — Live Support Chat
+// ──────────────────────────────────────
+
+enum SupportConversationStatus {
+  OPEN
+  WAITING_ON_CUSTOMER
+  WAITING_ON_AGENT
+  RESOLVED
+  CLOSED
+}
+
+enum SupportPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum SupportSenderType {
+  CUSTOMER
+  AGENT
+  SYSTEM
+  BOT
+}
+
+enum SupportMessageType {
+  TEXT
+  IMAGE
+  FILE
+  SYSTEM_MSG
+  AUTO_REPLY
+}
+
+model SupportConversation {
+  id                   String                    @id @default(cuid())
+  userId               String?
+  visitorId            String?
+  assignedAgentId      String?
+  status               SupportConversationStatus @default(OPEN)
+  priority             SupportPriority           @default(NORMAL)
+  priorityReason       String?
+  routingReason        String?
+  category             String?
+  tags                 String[]
+  subject              String?
+  sourcePageUrl        String?
+  sourceType           String?
+  lastMessageAt        DateTime?
+  lastCustomerMessageAt DateTime?
+  lastAgentMessageAt   DateTime?
+  botResolvedAt        DateTime?
+  startedAt            DateTime                  @default(now())
+  resolvedAt           DateTime?
+  closedReason         String?
+  satisfactionRating   Int?
+  csatComment          String?
+
+  messages       SupportMessage[]
+  internalNotes  SupportInternalNote[]
+  transfers      SupportTransferLog[]
+
+  @@index([status])
+  @@index([userId])
+  @@map("support_conversations")
+}
+
+model SupportMessage {
+  id             String             @id @default(cuid())
+  conversationId String
+  senderId       String?
+  senderType     SupportSenderType
+  messageType    SupportMessageType @default(TEXT)
+  content        String             @db.Text
+  attachments    String[]
+  deliveredAt    DateTime?
+  readAt         DateTime?
+  failedAt       DateTime?
+  metadataJson   Json?
+  createdAt      DateTime           @default(now())
+
+  conversation SupportConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@map("support_messages")
+}
+
+model SupportInternalNote {
+  id             String   @id @default(cuid())
+  conversationId String
+  agentId        String
+  content        String   @db.Text
+  createdAt      DateTime @default(now())
+
+  conversation SupportConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@map("support_internal_notes")
+}
+
+model SupportTransferLog {
+  id             String   @id @default(cuid())
+  conversationId String
+  fromAgentId    String
+  toAgentId      String
+  reason         String?
+  createdAt      DateTime @default(now())
+
+  conversation SupportConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@map("support_transfer_logs")
+}
+
+model CannedResponse {
+  id        String   @id @default(cuid())
+  shortcut  String   @unique
+  title     String
+  content   String   @db.Text
+  category  String?
+  createdBy String?
+  createdAt DateTime @default(now())
+
+  @@map("canned_responses")
 }
