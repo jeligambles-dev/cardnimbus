@@ -2,9 +2,13 @@ import { type NextRequest } from "next/server";
 import { ProductCategory, CardCondition } from "@prisma/client";
 import { search } from "@/services/search.service";
 import { errorResponse } from "@/lib/errors";
+import { auth } from "@/lib/auth";
+import { trackSearch } from "@/services/search-analytics.service";
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth();
+    const userId = session?.user?.id;
     const searchParams = request.nextUrl.searchParams;
 
     const q = searchParams.get("q") ?? "";
@@ -37,6 +41,19 @@ export async function GET(request: NextRequest) {
       maxPrice,
       limit,
       offset,
+    });
+
+    // Fire-and-forget analytics tracking
+    void trackSearch({
+      userId: userId ?? undefined,
+      query: q,
+      filters:
+        category || condition || minPrice !== undefined || maxPrice !== undefined
+          ? { category, condition, minPrice, maxPrice }
+          : undefined,
+      resultCount: result.total,
+      sessionId:
+        request.headers.get("x-session-id") ?? undefined,
     });
 
     return Response.json(result);
