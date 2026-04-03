@@ -4,9 +4,17 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Badge } from '@/components/ui/badge'
+import { BadgeIcon } from '@/components/badges/badge-icon'
 import { DealBadge } from '@/components/deals/deal-badge'
 import { formatCurrency } from '@/lib/utils'
 import type { DealScoreBand } from '@/services/deal-score.service'
+import type { BadgeCategory } from '@prisma/client'
+
+interface SellerBadge {
+  name: string
+  icon?: string | null
+  category: BadgeCategory
+}
 
 interface ListingCardProps {
   listing: {
@@ -27,6 +35,7 @@ interface ListingCardProps {
     }
   }
   index?: number
+  sellerBadges?: SellerBadge[]
 }
 
 function StarRating({ rating }: { rating: number | null }) {
@@ -49,7 +58,7 @@ function StarRating({ rating }: { rating: number | null }) {
   )
 }
 
-export function ListingCard({ listing, index = 0 }: ListingCardProps) {
+export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardProps) {
   const mainImage = listing.images[0] ?? null
   const sellerName = listing.seller.user.name ?? 'Seller'
 
@@ -126,7 +135,22 @@ export function ListingCard({ listing, index = 0 }: ListingCardProps) {
 
             {/* Seller */}
             <div className="flex items-center justify-between pt-1 border-t border-surface-border">
-              <span className="text-xs text-text-muted truncate max-w-[100px]">{sellerName}</span>
+              <div className="flex items-center gap-1 min-w-0">
+                <span className="text-xs text-text-muted truncate max-w-[80px]">{sellerName}</span>
+                {sellerBadges && sellerBadges.length > 0 && (
+                  <div className="flex items-center gap-0.5 shrink-0">
+                    {sellerBadges.slice(0, 2).map((b) => (
+                      <BadgeIcon
+                        key={b.name}
+                        name={b.name}
+                        icon={b.icon}
+                        category={b.category}
+                        size="small"
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
               <StarRating rating={listing.seller.rating} />
             </div>
           </div>

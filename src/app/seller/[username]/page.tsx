@@ -3,8 +3,10 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { getPublicSellerProfile } from '@/services/seller.service'
 import { getSellerListings } from '@/services/listing.service'
+import { getUserBadges } from '@/services/badge.service'
 import { ListingCard } from '@/components/marketplace/listing-card'
 import { Badge } from '@/components/ui/badge'
+import { BadgeGrid } from '@/components/badges/badge-grid'
 
 interface SellerPageProps {
   params: Promise<{ username: string }>
@@ -61,11 +63,21 @@ export default async function SellerProfilePage({ params }: SellerPageProps) {
   const sellerUser = profile.user as { name: string | null; avatar: string | null; createdAt: Date }
   const activeListingsCount = (profile._count as { listings: number }).listings
 
-  // Fetch active listings
-  const { items: listings } = await getSellerListings(profile.id, 1, 20)
+  // Fetch active listings and badges
+  const [{ items: listings }, userBadges] = await Promise.all([
+    getSellerListings(profile.id, 1, 20),
+    getUserBadges(profile.userId),
+  ])
   const activeListings = listings.filter(
     (l) => l.moderationStatus === 'APPROVED' && l.saleStatus === 'ACTIVE'
   )
+
+  // Map to badge grid shape
+  const badgeEntries = userBadges.map((ub) => ({
+    id: ub.id,
+    awardedAt: ub.awardedAt,
+    badge: ub.badge,
+  }))
 
   const memberSince = new Date(sellerUser.createdAt).toLocaleDateString('en-US', {
     month: 'long',
@@ -140,6 +152,14 @@ export default async function SellerProfilePage({ params }: SellerPageProps) {
             </div>
           </div>
         </div>
+
+        {/* Badges */}
+        {badgeEntries.length > 0 && (
+          <div className="mb-10">
+            <h2 className="text-xl font-bold text-text-primary mb-6">Badges</h2>
+            <BadgeGrid userBadges={badgeEntries} />
+          </div>
+        )}
 
         {/* Active Listings */}
         <div>

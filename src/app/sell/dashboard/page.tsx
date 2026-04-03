@@ -181,10 +181,42 @@ export default async function SellerDashboardPage() {
     )
   }
 
-  const [payoutSummary, listingsData] = await Promise.all([
+  const [payoutSummary, listingsData, userBadges] = await Promise.all([
     getPayoutSummary(profile.id),
     getSellerListings(profile.id, 1, 5),
+    getUserBadges(userId),
   ])
+
+  // Badge progress — next unearned milestone
+  const earnedSlugs = new Set(userBadges.map((ub) => ub.badge.slug))
+  const milestoneProgress = await (async () => {
+    const milestones = [
+      { slug: 'first-sale', target: 1 },
+      { slug: '10-sales', target: 10 },
+      { slug: '50-sales', target: 50 },
+      { slug: '100-sales', target: 100 },
+      { slug: '500-sales', target: 500 },
+    ]
+    const items = []
+    for (const m of milestones) {
+      if (earnedSlugs.has(m.slug)) continue
+      const badge = await db.badge.findUnique({
+        where: { slug: m.slug },
+        select: { name: true, icon: true, visibility: true, isActive: true },
+      })
+      if (!badge?.isActive || badge.visibility !== BadgeVisibility.PUBLIC) continue
+      items.push({
+        badgeSlug: m.slug,
+        badgeName: badge.name,
+        badgeIcon: badge.icon ?? null,
+        label: `${badge.name}: ${profile.totalSales} / ${m.target} sales`,
+        current: profile.totalSales,
+        target: m.target,
+      })
+      break // only show the next unearned milestone
+    }
+    return items
+  })()
 
   // Get all tiers to calculate next tier progress
   const allTiers = await db.commissionTier.findMany({ orderBy: { minSales: 'asc' } })
@@ -254,6 +286,22 @@ export default async function SellerDashboardPage() {
           nextTier={nextTier}
           progressPct={progressPct}
         />
+
+        {/* Badge Progress */}
+        {milestoneProgress.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-base font-semibold text-text-primary mb-3">Badge Progress</h2>
+            <BadgeProgress progress={milestoneProgress} />
+          </div>
+        )}
+
+        {/* My Badges */}
+        {userBadges.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-base font-semibold text-text-primary mb-3">My Badges</h2>
+            <BadgeGrid userBadges={userBadges.map((ub) => ({ id: ub.id, awardedAt: ub.awardedAt, badge: ub.badge }))} />
+          </div>
+        )}
 
         {/* Quick Nav */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
