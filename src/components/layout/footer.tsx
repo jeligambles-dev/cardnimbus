@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 const SHOP_LINKS = [
   { label: 'All Products', href: '/shop' },
+  { label: 'Marketplace', href: '/marketplace' },
   { label: 'Packs', href: '/shop?category=PACK' },
   { label: 'Booster Boxes', href: '/shop?category=BOX' },
   { label: 'Graded Slabs', href: '/shop?category=SLAB' },
@@ -9,6 +10,7 @@ const SHOP_LINKS = [
   { label: 'New Arrivals', href: '/shop?sort=newest' },
   { label: 'Deals', href: '/deals' },
   { label: 'Sell Your Cards', href: '/sell-your-cards' },
+  { label: 'Sell on Marketplace', href: '/account/seller' },
 ]
 
 const HELP_LINKS = [

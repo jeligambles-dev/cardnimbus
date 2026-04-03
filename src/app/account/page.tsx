@@ -10,6 +10,7 @@ export const metadata = {
 export default async function AccountPage() {
   const session = await requireAuth()
   const user = session.user
+  const isSeller = (user as { role?: string }).role === 'SELLER' || (user as { role?: string }).role === 'ADMIN'
 
   return (
     <main className="min-h-screen bg-surface">
@@ -139,6 +140,50 @@ export default async function AccountPage() {
               </div>
             </Card>
           </Link>
+
+          <Link href="/account/messages">
+            <Card hover className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                  💬
+                </div>
+                <div>
+                  <p className="font-bold text-text-primary">Messages</p>
+                  <p className="text-text-secondary text-sm">Chat with buyers and sellers</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/account/disputes">
+            <Card hover className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                  ⚖️
+                </div>
+                <div>
+                  <p className="font-bold text-text-primary">Disputes</p>
+                  <p className="text-text-secondary text-sm">Manage order disputes</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          {isSeller && (
+            <Link href="/account/seller">
+              <Card hover className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                    🏪
+                  </div>
+                  <div>
+                    <p className="font-bold text-text-primary">Seller Dashboard</p>
+                    <p className="text-text-secondary text-sm">Manage your listings and earnings</p>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          )}
         </div>
       </div>
     </main>
