@@ -3,14 +3,141 @@ import { requireAuth } from '@/lib/auth-guard'
 import { getSellerProfile } from '@/services/seller.service'
 import { getSellerListings } from '@/services/listing.service'
 import { getPayoutSummary } from '@/services/payout.service'
+import { getUserBadges } from '@/services/badge.service'
 import { db } from '@/lib/db'
 import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
+import { BadgeGrid } from '@/components/badges/badge-grid'
+import { BadgeProgress } from '@/components/badges/badge-progress'
+import { BadgeVisibility } from '@prisma/client'
 
 export const metadata = {
   title: 'Seller Dashboard — Card Nimbus',
 }
+
+// ─── Types ─────────────────────────────────────────────────────────────────────
+
+interface CommissionTierShape {
+  id: string
+  name: string
+  minSales: number
+  rate: number
+}
+
+interface SellerProfileShape {
+  totalSales: number
+  rating: number | null
+  ratingCount: number
+  tier: CommissionTierShape | null
+}
+
+// ─── Tier helpers ──────────────────────────────────────────────────────────────
+
+const TIER_COLORS: Record<string, { badge: string; bar: string; text: string }> = {
+  STANDARD: {
+    badge: 'bg-surface-overlay text-text-secondary border-surface-border',
+    bar: 'bg-text-muted',
+    text: 'text-text-secondary',
+  },
+  SILVER: {
+    badge: 'bg-slate-800 text-slate-300 border-slate-600',
+    bar: 'bg-slate-400',
+    text: 'text-slate-300',
+  },
+  GOLD: {
+    badge: 'bg-amber-950 text-amber-300 border-amber-700',
+    bar: 'bg-amber-400',
+    text: 'text-amber-300',
+  },
+}
+
+function getTierColors(tierName?: string | null) {
+  if (!tierName) return TIER_COLORS.STANDARD
+  const key = tierName.toUpperCase()
+  return TIER_COLORS[key] ?? TIER_COLORS.STANDARD
+}
+
+// ─── Tier Progress Card ────────────────────────────────────────────────────────
+
+interface TierProgressCardProps {
+  profile: SellerProfileShape
+  allTiers: CommissionTierShape[]
+  nextTier: CommissionTierShape | null
+  progressPct: number
+}
+
+function TierProgressCard({ profile, allTiers: _allTiers, nextTier, progressPct }: TierProgressCardProps) {
+  const tierName = profile.tier?.name ?? 'STANDARD'
+  const colors = getTierColors(tierName)
+  const currentRate = profile.tier?.rate ?? 0.1
+
+  return (
+    <Card className="p-6 mb-8">
+      {/* Header row */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <span
+            className={`inline-flex items-center px-3 py-1 rounded-full border text-xs font-bold tracking-wide uppercase ${colors.badge}`}
+          >
+            {tierName}
+          </span>
+          <span className={`text-sm font-semibold ${colors.text}`}>
+            {(currentRate * 100).toFixed(0)}% commission rate
+          </span>
+        </div>
+        {nextTier && (
+          <span className="text-xs text-text-muted">
+            {profile.totalSales} / {nextTier.minSales} sales
+          </span>
+        )}
+      </div>
+
+      {/* Progress bar */}
+      {nextTier ? (
+        <>
+          <div className="w-full h-3 bg-surface-overlay rounded-full overflow-hidden mb-2">
+            <div
+              className={`h-full rounded-full transition-all duration-700 ${colors.bar}`}
+              style={{ width: `${progressPct}%` }}
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-text-muted">
+              <span className="font-semibold text-text-secondary">
+                {nextTier.minSales - profile.totalSales}
+              </span>{' '}
+              more sales to reach{' '}
+              <span className={`font-semibold ${getTierColors(nextTier.name).text}`}>
+                {nextTier.name}
+              </span>
+            </p>
+            <span className="text-xs font-bold text-text-muted">{progressPct}%</span>
+          </div>
+
+          {/* Next tier benefit preview */}
+          <div className={`mt-4 rounded-xl border px-4 py-3 ${getTierColors(nextTier.name).badge} border-opacity-40`}>
+            <p className="text-xs font-bold uppercase tracking-widest mb-1 opacity-70">
+              {nextTier.name} tier unlocks
+            </p>
+            <p className="text-xs">
+              Commission drops to{' '}
+              <span className="font-bold">{(nextTier.rate * 100).toFixed(0)}%</span>
+              {' '}(saving you {((currentRate - nextTier.rate) * 100).toFixed(0)} percentage points per sale)
+            </p>
+          </div>
+        </>
+      ) : (
+        <div className="flex items-center gap-2 mt-1">
+          <div className={`h-3 w-full rounded-full ${colors.bar}`} />
+          <span className="text-xs font-bold text-text-muted whitespace-nowrap ml-2">Max tier</span>
+        </div>
+      )}
+    </Card>
+  )
+}
+
+// ─── Stat Card ─────────────────────────────────────────────────────────────────
 
 interface StatCardProps {
   label: string
@@ -120,27 +247,13 @@ export default async function SellerDashboardPage() {
           />
         </div>
 
-        {/* Tier Progress */}
-        {nextTier && (
-          <Card className="p-6 mb-8">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-medium text-text-primary">
-                Progress to <span className="text-nimbus-400">{nextTier.name}</span>
-              </p>
-              <span className="text-sm text-text-muted">{progressPct}%</span>
-            </div>
-            <div className="w-full h-2 bg-surface-overlay rounded-full overflow-hidden">
-              <div
-                className="h-full bg-nimbus-500 rounded-full transition-all duration-500"
-                style={{ width: `${progressPct}%` }}
-              />
-            </div>
-            <p className="text-xs text-text-muted mt-2">
-              {nextTier.minSales - profile.totalSales} more sales to reach {nextTier.name} (
-              {(nextTier.rate * 100).toFixed(0)}% commission rate)
-            </p>
-          </Card>
-        )}
+        {/* Tier Progression */}
+        <TierProgressCard
+          profile={profile}
+          allTiers={allTiers}
+          nextTier={nextTier}
+          progressPct={progressPct}
+        />
 
         {/* Quick Nav */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
