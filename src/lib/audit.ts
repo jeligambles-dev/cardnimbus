@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { db } from "./db";
 import { ActorType } from "@prisma/client";
 
@@ -12,5 +13,11 @@ interface AuditEntry {
 }
 
 export async function logAudit(entry: AuditEntry) {
-  await db.auditLog.create({ data: entry });
+  const { details, ...rest } = entry;
+  await db.auditLog.create({
+    data: {
+      ...rest,
+      details: details !== undefined ? (details as Prisma.InputJsonValue) : Prisma.DbNull,
+    },
+  });
 }
