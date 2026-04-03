@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { label: 'Slabs', href: '/shop?category=SLAB' },
   { label: 'Singles', href: '/shop?category=SINGLE' },
   { label: '🔥 Deals', href: '/deals' },
+  { label: 'Sell Cards', href: '/sell-your-cards' },
 ]
 
 function CartIcon() {

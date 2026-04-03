@@ -7,6 +7,8 @@ const SHOP_LINKS = [
   { label: 'Graded Slabs', href: '/shop?category=SLAB' },
   { label: 'Singles', href: '/shop?category=SINGLE' },
   { label: 'New Arrivals', href: '/shop?sort=newest' },
+  { label: 'Deals', href: '/deals' },
+  { label: 'Sell Your Cards', href: '/sell-your-cards' },
 ]
 
 const HELP_LINKS = [

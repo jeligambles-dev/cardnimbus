@@ -97,6 +97,48 @@ export default async function AccountPage() {
               </div>
             </Card>
           </Link>
+
+          <Link href="/account/wishlist">
+            <Card hover className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                  ❤️
+                </div>
+                <div>
+                  <p className="font-bold text-text-primary">Wishlist</p>
+                  <p className="text-text-secondary text-sm">Track cards and get price drop alerts</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/account/submissions">
+            <Card hover className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                  📬
+                </div>
+                <div>
+                  <p className="font-bold text-text-primary">My Submissions</p>
+                  <p className="text-text-secondary text-sm">Check offers on cards you&apos;ve sent in</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/account/notification-settings">
+            <Card hover className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                  ⚙️
+                </div>
+                <div>
+                  <p className="font-bold text-text-primary">Notification Settings</p>
+                  <p className="text-text-secondary text-sm">Choose how and when you hear from us</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
         </div>
       </div>
     </main>
