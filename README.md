@@ -1,36 +1,186 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Card Nimbus
 
-## Getting Started
+Pokemon card marketplace platform. Buy packs, booster boxes, slabs, and singles. Sell your cards. Community P2P marketplace with escrow. Raffles, mystery collections, live support chat.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Database:** PostgreSQL 17 + Prisma 7
+- **Cache:** Redis
+- **Search:** Meilisearch
+- **Payments:** Stripe Connect + PayPal
+- **Email:** Resend
+- **Jobs:** BullMQ
+- **Bot:** Discord.js
+- **UI:** Tailwind CSS v4, Framer Motion, Zustand
+
+## Prerequisites
+
+- Node.js 20+
+- PostgreSQL 17
+- Redis
+- Meilisearch
+
+### Install via Homebrew (macOS)
+
+```bash
+brew install postgresql@17 redis meilisearch
+brew services start postgresql@17
+brew services start redis
+brew services start meilisearch
+```
+
+### Or via Docker
+
+```bash
+docker run -d --name cn-postgres -e POSTGRES_DB=card_nimbus -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:17
+docker run -d --name cn-redis -p 6379:6379 redis:7
+docker run -d --name cn-meili -e MEILI_ENV=development -p 7700:7700 getmeili/meilisearch:latest
+```
+
+## Setup
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/jeligambles-dev/cardnimbus.git
+cd cardnimbus
+npm install
+```
+
+### 2. Configure environment
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` with your values:
+
+```env
+# Required
+DATABASE_URL="postgresql://user:password@localhost:5432/card_nimbus"
+AUTH_SECRET="generate-with: openssl rand -base64 32"
+REDIS_URL="redis://localhost:6379"
+MEILISEARCH_HOST="http://localhost:7700"
+
+# Payments (get from Stripe/PayPal dashboards)
+STRIPE_SECRET_KEY="sk_test_..."
+STRIPE_PUBLISHABLE_KEY="pk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+PAYPAL_CLIENT_ID="..."
+PAYPAL_CLIENT_SECRET="..."
+
+# Email (get from resend.com)
+RESEND_API_KEY="re_..."
+
+# Optional - Discord bot
+DISCORD_BOT_TOKEN=""
+DISCORD_GUILD_ID=""
+DISCORD_SUBMISSIONS_CHANNEL_ID=""
+DISCORD_APPROVALS_CHANNEL_ID=""
+DISCORD_ALERTS_CHANNEL_ID=""
+DISCORD_MODERATOR_ROLE_ID=""
+DISCORD_TRUSTED_OPS_ROLE_ID=""
+```
+
+### 3. Set up database
+
+```bash
+# Create database (Homebrew PostgreSQL)
+createdb card_nimbus
+
+# Or with Docker
+# docker exec cn-postgres psql -U postgres -c "CREATE DATABASE card_nimbus;"
+
+# Run migrations
+npx prisma migrate deploy
+
+# Seed sample data
+ADMIN_SEED_PASSWORD="YourSecurePassword" npx prisma db seed
+```
+
+### 4. Start the app
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 5. Start background workers (optional)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# In a separate terminal
+npm run worker
+```
 
-## Learn More
+### 6. Start Discord bot (optional)
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# In a separate terminal - requires Discord env vars
+npm run bot
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Admin Access
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+After seeding, login at `/login` with:
 
-## Deploy on Vercel
+- **Email:** admin@cardnimbus.com
+- **Password:** whatever you set in `ADMIN_SEED_PASSWORD`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Admin panel: `/admin`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+src/
+  app/           # Next.js pages and API routes
+  components/    # React components
+  services/      # Business logic
+  lib/           # Shared utilities (db, auth, stripe, email, etc.)
+  stores/        # Zustand client stores
+  hooks/         # React hooks
+  types/         # TypeScript types
+bot/             # Discord bot (separate process)
+jobs/            # BullMQ workers and cron jobs
+prisma/          # Database schema and migrations
+```
+
+## Key Routes
+
+| Route | Description |
+|-------|-------------|
+| `/` | Homepage |
+| `/shop` | Store catalog |
+| `/marketplace` | Community P2P listings |
+| `/raffles` | Active raffles |
+| `/mystery` | Mystery collections |
+| `/deals` | Best deal scores |
+| `/sell-your-cards` | Sell cards to us |
+| `/sell/dashboard` | Seller dashboard |
+| `/community` | Leaderboards |
+| `/admin` | Admin panel |
+
+## Deployment (Railway)
+
+```bash
+railway login
+railway init
+railway add --plugin postgresql
+railway add --plugin redis
+# Add Meilisearch as Docker image service from dashboard
+railway variables set AUTH_SECRET="..." STRIPE_SECRET_KEY="..." ...
+railway up
+railway run npx prisma db seed
+```
+
+## Services
+
+| Service | Default Port | Purpose |
+|---------|-------------|---------|
+| Next.js | 3000 | Web app + API |
+| PostgreSQL | 5432 | Primary database |
+| Redis | 6379 | Cache, rate limiting, job queues |
+| Meilisearch | 7700 | Full-text search |
+| BullMQ Worker | - | Background jobs (email, search sync, badges) |
+| Discord Bot | - | Admin notifications |
