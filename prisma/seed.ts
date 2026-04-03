@@ -7,7 +7,8 @@ const db = new PrismaClient({ adapter });
 
 async function main() {
   // ── Admin user ──────────────────────────────────────────────────────────────
-  const passwordHash = await bcrypt.hash("AdminPass123!", 12);
+  const adminPassword = process.env.ADMIN_SEED_PASSWORD ?? "ChangeThisPassword123!";
+  const passwordHash = await bcrypt.hash(adminPassword, 12);
 
   const admin = await db.user.upsert({
     where: { email: "admin@cardnimbus.com" },
