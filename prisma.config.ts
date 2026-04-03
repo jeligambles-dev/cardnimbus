@@ -4,4 +4,7 @@ export default defineConfig({
   datasource: {
     url: process.env.DATABASE_URL ?? "postgresql://localhost:5432/card_nimbus",
   },
+  migrations: {
+    seed: "npx tsx prisma/seed.ts",
+  },
 });

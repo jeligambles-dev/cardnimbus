@@ -1,9 +1,19 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
 const FROM_ADDRESS =
   process.env.EMAIL_FROM ?? "Card Nimbus <noreply@cardnimbus.com>";
+
+async function sendEmail(params: { from: string; to: string; subject: string; html: string }) {
+  if (!resend) {
+    console.log(`[EMAIL STUB] To: ${params.to} | Subject: ${params.subject}`);
+    return;
+  }
+  await resend.emails.send(params);
+}
 
 const ACCENT = "#f97316";
 const DARK_BG = "#1a1a25";
@@ -135,7 +145,7 @@ export async function sendOrderConfirmation(
     ${button("View Order", `https://cardnimbus.com/account/orders/${orderNumber}`)}
   `;
 
-  await resend.emails.send({
+  await sendEmail({
     from: FROM_ADDRESS,
     to,
     subject: `Order Confirmed — #${orderNumber}`,
@@ -182,7 +192,7 @@ export async function sendShippingNotification(
     <p style="margin:0;font-size:13px;color:${TEXT_MUTED};">Tracking information may take up to 24 hours to update after shipment.</p>
   `;
 
-  await resend.emails.send({
+  await sendEmail({
     from: FROM_ADDRESS,
     to,
     subject: `Your order #${orderNumber} has shipped!`,
@@ -208,7 +218,7 @@ export async function sendWelcomeEmail(
     <p style="margin:0;font-size:13px;color:${TEXT_MUTED};">Apply your code at checkout. Questions? We're always happy to help at <a href="mailto:support@cardnimbus.com" style="color:${ACCENT};">support@cardnimbus.com</a>.</p>
   `;
 
-  await resend.emails.send({
+  await sendEmail({
     from: FROM_ADDRESS,
     to,
     subject: "Welcome to Card Nimbus — Here's 5% off your first order!",
@@ -234,7 +244,7 @@ export async function sendCouponReminder(
     <p style="margin:0;font-size:13px;color:${TEXT_MUTED};">Simply enter the code above at checkout. Only valid for one order.</p>
   `;
 
-  await resend.emails.send({
+  await sendEmail({
     from: FROM_ADDRESS,
     to,
     subject: `${name}, your 5% off coupon is waiting — don't miss it!`,
@@ -256,7 +266,7 @@ export async function sendPasswordReset(
     <p style="margin:0;font-size:13px;color:${TEXT_MUTED};">For security, never share this link with anyone.</p>
   `;
 
-  await resend.emails.send({
+  await sendEmail({
     from: FROM_ADDRESS,
     to,
     subject: "Reset your Card Nimbus password",
