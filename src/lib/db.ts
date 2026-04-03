@@ -4,7 +4,18 @@ import { PrismaPg } from "@prisma/adapter-pg";
 function createPrismaClient() {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    throw new Error("DATABASE_URL environment variable is not set");
+    // Return a proxy that throws on actual usage, not on import.
+    // This allows next build to compile without a database connection.
+    return new Proxy({} as PrismaClient, {
+      get(_target, prop) {
+        if (prop === "then" || prop === "$connect" || prop === "$disconnect") {
+          return undefined;
+        }
+        throw new Error(
+          `DATABASE_URL is not set. Cannot access db.${String(prop)}`
+        );
+      },
+    });
   }
   const adapter = new PrismaPg({ connectionString });
   return new PrismaClient({
