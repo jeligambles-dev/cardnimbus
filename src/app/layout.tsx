@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toast";
+import { ChatWidget } from "@/components/support/chat-widget";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -40,6 +41,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <Toaster />
+          <ChatWidget />
         </SessionProvider>
       </body>
     </html>
