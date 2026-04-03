@@ -17,6 +17,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY prisma ./prisma/
 COPY prisma.config.ts ./
+COPY postcss.config.mjs ./
 RUN npm ci
 RUN npx prisma generate
 
