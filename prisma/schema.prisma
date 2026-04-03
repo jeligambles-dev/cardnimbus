@@ -20,12 +20,16 @@ model User {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  sessions          Session[]
-  accounts          Account[]
-  addresses         Address[]
-  orders            Order[]
-  notifications     Notification[]
-  couponRedemptions CouponRedemption[]
+  sessions                Session[]
+  accounts                Account[]
+  addresses               Address[]
+  orders                  Order[]
+  notifications           Notification[]
+  couponRedemptions       CouponRedemption[]
+  submissions             CardSubmission[]
+  wishlists               Wishlist[]
+  notificationEvents      NotificationEvent[]
+  notificationPreferences NotificationPreference[]
 
   @@map("users")
 }
@@ -131,6 +135,8 @@ model Card {
 
   products     Product[]
   priceHistory CardPriceHistory[]
+  submissions  CardSubmission[]
+  wishlists    Wishlist[]
 
   @@index([normalizedName])
   @@index([setName])
@@ -176,6 +182,7 @@ model Product {
   card       Card?            @relation(fields: [cardId], references: [id])
   variants   ProductVariant[]
   orderItems OrderItem[]
+  wishlists  Wishlist[]
 
   @@index([category])
   @@index([isActive])
@@ -415,4 +422,178 @@ enum ActorType {
   SYSTEM
   USER
   WEBHOOK
+}
+
+// ──────────────────────────────────────
+// Buy Cards Program
+// ──────────────────────────────────────
+
+enum SubmissionStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  OFFER_SENT
+  ACCEPTED
+  REJECTED
+  SHIPPING
+  RECEIVED
+  COMPLETED
+}
+
+model CardSubmission {
+  id                 String           @id @default(cuid())
+  userId             String
+  cardId             String?
+  images             String[]
+  description        String?          @db.Text
+  estimatedCondition CardCondition
+  tcgPriceNM         Float?
+  tcgPriceLP         Float?
+  tcgPriceMP         Float?
+  tcgPriceHP         Float?
+  offeredPrice       Float?
+  counterOfferPrice  Float?
+  finalAcceptedPrice Float?
+  status             SubmissionStatus @default(SUBMITTED)
+  assignedAdminId    String?
+  offerExpiresAt     DateTime?
+  shippingStatus     String?
+  receivedAt         DateTime?
+  completedAt        DateTime?
+  discordMessageId   String?
+  discordThreadId    String?
+  adminNotes         String?          @db.Text
+  rejectionReason    String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  user   User  @relation(fields: [userId], references: [id])
+  card   Card? @relation(fields: [cardId], references: [id])
+  events CardSubmissionEvent[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([assignedAdminId])
+  @@map("card_submissions")
+}
+
+model CardSubmissionEvent {
+  id           String   @id @default(cuid())
+  submissionId String
+  actorId      String?
+  type         String
+  payload      Json?
+  createdAt    DateTime @default(now())
+
+  submission CardSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+  @@map("card_submission_events")
+}
+
+// ──────────────────────────────────────
+// Wishlist
+// ──────────────────────────────────────
+
+model Wishlist {
+  id          String   @id @default(cuid())
+  userId      String
+  productId   String?
+  cardId      String?
+  priceAtAdd  Float?
+  alertOnDrop Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  card    Card?    @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@unique([userId, cardId])
+  @@index([userId])
+  @@map("wishlists")
+}
+
+// ──────────────────────────────────────
+// Enhanced Notifications
+// ──────────────────────────────────────
+
+model NotificationEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  payload   Json?
+  createdAt DateTime @default(now())
+
+  user       User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deliveries NotificationDelivery[]
+
+  @@index([userId])
+  @@index([type])
+  @@map("notification_events")
+}
+
+enum DeliveryChannel {
+  IN_APP
+  EMAIL
+  DISCORD
+}
+
+enum DeliveryStatus {
+  PENDING
+  SENT
+  DELIVERED
+  OPENED
+  CLICKED
+  FAILED
+}
+
+model NotificationDelivery {
+  id         String          @id @default(cuid())
+  eventId    String
+  channel    DeliveryChannel
+  status     DeliveryStatus  @default(PENDING)
+  sentAt     DateTime?
+  error      String?
+  retryCount Int             @default(0)
+  createdAt  DateTime        @default(now())
+
+  event NotificationEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([channel, status])
+  @@map("notification_deliveries")
+}
+
+model NotificationPreference {
+  id        String          @id @default(cuid())
+  userId    String
+  eventType String
+  channel   DeliveryChannel
+  enabled   Boolean         @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventType, channel])
+  @@map("notification_preferences")
+}
+
+// ──────────────────────────────────────
+// Search Analytics
+// ──────────────────────────────────────
+
+model SearchAnalytics {
+  id                String   @id @default(cuid())
+  userId            String?
+  query             String
+  normalizedQuery   String
+  filtersJson       Json?
+  resultCount       Int
+  clickedEntityId   String?
+  clickedEntityType String?
+  sessionId         String?
+  createdAt         DateTime @default(now())
+
+  @@index([normalizedQuery])
+  @@index([createdAt])
+  @@map("search_analytics")
 }
