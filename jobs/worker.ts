@@ -3,6 +3,9 @@ import { connection } from "./queues";
 import { handleSendEmail } from "./handlers/send-email";
 import { handleSyncSearchIndex } from "./handlers/sync-search-index";
 import { handleSyncPrices } from "./handlers/sync-prices";
+import { handleDiscordNotify } from "./handlers/discord-notify";
+import { handleWishlistAlerts } from "./handlers/wishlist-alerts";
+import { handleSubmissionReminders } from "./handlers/submission-reminders";
 
 // Email worker — higher concurrency since sends are I/O-bound
 const emailWorker = new Worker("email", handleSendEmail, {
@@ -22,7 +25,34 @@ const priceWorker = new Worker("price-sync", handleSyncPrices, {
   concurrency: 1,
 });
 
-const workers = [emailWorker, searchWorker, priceWorker];
+// Discord notification worker — serial to respect rate limits
+const discordWorker = new Worker("discord-notify", handleDiscordNotify, {
+  connection,
+  concurrency: 1,
+});
+
+// Wishlist alert worker
+const wishlistAlertWorker = new Worker(
+  "wishlist-alerts",
+  handleWishlistAlerts,
+  { connection, concurrency: 1 }
+);
+
+// Submission reminder worker
+const submissionReminderWorker = new Worker(
+  "submission-reminders",
+  handleSubmissionReminders,
+  { connection, concurrency: 1 }
+);
+
+const workers = [
+  emailWorker,
+  searchWorker,
+  priceWorker,
+  discordWorker,
+  wishlistAlertWorker,
+  submissionReminderWorker,
+];
 
 // Logging
 
@@ -48,4 +78,8 @@ async function shutdown() {
 process.on("SIGTERM", shutdown);
 process.on("SIGINT", shutdown);
 
-console.log("Workers started: email (concurrency=5), search-sync (concurrency=3), price-sync (concurrency=1)");
+console.log(
+  "Workers started: email (concurrency=5), search-sync (concurrency=3), " +
+    "price-sync (concurrency=1), discord-notify (concurrency=1), " +
+    "wishlist-alerts (concurrency=1), submission-reminders (concurrency=1)"
+);
