@@ -3,6 +3,8 @@ import {
   searchSyncQueue,
   wishlistAlertQueue,
   submissionReminderQueue,
+  raffleLifecycleQueue,
+  mysteryStockQueue,
 } from "./queues";
 
 async function scheduleCronJobs() {
@@ -46,11 +48,44 @@ async function scheduleCronJobs() {
     }
   );
 
+  // Every minute: raffle lifecycle (activate scheduled, freeze full, draw/cancel expired)
+  await raffleLifecycleQueue.add(
+    "raffle-lifecycle",
+    { action: "lifecycle" },
+    {
+      repeat: { pattern: "* * * * *" },
+      jobId: "raffle-lifecycle",
+    }
+  );
+
+  // Every 5 minutes: expire stale ticket reservations
+  await raffleLifecycleQueue.add(
+    "expire-reservations",
+    { action: "expire_reservations" },
+    {
+      repeat: { pattern: "*/5 * * * *" },
+      jobId: "expire-reservations",
+    }
+  );
+
+  // Hourly: mystery stock alerts
+  await mysteryStockQueue.add(
+    "mystery-stock-alerts",
+    {},
+    {
+      repeat: { pattern: "0 * * * *" },
+      jobId: "mystery-stock-alerts",
+    }
+  );
+
   console.log("Cron jobs scheduled:");
   console.log("  - daily-price-sync:        0 3 * * *    (every day at 03:00 UTC)");
   console.log("  - weekly-full-reindex:     0 4 * * 0    (every Sunday at 04:00 UTC)");
   console.log("  - hourly-wishlist-alerts:  0 * * * *    (every hour)");
   console.log("  - submission-reminders:    */15 * * * * (every 15 minutes)");
+  console.log("  - raffle-lifecycle:        * * * * *    (every minute)");
+  console.log("  - expire-reservations:     */5 * * * *  (every 5 minutes)");
+  console.log("  - mystery-stock-alerts:    0 * * * *    (every hour)");
 }
 
 scheduleCronJobs().catch((err) => {

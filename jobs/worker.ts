@@ -6,6 +6,8 @@ import { handleSyncPrices } from "./handlers/sync-prices";
 import { handleDiscordNotify } from "./handlers/discord-notify";
 import { handleWishlistAlerts } from "./handlers/wishlist-alerts";
 import { handleSubmissionReminders } from "./handlers/submission-reminders";
+import { handleRaffleLifecycle } from "./handlers/raffle-lifecycle";
+import { handleMysteryStockAlerts } from "./handlers/mystery-stock-alerts";
 
 // Email worker — higher concurrency since sends are I/O-bound
 const emailWorker = new Worker("email", handleSendEmail, {
@@ -45,6 +47,20 @@ const submissionReminderWorker = new Worker(
   { connection, concurrency: 1 }
 );
 
+// Raffle lifecycle worker — serial to avoid race conditions
+const raffleLifecycleWorker = new Worker(
+  "raffle-lifecycle",
+  handleRaffleLifecycle,
+  { connection, concurrency: 1 }
+);
+
+// Mystery stock alert worker
+const mysteryStockWorker = new Worker(
+  "mystery-stock",
+  handleMysteryStockAlerts,
+  { connection, concurrency: 1 }
+);
+
 const workers = [
   emailWorker,
   searchWorker,
@@ -52,6 +68,8 @@ const workers = [
   discordWorker,
   wishlistAlertWorker,
   submissionReminderWorker,
+  raffleLifecycleWorker,
+  mysteryStockWorker,
 ];
 
 // Logging
@@ -81,5 +99,6 @@ process.on("SIGINT", shutdown);
 console.log(
   "Workers started: email (concurrency=5), search-sync (concurrency=3), " +
     "price-sync (concurrency=1), discord-notify (concurrency=1), " +
-    "wishlist-alerts (concurrency=1), submission-reminders (concurrency=1)"
+    "wishlist-alerts (concurrency=1), submission-reminders (concurrency=1), " +
+    "raffle-lifecycle (concurrency=1), mystery-stock (concurrency=1)"
 );
