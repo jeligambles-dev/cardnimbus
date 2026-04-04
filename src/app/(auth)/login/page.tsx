@@ -157,7 +157,7 @@ function LoginForm() {
             Don&apos;t have an account?{' '}
             <Link
               href="/signup"
-              className="text-nimbus-400 hover:text-nimbus-300 font-medium transition-colors"
+              className="text-nimbus-600 hover:text-nimbus-700 font-medium transition-colors"
             >
               Create one
             </Link>

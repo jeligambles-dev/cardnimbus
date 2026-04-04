@@ -48,7 +48,7 @@ export default async function AccountDisputesPage({ searchParams }: DisputesPage
         {disputes.length === 0 ? (
           <Card className="p-12 text-center">
             <p className="text-text-muted text-sm">No disputes filed.</p>
-            <Link href="/account/orders" className="mt-4 inline-block text-nimbus-400 text-sm hover:underline">
+            <Link href="/account/orders" className="mt-4 inline-block text-nimbus-600 text-sm hover:underline">
               View your orders
             </Link>
           </Card>

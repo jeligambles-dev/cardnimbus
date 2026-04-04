@@ -43,7 +43,7 @@ function Avatar({ name, avatar, size = 'md' }: { name: string | null; avatar: st
   }
   return (
     <div
-      className={`${dim} rounded-full bg-nimbus-900 text-nimbus-300 font-bold flex items-center justify-center ring-1 ring-nimbus-700 shrink-0`}
+      className={`${dim} rounded-full bg-nimbus-100 text-nimbus-700 font-bold flex items-center justify-center ring-1 ring-nimbus-400 shrink-0`}
     >
       {initials}
     </div>
@@ -80,7 +80,7 @@ export default async function CommunityPage() {
       {/* Hero */}
       <div className="border-b border-surface-border bg-gradient-to-b from-nimbus-950/60 to-surface">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-          <p className="text-xs font-bold tracking-[0.25em] uppercase text-nimbus-400 mb-3">
+          <p className="text-xs font-bold tracking-[0.25em] uppercase text-nimbus-600 mb-3">
             Community
           </p>
           <h1 className="text-4xl sm:text-5xl font-black text-text-primary tracking-tight mb-3">
@@ -120,7 +120,7 @@ export default async function CommunityPage() {
                       )}
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-sm font-bold text-nimbus-400">
+                      <p className="text-sm font-bold text-nimbus-600">
                         {s.totalSales.toLocaleString()}
                       </p>
                       <p className="text-xs text-text-muted">sales</p>
@@ -220,7 +220,7 @@ export default async function CommunityPage() {
                       <p className="text-xs text-text-muted truncate">{w.title}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-sm font-bold text-nimbus-400">
+                      <p className="text-sm font-bold text-nimbus-600">
                         {formatCurrency(w.prizeValue)}
                       </p>
                       {w.drawnAt && (

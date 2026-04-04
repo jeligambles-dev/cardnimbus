@@ -83,7 +83,7 @@ export default async function AccountOrdersPage({ searchParams }: OrdersPageProp
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-nimbus-400 font-bold text-lg">
+                      <p className="text-nimbus-600 font-bold text-lg">
                         {formatCurrency(order.totalAmount)}
                       </p>
                       <p className="text-text-muted text-xs">View details →</p>

@@ -39,7 +39,7 @@ export function HeroSection() {
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-nimbus-500/30 bg-nimbus-500/10 px-4 py-1.5 text-sm font-medium text-nimbus-300"
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-nimbus-500/30 bg-nimbus-500/10 px-4 py-1.5 text-sm font-medium text-nimbus-700"
         >
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-nimbus-400 opacity-75" />

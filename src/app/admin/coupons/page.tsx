@@ -187,7 +187,7 @@ export default function AdminCouponsPage() {
             ) : (
               coupons.map((coupon) => (
                 <tr key={coupon.id} className="transition-colors hover:bg-surface-overlay/50">
-                  <td className="px-4 py-3 font-mono text-xs font-semibold text-nimbus-400">
+                  <td className="px-4 py-3 font-mono text-xs font-semibold text-nimbus-600">
                     {coupon.code}
                   </td>
                   <td className="px-4 py-3 text-text-secondary">{coupon.type}</td>

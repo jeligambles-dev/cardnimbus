@@ -24,7 +24,7 @@ export default async function AccountPage() {
               {user.image ? (
                 <Image src={user.image} alt={user.name ?? 'Avatar'} fill className="object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-nimbus-400">
+                <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-nimbus-600">
                   {(user.name ?? user.email).charAt(0).toUpperCase()}
                 </div>
               )}
@@ -33,7 +33,7 @@ export default async function AccountPage() {
               <p className="text-xl font-bold text-text-primary">{user.name ?? 'Anonymous'}</p>
               <p className="text-text-secondary text-sm">{user.email}</p>
               {(user as { role?: string }).role && (
-                <span className="mt-1 inline-flex items-center text-xs px-2 py-0.5 rounded-full bg-nimbus-950 text-nimbus-400 border border-nimbus-800">
+                <span className="mt-1 inline-flex items-center text-xs px-2 py-0.5 rounded-full bg-nimbus-50 text-nimbus-600 border border-nimbus-300">
                   {(user as { role?: string }).role}
                 </span>
               )}
@@ -46,7 +46,7 @@ export default async function AccountPage() {
           <Link href="/account/orders">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                   📦
                 </div>
                 <div>
@@ -60,7 +60,7 @@ export default async function AccountPage() {
           <Link href="/account/notifications">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                   🔔
                 </div>
                 <div>
@@ -74,7 +74,7 @@ export default async function AccountPage() {
           <Link href="/shop">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                   🃏
                 </div>
                 <div>
@@ -88,7 +88,7 @@ export default async function AccountPage() {
           <Link href="/cart">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                   🛒
                 </div>
                 <div>
@@ -102,7 +102,7 @@ export default async function AccountPage() {
           <Link href="/account/wishlist">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                   ❤️
                 </div>
                 <div>
@@ -116,7 +116,7 @@ export default async function AccountPage() {
           <Link href="/account/submissions">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                   📬
                 </div>
                 <div>
@@ -130,7 +130,7 @@ export default async function AccountPage() {
           <Link href="/account/notification-settings">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                   ⚙️
                 </div>
                 <div>
@@ -144,7 +144,7 @@ export default async function AccountPage() {
           <Link href="/account/messages">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                   💬
                 </div>
                 <div>
@@ -158,7 +158,7 @@ export default async function AccountPage() {
           <Link href="/account/disputes">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                   ⚖️
                 </div>
                 <div>
@@ -173,7 +173,7 @@ export default async function AccountPage() {
             <Link href="/account/seller">
               <Card hover className="p-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-800 flex items-center justify-center text-2xl">
+                  <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
                     🏪
                   </div>
                   <div>

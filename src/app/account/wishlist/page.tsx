@@ -107,7 +107,7 @@ export default async function WishlistPage() {
                     {slug ? (
                       <Link
                         href={`/shop/${slug}`}
-                        className="truncate font-semibold text-text-primary hover:text-nimbus-400 transition-colors"
+                        className="truncate font-semibold text-text-primary hover:text-nimbus-600 transition-colors"
                       >
                         {name}
                       </Link>

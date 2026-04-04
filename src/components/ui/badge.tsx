@@ -18,7 +18,7 @@ const variantClasses: Record<BadgeVariant, string> = {
   danger:
     'bg-red-950 text-red-400 border-red-800',
   nimbus:
-    'bg-nimbus-950 text-nimbus-400 border-nimbus-800',
+    'bg-nimbus-50 text-nimbus-600 border-nimbus-300',
 }
 
 const sizeClasses: Record<BadgeSize, string> = {

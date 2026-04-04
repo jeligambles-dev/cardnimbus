@@ -94,7 +94,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-text-muted mb-8">
-          <Link href="/marketplace" className="hover:text-nimbus-400 transition-colors">
+          <Link href="/marketplace" className="hover:text-nimbus-600 transition-colors">
             Marketplace
           </Link>
           <span>/</span>
@@ -188,7 +188,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
                     {card!.tcgPriceMarket && (
                       <div className="text-center">
                         <p className="text-xs text-text-muted">Market</p>
-                        <p className="text-sm font-semibold text-nimbus-400">{formatCurrency(card!.tcgPriceMarket)}</p>
+                        <p className="text-sm font-semibold text-nimbus-600">{formatCurrency(card!.tcgPriceMarket)}</p>
                       </div>
                     )}
                   </div>
@@ -225,7 +225,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
               </h1>
 
               {/* Price */}
-              <div className="text-3xl font-extrabold text-nimbus-400 mb-2">
+              <div className="text-3xl font-extrabold text-nimbus-600 mb-2">
                 {formatCurrency(listing.price)}
               </div>
               {listing.suggestedPrice && (
@@ -260,7 +260,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
                       sizes="48px"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-lg font-bold text-nimbus-400">
+                    <div className="w-full h-full flex items-center justify-center text-lg font-bold text-nimbus-600">
                       {(sellerUser.name ?? 'S').charAt(0).toUpperCase()}
                     </div>
                   )}

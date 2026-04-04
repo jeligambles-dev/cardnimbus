@@ -145,7 +145,7 @@ export default async function SubmissionDetailPage({ params }: Props) {
                       {new Date(event.createdAt).toLocaleString()}
                     </p>
                     {event.payload && typeof event.payload === 'object' && 'offeredPrice' in (event.payload as object) && (
-                      <p className="mt-0.5 text-xs text-nimbus-400">
+                      <p className="mt-0.5 text-xs text-nimbus-600">
                         Offer: {formatCurrency((event.payload as { offeredPrice: number }).offeredPrice)}
                       </p>
                     )}

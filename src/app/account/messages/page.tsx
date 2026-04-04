@@ -35,7 +35,7 @@ export default async function MessagesPage() {
             <p className="text-text-muted text-sm">No conversations yet.</p>
             <Link
               href="/marketplace"
-              className="mt-4 inline-block text-nimbus-400 text-sm hover:underline"
+              className="mt-4 inline-block text-nimbus-600 text-sm hover:underline"
             >
               Browse the marketplace to start a conversation
             </Link>
@@ -53,7 +53,7 @@ export default async function MessagesPage() {
                     hover
                     className={[
                       'p-4 flex items-start gap-4',
-                      hasUnread ? 'border-nimbus-800' : '',
+                      hasUnread ? 'border-nimbus-300' : '',
                     ].join(' ')}
                   >
                     {/* Avatar */}
@@ -66,7 +66,7 @@ export default async function MessagesPage() {
                           className="object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-sm font-bold text-nimbus-400">
+                        <div className="w-full h-full flex items-center justify-center text-sm font-bold text-nimbus-600">
                           {(other?.name ?? '?').charAt(0).toUpperCase()}
                         </div>
                       )}
@@ -87,7 +87,7 @@ export default async function MessagesPage() {
                       </div>
 
                       {conv.listing && (
-                        <p className="text-xs text-nimbus-400 truncate mt-0.5">
+                        <p className="text-xs text-nimbus-600 truncate mt-0.5">
                           Re: {conv.listing.title}
                         </p>
                       )}

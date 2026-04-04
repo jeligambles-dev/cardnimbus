@@ -57,7 +57,7 @@ export default function SellYourCardsPage() {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-nimbus-500/10 via-transparent to-transparent" />
         <div className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-nimbus-500/30 bg-nimbus-500/10 px-4 py-1.5 text-sm font-medium text-nimbus-400">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-nimbus-500/30 bg-nimbus-500/10 px-4 py-1.5 text-sm font-medium text-nimbus-600">
               <span className="h-1.5 w-1.5 rounded-full bg-nimbus-500" />
               Buying Cards — Fast &amp; Fair
             </div>
@@ -91,7 +91,7 @@ export default function SellYourCardsPage() {
           <div className="absolute left-0 top-10 hidden h-0.5 w-full bg-gradient-to-r from-transparent via-surface-border to-transparent md:block" />
           {STEPS.map(({ step, title, description, icon }) => (
             <div key={step} className="relative flex flex-col items-center text-center">
-              <div className="relative z-10 mb-5 flex h-20 w-20 items-center justify-center rounded-2xl border border-nimbus-500/30 bg-nimbus-500/10 text-nimbus-400 shadow-lg shadow-nimbus-500/10">
+              <div className="relative z-10 mb-5 flex h-20 w-20 items-center justify-center rounded-2xl border border-nimbus-500/30 bg-nimbus-500/10 text-nimbus-600 shadow-lg shadow-nimbus-500/10">
                 {icon}
                 <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white shadow">
                   {step}

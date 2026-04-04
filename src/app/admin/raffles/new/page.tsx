@@ -163,7 +163,7 @@ export default function NewRafflePage() {
             <button
               type="button"
               onClick={addPrizeImage}
-              className="text-sm text-nimbus-400 hover:text-nimbus-300"
+              className="text-sm text-nimbus-600 hover:text-nimbus-700"
             >
               + Add image
             </button>

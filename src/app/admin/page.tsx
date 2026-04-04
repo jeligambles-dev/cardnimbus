@@ -53,7 +53,7 @@ export default async function AdminDashboard() {
       label: 'Total Orders',
       value: stats.totalOrders.toLocaleString(),
       icon: STAT_ICONS.orders,
-      iconBg: 'bg-nimbus-500/10 text-nimbus-400',
+      iconBg: 'bg-nimbus-500/10 text-nimbus-600',
     },
     {
       label: 'Revenue',

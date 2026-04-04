@@ -107,7 +107,7 @@ export default async function MySubmissionsPage() {
                     <div className="flex flex-col items-end gap-1.5">
                       <Badge variant={cfg.variant}>{cfg.label}</Badge>
                       {sub.offeredPrice != null && (
-                        <span className="text-sm font-bold text-nimbus-400">
+                        <span className="text-sm font-bold text-nimbus-600">
                           {formatCurrency(sub.offeredPrice)}
                         </span>
                       )}

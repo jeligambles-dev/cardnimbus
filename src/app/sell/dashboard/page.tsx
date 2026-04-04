@@ -324,14 +324,14 @@ export default async function SellerDashboardPage() {
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-semibold text-text-primary">Recent Listings</h2>
-            <Link href="/sell/listings" className="text-xs text-nimbus-400 hover:text-nimbus-300 transition-colors">
+            <Link href="/sell/listings" className="text-xs text-nimbus-600 hover:text-nimbus-700 transition-colors">
               View all
             </Link>
           </div>
           {listingsData.items.length === 0 ? (
             <p className="text-sm text-text-muted text-center py-6">
               No listings yet.{' '}
-              <Link href="/sell" className="text-nimbus-400 hover:underline">
+              <Link href="/sell" className="text-nimbus-600 hover:underline">
                 Create your first listing
               </Link>
             </p>
@@ -361,7 +361,7 @@ export default async function SellerDashboardPage() {
                     >
                       {listing.moderationStatus}
                     </Badge>
-                    <span className="text-sm font-semibold text-nimbus-400">
+                    <span className="text-sm font-semibold text-nimbus-600">
                       ${listing.price.toFixed(2)}
                     </span>
                   </div>

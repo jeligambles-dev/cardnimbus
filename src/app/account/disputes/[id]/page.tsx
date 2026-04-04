@@ -100,7 +100,7 @@ export default async function DisputeDetailPage({ params }: DisputeDetailPagePro
             <div className="mt-3 pt-3 border-t border-surface-border">
               <Link
                 href={`/account/orders/${dispute.order.id}`}
-                className="text-xs text-nimbus-400 hover:underline"
+                className="text-xs text-nimbus-600 hover:underline"
               >
                 View full order details →
               </Link>
@@ -173,7 +173,7 @@ export default async function DisputeDetailPage({ params }: DisputeDetailPagePro
                     </span>
                     <p className={[
                       'text-sm font-medium',
-                      isCurrent ? 'text-nimbus-400' : isCompleted ? 'text-text-primary' : 'text-text-muted',
+                      isCurrent ? 'text-nimbus-600' : isCompleted ? 'text-text-primary' : 'text-text-muted',
                     ].join(' ')}>
                       {step.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
                     </p>
@@ -190,7 +190,7 @@ export default async function DisputeDetailPage({ params }: DisputeDetailPagePro
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </span>
-                  <p className="text-sm font-medium text-nimbus-400">
+                  <p className="text-sm font-medium text-nimbus-600">
                     {dispute.status === DisputeStatus.RESOLVED_BUYER
                       ? 'Resolved — Refund Issued'
                       : 'Resolved — Seller Decision'}
@@ -207,8 +207,8 @@ export default async function DisputeDetailPage({ params }: DisputeDetailPagePro
 
           {/* Admin Notes */}
           {dispute.adminNotes && (
-            <Card className="p-5 border-nimbus-800 bg-nimbus-950/30">
-              <h2 className="mb-2 text-sm font-semibold text-nimbus-400">Note from Support</h2>
+            <Card className="p-5 border-nimbus-300 bg-nimbus-50/30">
+              <h2 className="mb-2 text-sm font-semibold text-nimbus-600">Note from Support</h2>
               <p className="text-sm text-text-secondary whitespace-pre-wrap">{dispute.adminNotes}</p>
             </Card>
           )}
@@ -222,7 +222,7 @@ export default async function DisputeDetailPage({ params }: DisputeDetailPagePro
               </p>
               <Link
                 href={`/account/disputes/${dispute.id}/evidence`}
-                className="inline-flex items-center gap-2 rounded-xl border border-surface-border bg-surface-overlay px-4 py-2 text-sm font-medium text-text-primary hover:border-nimbus-500/50 hover:text-nimbus-400 transition-colors"
+                className="inline-flex items-center gap-2 rounded-xl border border-surface-border bg-surface-overlay px-4 py-2 text-sm font-medium text-text-primary hover:border-nimbus-500/50 hover:text-nimbus-600 transition-colors"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />

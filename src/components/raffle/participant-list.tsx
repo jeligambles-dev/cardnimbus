@@ -38,7 +38,7 @@ export function ParticipantList({
             className="flex items-center justify-between px-4 py-2.5 text-sm transition-colors hover:bg-surface-overlay/40"
           >
             <span className="flex items-center gap-2.5">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-nimbus-500/20 text-xs font-bold text-nimbus-400">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-nimbus-500/20 text-xs font-bold text-nimbus-600">
                 {(p.name ?? "?")[0]?.toUpperCase()}
               </span>
               <span className="text-text-primary">

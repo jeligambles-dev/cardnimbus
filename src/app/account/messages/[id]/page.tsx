@@ -181,7 +181,7 @@ export default function ChatThreadPage() {
                   className="object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center text-sm font-bold text-nimbus-400">
+                <div className="flex h-full w-full items-center justify-center text-sm font-bold text-nimbus-600">
                   {(otherParty.name ?? '?').charAt(0).toUpperCase()}
                 </div>
               )}
@@ -191,7 +191,7 @@ export default function ChatThreadPage() {
                 {otherParty.name ?? 'Unknown User'}
               </p>
               {meta?.listing && (
-                <p className="text-xs text-nimbus-400 truncate">
+                <p className="text-xs text-nimbus-600 truncate">
                   Re:{' '}
                   <Link href={`/marketplace/${meta.listing.id}`} className="hover:underline">
                     {meta.listing.title}
@@ -230,7 +230,7 @@ export default function ChatThreadPage() {
                       className="object-cover"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-xs font-bold text-nimbus-400">
+                    <div className="flex h-full w-full items-center justify-center text-xs font-bold text-nimbus-600">
                       {(msg.sender.name ?? '?').charAt(0).toUpperCase()}
                     </div>
                   )}

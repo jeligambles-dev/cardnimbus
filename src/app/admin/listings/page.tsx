@@ -90,7 +90,7 @@ export default async function AdminListingsPage({ searchParams }: AdminListingsP
               className={[
                 'rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors',
                 isActive
-                  ? 'border-nimbus-600 bg-nimbus-500/10 text-nimbus-400'
+                  ? 'border-nimbus-600 bg-nimbus-500/10 text-nimbus-600'
                   : 'border-surface-border bg-surface-overlay text-text-secondary hover:text-text-primary',
               ].join(' ')}
             >
@@ -126,7 +126,7 @@ export default async function AdminListingsPage({ searchParams }: AdminListingsP
                   <td className="px-4 py-3 max-w-xs">
                     <Link
                       href={`/admin/listings/${listing.id}`}
-                      className="font-medium text-text-primary hover:text-nimbus-400 line-clamp-2"
+                      className="font-medium text-text-primary hover:text-nimbus-600 line-clamp-2"
                     >
                       {listing.title}
                     </Link>

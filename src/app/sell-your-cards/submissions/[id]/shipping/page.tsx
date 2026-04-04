@@ -70,7 +70,7 @@ export default async function ShippingInstructionsPage({ params }: Props) {
               },
             ].map(({ title, desc }, i) => (
               <li key={i} className="flex gap-4">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-nimbus-500/10 text-xs font-bold text-nimbus-400 border border-nimbus-500/30">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-nimbus-500/10 text-xs font-bold text-nimbus-600 border border-nimbus-500/30">
                   {i + 1}
                 </span>
                 <div>
@@ -88,7 +88,7 @@ export default async function ShippingInstructionsPage({ params }: Props) {
           <ul className="space-y-2">
             {CHECKLIST.map((item) => (
               <li key={item} className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-nimbus-500/10 text-nimbus-400">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-nimbus-500/10 text-nimbus-600">
                   <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                   </svg>

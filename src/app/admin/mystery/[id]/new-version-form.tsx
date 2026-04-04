@@ -144,7 +144,7 @@ export function NewVersionForm({ collectionId }: NewVersionFormProps) {
           <button
             type="button"
             onClick={addPullRate}
-            className="text-sm text-nimbus-400 hover:text-nimbus-300"
+            className="text-sm text-nimbus-600 hover:text-nimbus-700"
           >
             + Add tier
           </button>
@@ -191,7 +191,7 @@ export function NewVersionForm({ collectionId }: NewVersionFormProps) {
           <button
             type="button"
             onClick={addPoolItem}
-            className="text-sm text-nimbus-400 hover:text-nimbus-300"
+            className="text-sm text-nimbus-600 hover:text-nimbus-700"
           >
             + Add item
           </button>

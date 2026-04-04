@@ -120,7 +120,7 @@ export default function NotificationsPage() {
                 <Card
                   className={[
                     'p-4 transition-colors',
-                    !notification.isRead ? 'border-nimbus-800 bg-nimbus-950/30' : '',
+                    !notification.isRead ? 'border-nimbus-300 bg-nimbus-50/30' : '',
                   ].join(' ')}
                 >
                   <div className="flex items-start gap-3">
@@ -145,7 +145,7 @@ export default function NotificationsPage() {
                                 e.stopPropagation()
                                 void markOneRead(notification.id)
                               }}
-                              className="text-xs text-nimbus-400 hover:text-nimbus-300 transition-colors"
+                              className="text-xs text-nimbus-600 hover:text-nimbus-700 transition-colors"
                             >
                               Mark read
                             </button>

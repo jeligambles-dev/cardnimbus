@@ -73,7 +73,7 @@ export default async function AdminProductsPage() {
                   <td className="px-4 py-3 text-right">
                     <Link
                       href={`/admin/products/${product.id}/edit`}
-                      className="text-xs font-medium text-nimbus-400 hover:text-nimbus-300 transition-colors"
+                      className="text-xs font-medium text-nimbus-600 hover:text-nimbus-700 transition-colors"
                     >
                       Edit
                     </Link>

@@ -61,7 +61,7 @@ export default async function AdminOrdersPage() {
             ) : (
               orders.map((order) => (
                 <tr key={order.id} className="transition-colors hover:bg-surface-overlay/50">
-                  <td className="px-4 py-3 font-mono text-xs text-nimbus-400">
+                  <td className="px-4 py-3 font-mono text-xs text-nimbus-600">
                     {order.orderNumber}
                   </td>
                   <td className="px-4 py-3">

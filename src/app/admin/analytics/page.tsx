@@ -167,7 +167,7 @@ const DELIVERY_STATUS_COLORS: Record<string, string> = {
   PENDING: 'text-text-muted',
   SENT: 'text-blue-400',
   DELIVERED: 'text-emerald-400',
-  OPENED: 'text-nimbus-400',
+  OPENED: 'text-nimbus-600',
   CLICKED: 'text-purple-400',
   FAILED: 'text-red-400',
 }
@@ -191,7 +191,7 @@ export default async function AdminAnalyticsPage() {
       <section>
         <SectionTitle>Revenue</SectionTitle>
         <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
-          <StatCard label="Today" value={formatCurrency(data.revenue.today)} accent="text-nimbus-400" />
+          <StatCard label="Today" value={formatCurrency(data.revenue.today)} accent="text-nimbus-600" />
           <StatCard label="This Week" value={formatCurrency(data.revenue.week)} />
           <StatCard label="This Month" value={formatCurrency(data.revenue.month)} />
           <StatCard label="All-Time" value={formatCurrency(data.revenue.allTime)} />
@@ -219,7 +219,7 @@ export default async function AdminAnalyticsPage() {
           <StatCard
             label="Total Volume"
             value={formatCurrency(data.gmv.totalVolume)}
-            accent="text-nimbus-400"
+            accent="text-nimbus-600"
           />
           <StatCard
             label="Commission Earned"
@@ -244,7 +244,7 @@ export default async function AdminAnalyticsPage() {
                     </span>
                     <span className="text-sm text-text-primary truncate">{s.name}</span>
                   </div>
-                  <span className="text-sm font-bold text-nimbus-400 shrink-0">
+                  <span className="text-sm font-bold text-nimbus-600 shrink-0">
                     {formatCurrency(s.gmv)}
                   </span>
                 </div>

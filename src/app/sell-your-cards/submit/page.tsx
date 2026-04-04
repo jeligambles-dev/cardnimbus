@@ -103,7 +103,7 @@ function StepSearchCard({
                   </p>
                 </div>
                 {card.tcgPriceNM != null && (
-                  <span className="shrink-0 text-sm font-semibold text-nimbus-400">
+                  <span className="shrink-0 text-sm font-semibold text-nimbus-600">
                     {formatCurrency(card.tcgPriceNM)}
                   </span>
                 )}
@@ -115,7 +115,7 @@ function StepSearchCard({
 
       {selected && (
         <div className="flex items-center gap-3 rounded-xl border border-nimbus-500/40 bg-nimbus-500/5 p-4">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-nimbus-500/20 text-nimbus-400">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-nimbus-500/20 text-nimbus-600">
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
@@ -139,7 +139,7 @@ function StepSearchCard({
           Can&apos;t find your card?{' '}
           <button
             type="button"
-            className="text-nimbus-400 hover:underline"
+            className="text-nimbus-600 hover:underline"
             onClick={() => onSelect({ id: '', name: 'Unlisted Card', setName: 'Not in database' })}
           >
             Skip and continue with an unlisted card
@@ -217,7 +217,7 @@ function StepUploadPhotos({
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
             </svg>
             <p className="text-sm font-medium text-text-secondary">
-              Drop photos here or <span className="text-nimbus-400">browse</span>
+              Drop photos here or <span className="text-nimbus-600">browse</span>
             </p>
             <p className="mt-1 text-xs text-text-muted">PNG, JPG, WEBP up to 10 MB each</p>
           </>
@@ -302,7 +302,7 @@ function StepSelectCondition({
               ].join(' ')}
             >
               <div className="flex w-full items-center justify-between">
-                <span className={`font-semibold ${isSelected ? 'text-nimbus-400' : 'text-text-primary'}`}>{label}</span>
+                <span className={`font-semibold ${isSelected ? 'text-nimbus-600' : 'text-text-primary'}`}>{label}</span>
                 {isSelected && (
                   <span className="flex h-5 w-5 items-center justify-center rounded-full bg-nimbus-500">
                     <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -313,7 +313,7 @@ function StepSelectCondition({
               </div>
               <p className="text-xs text-text-secondary">{description}</p>
               {price != null && (
-                <p className="mt-1 text-xs font-medium text-nimbus-400">
+                <p className="mt-1 text-xs font-medium text-nimbus-600">
                   Market: {formatCurrency(price)}
                 </p>
               )}
@@ -416,7 +416,7 @@ function ProgressBar({ step }: { step: number }) {
                   done
                     ? 'border-nimbus-500 bg-nimbus-500 text-white'
                     : current
-                    ? 'border-nimbus-500 bg-nimbus-500/10 text-nimbus-400'
+                    ? 'border-nimbus-500 bg-nimbus-500/10 text-nimbus-600'
                     : 'border-surface-border bg-surface-overlay text-text-muted',
                 ].join(' ')}
               >
@@ -431,7 +431,7 @@ function ProgressBar({ step }: { step: number }) {
               <span
                 className={[
                   'mt-1.5 hidden text-[11px] font-medium sm:block',
-                  current ? 'text-nimbus-400' : done ? 'text-text-secondary' : 'text-text-muted',
+                  current ? 'text-nimbus-600' : done ? 'text-text-secondary' : 'text-text-muted',
                 ].join(' ')}
               >
                 {label}

@@ -163,7 +163,7 @@ function ActionForm({
     default:
       'bg-surface-overlay text-text-secondary border border-surface-border hover:text-text-primary hover:bg-surface-border',
     nimbus:
-      'bg-nimbus-500/10 text-nimbus-400 border border-nimbus-500/20 hover:bg-nimbus-500/20',
+      'bg-nimbus-500/10 text-nimbus-600 border border-nimbus-500/20 hover:bg-nimbus-500/20',
     danger:
       'bg-red-950 text-red-400 border border-red-800 hover:bg-red-900',
   }

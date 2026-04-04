@@ -58,7 +58,7 @@ export default function ShippingPage() {
                 <div className="flex items-start justify-between gap-4 mb-2">
                   <div>
                     <p className="font-semibold text-text-primary">{method.name}</p>
-                    <p className="text-sm text-nimbus-400 mt-0.5">{method.time}</p>
+                    <p className="text-sm text-nimbus-600 mt-0.5">{method.time}</p>
                   </div>
                   <span className="text-sm font-medium text-text-secondary whitespace-nowrap">{method.price}</span>
                 </div>
@@ -115,8 +115,8 @@ export default function ShippingPage() {
 
         {/* Help link */}
         <div className="pt-6 border-t border-surface-border text-sm text-text-muted">
-          Questions? <Link href="/help" className="text-nimbus-400 hover:text-nimbus-300 transition-colors">Return to Help Center</Link> or email us at{' '}
-          <a href="mailto:support@cardnimbus.com" className="text-nimbus-400 hover:text-nimbus-300 transition-colors">support@cardnimbus.com</a>.
+          Questions? <Link href="/help" className="text-nimbus-600 hover:text-nimbus-700 transition-colors">Return to Help Center</Link> or email us at{' '}
+          <a href="mailto:support@cardnimbus.com" className="text-nimbus-600 hover:text-nimbus-700 transition-colors">support@cardnimbus.com</a>.
         </div>
 
       </div>

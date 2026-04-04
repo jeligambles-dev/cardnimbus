@@ -111,7 +111,7 @@ export default async function SellerOrdersPage({ searchParams }: OrdersPageProps
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-bold text-nimbus-400">
+                      <p className="text-lg font-bold text-nimbus-600">
                         {formatCurrency(sellerTotal)}
                       </p>
                       <p className="text-xs text-text-muted">
@@ -122,7 +122,7 @@ export default async function SellerOrdersPage({ searchParams }: OrdersPageProps
 
                   {/* Buyer Info */}
                   <div className="flex items-center gap-2 mb-4 pb-4 border-b border-surface-border">
-                    <div className="w-8 h-8 rounded-full bg-nimbus-900 border border-nimbus-700 flex items-center justify-center text-xs font-bold text-nimbus-400">
+                    <div className="w-8 h-8 rounded-full bg-nimbus-100 border border-nimbus-400 flex items-center justify-center text-xs font-bold text-nimbus-600">
                       {(buyer.name ?? buyer.email).charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -155,7 +155,7 @@ export default async function SellerOrdersPage({ searchParams }: OrdersPageProps
                     <div className="text-xs text-text-muted mb-3">
                       Tracking:{' '}
                       {latestShipment.trackingNumber ? (
-                        <span className="text-nimbus-400 font-mono">{latestShipment.trackingNumber}</span>
+                        <span className="text-nimbus-600 font-mono">{latestShipment.trackingNumber}</span>
                       ) : (
                         'Not yet assigned'
                       )}

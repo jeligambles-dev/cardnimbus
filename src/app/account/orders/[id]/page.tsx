@@ -134,7 +134,7 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
                     <td colSpan={3} className="pt-2 text-right font-bold text-text-primary">
                       Total
                     </td>
-                    <td className="pt-2 text-right font-bold text-nimbus-400 text-base">
+                    <td className="pt-2 text-right font-bold text-nimbus-600 text-base">
                       {formatCurrency(order.totalAmount)}
                     </td>
                   </tr>
@@ -199,7 +199,7 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
                 {shipment.trackingNumber && (
                   <div className="flex justify-between">
                     <dt className="text-text-secondary">Tracking Number</dt>
-                    <dd className="font-mono text-nimbus-400">{shipment.trackingNumber}</dd>
+                    <dd className="font-mono text-nimbus-600">{shipment.trackingNumber}</dd>
                   </div>
                 )}
                 {shipment.deliveredAt && (

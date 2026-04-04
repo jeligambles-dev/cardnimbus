@@ -72,7 +72,7 @@ export default async function AdminDisputesPage({ searchParams }: AdminDisputesP
               className={[
                 'rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors',
                 isActive
-                  ? 'border-nimbus-600 bg-nimbus-500/10 text-nimbus-400'
+                  ? 'border-nimbus-600 bg-nimbus-500/10 text-nimbus-600'
                   : 'border-surface-border bg-surface-overlay text-text-secondary hover:text-text-primary',
               ].join(' ')}
             >
@@ -108,7 +108,7 @@ export default async function AdminDisputesPage({ searchParams }: AdminDisputesP
                   <td className="px-4 py-3">
                     <Link
                       href={`/admin/disputes/${dispute.id}`}
-                      className="font-medium text-nimbus-400 hover:underline"
+                      className="font-medium text-nimbus-600 hover:underline"
                     >
                       #{dispute.order.orderNumber}
                     </Link>

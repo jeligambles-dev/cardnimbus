@@ -86,7 +86,7 @@ export default async function RaffleDetailPage({ params }: PageProps) {
                   Card Nimbus uses provably fair random draws. A cryptographically
                   secure random seed (32 bytes) was generated server-side. The
                   winning ticket number is derived as{" "}
-                  <code className="rounded bg-surface-overlay px-1 font-mono text-xs text-nimbus-400">
+                  <code className="rounded bg-surface-overlay px-1 font-mono text-xs text-nimbus-600">
                     seed % totalTickets
                   </code>
                   .
@@ -151,7 +151,7 @@ export default async function RaffleDetailPage({ params }: PageProps) {
             <p className="text-xs text-text-muted uppercase tracking-wide">
               Prize value
             </p>
-            <p className="text-2xl font-bold text-nimbus-400">
+            <p className="text-2xl font-bold text-nimbus-600">
               {formatCurrency(raffle.prizeValue)}
             </p>
           </div>
@@ -188,7 +188,7 @@ export default async function RaffleDetailPage({ params }: PageProps) {
             <p className="font-medium text-text-primary">Odds</p>
             <p className="text-text-secondary">
               Per ticket:{" "}
-              <span className="text-nimbus-400 font-mono">
+              <span className="text-nimbus-600 font-mono">
                 {odds.totalTickets > 0
                   ? `1 in ${odds.totalTickets.toLocaleString()}`
                   : "—"}
@@ -197,7 +197,7 @@ export default async function RaffleDetailPage({ params }: PageProps) {
             {"personalOdds" in odds && (
               <p className="text-text-secondary">
                 Your odds:{" "}
-                <span className="text-nimbus-400 font-mono">
+                <span className="text-nimbus-600 font-mono">
                   {odds.personalOdds
                     ? `${(odds.personalOdds * 100).toFixed(2)}%`
                     : "0%"}

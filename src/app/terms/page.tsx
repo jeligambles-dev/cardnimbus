@@ -27,7 +27,7 @@ export default function TermsPage() {
           <ol className="space-y-1.5 text-sm">
             {['Terms of Service', 'Privacy Policy', 'Cookie Policy'].map((item, i) => (
               <li key={i}>
-                <a href={`#section-${i + 1}`} className="text-nimbus-400 hover:text-nimbus-300 transition-colors">
+                <a href={`#section-${i + 1}`} className="text-nimbus-600 hover:text-nimbus-700 transition-colors">
                   {i + 1}. {item}
                 </a>
               </li>
@@ -70,7 +70,7 @@ export default function TermsPage() {
               <h3 className="text-text-primary font-semibold mb-1.5">1.5 Purchases and Payments</h3>
               <p>
                 All prices are listed in USD. By completing a purchase, you authorize Card Nimbus to charge the provided payment method. All sales are final except as described in our{' '}
-                <Link href="/help/returns" className="text-nimbus-400 hover:text-nimbus-300 transition-colors">Return Policy</Link>.
+                <Link href="/help/returns" className="text-nimbus-600 hover:text-nimbus-700 transition-colors">Return Policy</Link>.
               </p>
             </div>
 
@@ -123,7 +123,7 @@ export default function TermsPage() {
               <h3 className="text-text-primary font-semibold mb-1.5">2.4 Data Retention</h3>
               <p>
                 We retain your data for as long as your account is active or as required by law. You may request deletion of your account and associated data by contacting us at{' '}
-                <a href="mailto:privacy@cardnimbus.com" className="text-nimbus-400 hover:text-nimbus-300 transition-colors">privacy@cardnimbus.com</a>.
+                <a href="mailto:privacy@cardnimbus.com" className="text-nimbus-600 hover:text-nimbus-700 transition-colors">privacy@cardnimbus.com</a>.
               </p>
             </div>
 
@@ -180,7 +180,7 @@ export default function TermsPage() {
         {/* Contact */}
         <div className="pt-6 border-t border-surface-border text-sm text-text-muted">
           Questions about these policies? Contact us at{' '}
-          <a href="mailto:legal@cardnimbus.com" className="text-nimbus-400 hover:text-nimbus-300 transition-colors">legal@cardnimbus.com</a>.
+          <a href="mailto:legal@cardnimbus.com" className="text-nimbus-600 hover:text-nimbus-700 transition-colors">legal@cardnimbus.com</a>.
         </div>
 
       </div>

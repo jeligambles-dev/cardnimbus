@@ -127,7 +127,7 @@ export default function CheckoutSuccessPage({ searchParams }: SuccessPageProps) 
             transition={{ delay: 0.4 }}
           >
             <p className="text-text-secondary text-sm">Order Number</p>
-            <p className="text-nimbus-400 font-bold text-xl font-mono tracking-wider mt-0.5">
+            <p className="text-nimbus-600 font-bold text-xl font-mono tracking-wider mt-0.5">
               {orderNumber}
             </p>
           </motion.div>
@@ -175,7 +175,7 @@ export default function CheckoutSuccessPage({ searchParams }: SuccessPageProps) 
             </ul>
             <div className="border-t border-surface-border mt-3 pt-3 flex justify-between items-center">
               <span className="text-sm font-semibold text-text-secondary">Total</span>
-              <span className="text-base font-bold text-nimbus-400">
+              <span className="text-base font-bold text-nimbus-600">
                 ${orderData.total.toFixed(2)}
               </span>
             </div>

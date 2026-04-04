@@ -177,7 +177,7 @@ function ConversationPanel({
             className={[
               "px-4 py-2 text-sm font-medium capitalize transition-colors",
               tab === t
-                ? "border-b-2 border-nimbus-500 text-nimbus-400"
+                ? "border-b-2 border-nimbus-500 text-nimbus-600"
                 : "text-text-secondary hover:text-text-primary",
             ].join(" ")}
           >
@@ -222,7 +222,7 @@ function ConversationPanel({
               onClick={() => { setReply(cr.content); setShowCanned(false); }}
               className="block w-full text-left rounded px-2 py-1 text-xs text-text-secondary hover:bg-surface-raised"
             >
-              <span className="font-mono text-nimbus-400">/{cr.shortcut}</span>{" "}
+              <span className="font-mono text-nimbus-600">/{cr.shortcut}</span>{" "}
               {cr.title}
             </button>
           ))}

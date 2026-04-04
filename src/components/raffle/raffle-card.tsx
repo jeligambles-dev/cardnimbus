@@ -86,7 +86,7 @@ export function RaffleCard({
           <ProgressBar filled={filledSlots} total={totalSlots} />
 
           <div className="flex items-center justify-between">
-            <span className="text-sm font-bold text-nimbus-400">
+            <span className="text-sm font-bold text-nimbus-600">
               {formatCurrency(ticketPrice)} / ticket
             </span>
             <div className="flex items-center gap-1.5 text-xs text-text-secondary">

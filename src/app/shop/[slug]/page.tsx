@@ -98,7 +98,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             {/* Price */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-nimbus-400">
+              <span className="text-3xl font-bold text-nimbus-600">
                 {formatCurrency(product.price)}
               </span>
               {product.compareAtPrice && product.compareAtPrice > product.price && (
@@ -153,7 +153,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <span className="text-xs text-text-muted font-medium uppercase tracking-wider">
                       Market Price
                     </span>
-                    <span className="text-sm font-semibold text-nimbus-400">
+                    <span className="text-sm font-semibold text-nimbus-600">
                       {formatCurrency(card.tcgPriceMarket)}
                     </span>
                   </div>

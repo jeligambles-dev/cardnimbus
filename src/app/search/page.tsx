@@ -74,7 +74,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <>
               <h1 className="text-3xl font-bold text-text-primary tracking-tight">
                 Results for{' '}
-                <span className="text-nimbus-400">&ldquo;{query}&rdquo;</span>
+                <span className="text-nimbus-600">&ldquo;{query}&rdquo;</span>
               </h1>
               <p className="mt-1 text-text-secondary text-sm">
                 {total === 0

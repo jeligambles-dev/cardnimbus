@@ -40,7 +40,7 @@ export default function CheckoutCancelPage() {
 
         <Link
           href="/help"
-          className="text-sm text-text-muted hover:text-nimbus-400 transition-colors underline underline-offset-4"
+          className="text-sm text-text-muted hover:text-nimbus-600 transition-colors underline underline-offset-4"
         >
           Need Help?
         </Link>

@@ -58,7 +58,7 @@ export default function ReturnsPage() {
 
             <div className="p-5 rounded-2xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-nimbus-400 font-bold text-sm uppercase tracking-wide">Sealed Products</span>
+                <span className="text-nimbus-600 font-bold text-sm uppercase tracking-wide">Sealed Products</span>
                 <span className="text-xs text-volt-400 bg-volt-400/10 px-2 py-0.5 rounded-full font-medium">30-Day Returns</span>
               </div>
               <p className="text-sm text-text-secondary leading-relaxed">
@@ -68,8 +68,8 @@ export default function ReturnsPage() {
 
             <div className="p-5 rounded-2xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-nimbus-400 font-bold text-sm uppercase tracking-wide">Singles & Raw Cards</span>
-                <span className="text-xs text-nimbus-400 bg-nimbus-400/10 px-2 py-0.5 rounded-full font-medium">As-Described Guarantee</span>
+                <span className="text-nimbus-600 font-bold text-sm uppercase tracking-wide">Singles & Raw Cards</span>
+                <span className="text-xs text-nimbus-600 bg-nimbus-400/10 px-2 py-0.5 rounded-full font-medium">As-Described Guarantee</span>
               </div>
               <p className="text-sm text-text-secondary leading-relaxed">
                 If a raw card or single is not as described — wrong card, condition significantly worse than listed, or damage not disclosed — you may return it for a full refund within 14 days.
@@ -78,8 +78,8 @@ export default function ReturnsPage() {
 
             <div className="p-5 rounded-2xl bg-surface-raised border border-surface-border">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-nimbus-400 font-bold text-sm uppercase tracking-wide">Graded Cards (Slabs)</span>
-                <span className="text-xs text-nimbus-400 bg-nimbus-400/10 px-2 py-0.5 rounded-full font-medium">As-Described Guarantee</span>
+                <span className="text-nimbus-600 font-bold text-sm uppercase tracking-wide">Graded Cards (Slabs)</span>
+                <span className="text-xs text-nimbus-600 bg-nimbus-400/10 px-2 py-0.5 rounded-full font-medium">As-Described Guarantee</span>
               </div>
               <p className="text-sm text-text-secondary leading-relaxed">
                 Graded slabs are guaranteed to match the listed grade and certification. If the slab arrives cracked, tampered with, or not as described, contact us within 14 days for a full refund.
@@ -96,7 +96,7 @@ export default function ReturnsPage() {
             {steps.map((s) => (
               <div key={s.step} className="flex gap-4 p-4 rounded-2xl bg-surface-raised border border-surface-border">
                 <div className="w-8 h-8 rounded-full bg-nimbus-500/20 border border-nimbus-500/30 flex items-center justify-center shrink-0">
-                  <span className="text-nimbus-400 font-bold text-sm">{s.step}</span>
+                  <span className="text-nimbus-600 font-bold text-sm">{s.step}</span>
                 </div>
                 <div>
                   <p className="font-semibold text-text-primary text-sm">{s.title}</p>
@@ -137,8 +137,8 @@ export default function ReturnsPage() {
         {/* Help link */}
         <div className="pt-6 border-t border-surface-border text-sm text-text-muted">
           Need to start a return? Email{' '}
-          <a href="mailto:support@cardnimbus.com" className="text-nimbus-400 hover:text-nimbus-300 transition-colors">support@cardnimbus.com</a>{' '}
-          or visit our <Link href="/help" className="text-nimbus-400 hover:text-nimbus-300 transition-colors">Help Center</Link>.
+          <a href="mailto:support@cardnimbus.com" className="text-nimbus-600 hover:text-nimbus-700 transition-colors">support@cardnimbus.com</a>{' '}
+          or visit our <Link href="/help" className="text-nimbus-600 hover:text-nimbus-700 transition-colors">Help Center</Link>.
         </div>
 
       </div>

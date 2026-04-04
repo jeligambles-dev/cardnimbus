@@ -71,7 +71,7 @@ export default async function AdminSubmissionsPage({ searchParams }: Props) {
           className={[
             'rounded-lg border px-3 py-1 text-sm font-medium transition-colors',
             !statusFilter
-              ? 'border-nimbus-500/50 bg-nimbus-500/10 text-nimbus-400'
+              ? 'border-nimbus-500/50 bg-nimbus-500/10 text-nimbus-600'
               : 'border-surface-border text-text-secondary hover:border-nimbus-500/30 hover:text-text-primary',
           ].join(' ')}
         >
@@ -86,7 +86,7 @@ export default async function AdminSubmissionsPage({ searchParams }: Props) {
               className={[
                 'rounded-lg border px-3 py-1 text-sm font-medium transition-colors',
                 statusFilter === s
-                  ? 'border-nimbus-500/50 bg-nimbus-500/10 text-nimbus-400'
+                  ? 'border-nimbus-500/50 bg-nimbus-500/10 text-nimbus-600'
                   : 'border-surface-border text-text-secondary hover:border-nimbus-500/30 hover:text-text-primary',
               ].join(' ')}
             >
@@ -179,7 +179,7 @@ export default async function AdminSubmissionsPage({ searchParams }: Props) {
                           <form action={`/api/submissions/${sub.id}/claim`} method="POST">
                             <button
                               type="submit"
-                              className="rounded-lg border border-nimbus-500/40 bg-nimbus-500/10 px-2.5 py-1 text-xs font-medium text-nimbus-400 transition-colors hover:bg-nimbus-500/20"
+                              className="rounded-lg border border-nimbus-500/40 bg-nimbus-500/10 px-2.5 py-1 text-xs font-medium text-nimbus-600 transition-colors hover:bg-nimbus-500/20"
                             >
                               Claim
                             </button>

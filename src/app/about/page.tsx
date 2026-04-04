@@ -59,7 +59,7 @@ export default function AboutPage() {
 
         {/* Header */}
         <div className="mb-12">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold text-nimbus-400 uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold text-nimbus-600 uppercase tracking-widest mb-4">
             <span className="w-6 h-px bg-nimbus-500" />
             Our Story
           </div>
@@ -93,7 +93,7 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             {values.map((value) => (
               <div key={value.title} className="p-5 rounded-2xl bg-surface-raised border border-surface-border">
-                <div className="w-9 h-9 rounded-xl bg-nimbus-500/15 border border-nimbus-500/20 flex items-center justify-center text-nimbus-400 mb-3">
+                <div className="w-9 h-9 rounded-xl bg-nimbus-500/15 border border-nimbus-500/20 flex items-center justify-center text-nimbus-600 mb-3">
                   {value.icon}
                 </div>
                 <p className="font-semibold text-text-primary mb-1.5">{value.title}</p>
@@ -104,7 +104,7 @@ export default function AboutPage() {
         </section>
 
         {/* CTA */}
-        <section className="p-6 rounded-2xl bg-gradient-to-br from-nimbus-900/30 to-surface-overlay border border-nimbus-800/40 text-center">
+        <section className="p-6 rounded-2xl bg-gradient-to-br from-nimbus-900/30 to-surface-overlay border border-nimbus-300/40 text-center">
           <h2 className="text-lg font-semibold text-text-primary mb-2">
             Ready to shop?
           </h2>

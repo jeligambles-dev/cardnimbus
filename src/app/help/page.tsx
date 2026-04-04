@@ -79,11 +79,11 @@ export default function HelpPage() {
                 href={topic.href}
                 className="group flex gap-4 p-5 rounded-2xl bg-surface-raised border border-surface-border hover:border-nimbus-500/50 hover:bg-surface-overlay transition-all duration-200"
               >
-                <div className="shrink-0 w-11 h-11 rounded-xl bg-surface-overlay border border-surface-border flex items-center justify-center text-nimbus-400 group-hover:text-nimbus-300 transition-colors">
+                <div className="shrink-0 w-11 h-11 rounded-xl bg-surface-overlay border border-surface-border flex items-center justify-center text-nimbus-600 group-hover:text-nimbus-700 transition-colors">
                   {topic.icon}
                 </div>
                 <div>
-                  <p className="font-semibold text-text-primary group-hover:text-nimbus-300 transition-colors">
+                  <p className="font-semibold text-text-primary group-hover:text-nimbus-700 transition-colors">
                     {topic.title}
                   </p>
                   <p className="text-sm text-text-secondary mt-0.5 leading-relaxed">
@@ -118,16 +118,16 @@ export default function HelpPage() {
           </p>
           <div className="space-y-3 text-sm">
             <div className="flex items-center gap-3 text-text-secondary">
-              <svg className="w-4 h-4 text-nimbus-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-4 h-4 text-nimbus-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect width="20" height="16" x="2" y="4" rx="2" />
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
               </svg>
-              <a href="mailto:support@cardnimbus.com" className="hover:text-nimbus-400 transition-colors">
+              <a href="mailto:support@cardnimbus.com" className="hover:text-nimbus-600 transition-colors">
                 support@cardnimbus.com
               </a>
             </div>
             <div className="flex items-center gap-3 text-text-secondary">
-              <svg className="w-4 h-4 text-nimbus-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-4 h-4 text-nimbus-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>

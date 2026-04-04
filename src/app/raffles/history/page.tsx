@@ -67,7 +67,7 @@ export default async function RaffleHistoryPage({ searchParams }: PageProps) {
                       <h3 className="font-semibold text-text-primary line-clamp-2">
                         {raffle.title}
                       </h3>
-                      <p className="text-sm text-nimbus-400 font-medium">
+                      <p className="text-sm text-nimbus-600 font-medium">
                         {formatCurrency(raffle.prizeValue)}
                       </p>
 

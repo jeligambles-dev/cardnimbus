@@ -154,7 +154,7 @@ export function AdminSidebar() {
               className={[
                 'flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150',
                 isActive
-                  ? 'bg-nimbus-500/10 text-nimbus-400 border border-nimbus-500/20'
+                  ? 'bg-nimbus-500/10 text-nimbus-600 border border-nimbus-500/20'
                   : 'text-text-secondary hover:bg-surface-overlay hover:text-text-primary border border-transparent',
               ].join(' ')}
             >

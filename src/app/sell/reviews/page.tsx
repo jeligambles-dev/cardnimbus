@@ -81,7 +81,7 @@ export default async function SellerReviewsPage({ searchParams }: ReviewsPagePro
           <div className="mb-8">
             <h2 className="text-lg font-semibold text-text-primary mb-4">
               Leave a Review
-              <span className="ml-2 text-xs bg-nimbus-900 text-nimbus-400 border border-nimbus-700 rounded-full px-2 py-0.5">
+              <span className="ml-2 text-xs bg-nimbus-100 text-nimbus-600 border border-nimbus-400 rounded-full px-2 py-0.5">
                 {pendingReviewOrders.length}
               </span>
             </h2>
@@ -141,7 +141,7 @@ export default async function SellerReviewsPage({ searchParams }: ReviewsPagePro
                   <Card key={review.id} className="p-6">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-surface-overlay border border-surface-border flex items-center justify-center text-sm font-bold text-nimbus-400 flex-shrink-0">
+                        <div className="w-9 h-9 rounded-full bg-surface-overlay border border-surface-border flex items-center justify-center text-sm font-bold text-nimbus-600 flex-shrink-0">
                           {(reviewer.name ?? 'A').charAt(0).toUpperCase()}
                         </div>
                         <div>

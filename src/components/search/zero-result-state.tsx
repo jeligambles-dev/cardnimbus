@@ -106,7 +106,7 @@ export function ZeroResultState({ query }: ZeroResultStateProps) {
       <button
         onClick={handleSaveSearch}
         disabled={saving || saved}
-        className="inline-flex items-center gap-1.5 text-sm text-nimbus-400 hover:text-nimbus-300 disabled:opacity-60 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-nimbus-600 hover:text-nimbus-700 disabled:opacity-60 transition-colors"
       >
         {saved ? (
           <>

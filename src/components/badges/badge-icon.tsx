@@ -12,7 +12,7 @@ interface BadgeIconProps {
 
 const categoryColors: Record<BadgeCategory, string> = {
   TRUST: 'bg-emerald-950 border-emerald-700 text-emerald-400',
-  PERFORMANCE: 'bg-nimbus-950 border-nimbus-700 text-nimbus-400',
+  PERFORMANCE: 'bg-nimbus-50 border-nimbus-400 text-nimbus-600',
   MILESTONE: 'bg-amber-950 border-amber-700 text-amber-400',
   COMMUNITY: 'bg-purple-950 border-purple-700 text-purple-400',
 }

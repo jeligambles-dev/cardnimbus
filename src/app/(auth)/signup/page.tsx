@@ -63,7 +63,7 @@ export default function SignupPage() {
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="text-2xl font-bold text-text-primary mb-1">Create Account</h1>
-            <p className="text-sm text-nimbus-400 font-medium">
+            <p className="text-sm text-nimbus-600 font-medium">
               Get 5% off your first purchase
             </p>
           </div>
@@ -124,7 +124,7 @@ export default function SignupPage() {
             Already have an account?{' '}
             <Link
               href="/login"
-              className="text-nimbus-400 hover:text-nimbus-300 font-medium transition-colors"
+              className="text-nimbus-600 hover:text-nimbus-700 font-medium transition-colors"
             >
               Sign in
             </Link>

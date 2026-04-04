@@ -80,7 +80,7 @@ function CardSearchInput({
 
   if (selected) {
     return (
-      <div className="flex items-center justify-between rounded-xl border border-nimbus-700 bg-nimbus-950/50 px-4 py-3">
+      <div className="flex items-center justify-between rounded-xl border border-nimbus-400 bg-nimbus-50/50 px-4 py-3">
         <div>
           <p className="text-sm font-semibold text-text-primary">{selected.name}</p>
           <p className="text-xs text-text-muted">{selected.setName}</p>
@@ -176,7 +176,7 @@ function PhotoUpload({
         ) : (
           <p className="text-sm text-text-muted">
             Drop photos here or{' '}
-            <span className="text-nimbus-400 font-medium">browse</span>
+            <span className="text-nimbus-600 font-medium">browse</span>
           </p>
         )}
       </div>
@@ -328,12 +328,12 @@ export default function CreateListingPage() {
                 required
               />
               {suggestedPrice && (
-                <p className="mt-1.5 text-xs text-nimbus-400">
+                <p className="mt-1.5 text-xs text-nimbus-600">
                   Suggested price based on TCGPlayer data:{' '}
                   <button
                     type="button"
                     onClick={() => setPrice(String(suggestedPrice))}
-                    className="font-semibold underline hover:text-nimbus-300 transition-colors"
+                    className="font-semibold underline hover:text-nimbus-700 transition-colors"
                   >
                     {formatCurrency(suggestedPrice)}
                   </button>

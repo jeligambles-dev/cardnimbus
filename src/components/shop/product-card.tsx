@@ -107,7 +107,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
 
             {/* Price */}
             <div className="flex items-baseline gap-2 mt-auto">
-              <span className="text-nimbus-400 font-bold text-base">
+              <span className="text-nimbus-600 font-bold text-base">
                 {formatCurrency(product.price)}
               </span>
               {product.compareAtPrice && product.compareAtPrice > product.price && (

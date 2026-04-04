@@ -58,7 +58,7 @@ export default async function SellerPayoutsPage({ searchParams }: PayoutsPagePro
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           <Card className="p-6">
             <p className="text-xs text-text-muted uppercase tracking-wide mb-1">Total Earned</p>
-            <p className="text-2xl font-bold text-nimbus-400">{formatCurrency(summary.totalEarned)}</p>
+            <p className="text-2xl font-bold text-nimbus-600">{formatCurrency(summary.totalEarned)}</p>
             <p className="text-xs text-text-muted mt-1">after fees</p>
           </Card>
           <Card className="p-6">
@@ -141,7 +141,7 @@ export default async function SellerPayoutsPage({ searchParams }: PayoutsPagePro
                           </span>
                         </td>
                         <td className="px-4 py-4 text-right">
-                          <span className="text-sm font-semibold text-nimbus-400">
+                          <span className="text-sm font-semibold text-nimbus-600">
                             {formatCurrency(payout.netAmount)}
                           </span>
                         </td>

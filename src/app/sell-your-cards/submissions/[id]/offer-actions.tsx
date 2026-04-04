@@ -61,7 +61,7 @@ export function OfferActions({ submissionId, offeredPrice }: OfferActionsProps) 
     <div className="rounded-xl border border-nimbus-500/30 bg-nimbus-500/5 p-5 space-y-4">
       <div>
         <p className="text-sm font-medium text-text-secondary">Offer received</p>
-        <p className="text-3xl font-extrabold text-nimbus-400">{formatCurrency(offeredPrice)}</p>
+        <p className="text-3xl font-extrabold text-nimbus-600">{formatCurrency(offeredPrice)}</p>
       </div>
 
       {showCounter ? (

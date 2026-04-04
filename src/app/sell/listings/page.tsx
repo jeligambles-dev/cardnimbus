@@ -121,7 +121,7 @@ export default async function SellerListingsPage({ searchParams }: ListingsPageP
                         </span>
                       </td>
                       <td className="px-4 py-4">
-                        <span className="text-sm font-semibold text-nimbus-400">
+                        <span className="text-sm font-semibold text-nimbus-600">
                           {formatCurrency(listing.price)}
                         </span>
                       </td>
@@ -148,7 +148,7 @@ export default async function SellerListingsPage({ searchParams }: ListingsPageP
                         <div className="flex items-center gap-2">
                           <Link
                             href={`/marketplace/${listing.id}`}
-                            className="text-xs text-nimbus-400 hover:text-nimbus-300 transition-colors"
+                            className="text-xs text-nimbus-600 hover:text-nimbus-700 transition-colors"
                           >
                             View
                           </Link>

@@ -96,11 +96,11 @@ export default function CartPage() {
                   <div className="flex-1 min-w-0">
                     <Link
                       href={`/shop/${item.slug}`}
-                      className="font-semibold text-text-primary hover:text-nimbus-400 transition-colors line-clamp-2"
+                      className="font-semibold text-text-primary hover:text-nimbus-600 transition-colors line-clamp-2"
                     >
                       {item.name}
                     </Link>
-                    <p className="text-nimbus-400 font-bold mt-1">
+                    <p className="text-nimbus-600 font-bold mt-1">
                       {formatCurrency(item.price)}
                     </p>
                   </div>
@@ -184,7 +184,7 @@ export default function CartPage() {
                 )}
                 <div className="flex justify-between text-text-primary font-bold text-base border-t border-surface-border pt-2 mt-2">
                   <span>Total</span>
-                  <span className="text-nimbus-400">{formatCurrency(orderTotal)}</span>
+                  <span className="text-nimbus-600">{formatCurrency(orderTotal)}</span>
                 </div>
               </div>
 

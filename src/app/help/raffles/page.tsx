@@ -32,9 +32,9 @@ export default function RaffleHelpPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Breadcrumb */}
       <nav className="mb-8 flex items-center gap-2 text-sm text-text-muted">
-        <Link href="/" className="hover:text-nimbus-400">Home</Link>
+        <Link href="/" className="hover:text-nimbus-600">Home</Link>
         <span>/</span>
-        <Link href="/help/faq" className="hover:text-nimbus-400">Help</Link>
+        <Link href="/help/faq" className="hover:text-nimbus-600">Help</Link>
         <span>/</span>
         <span className="text-text-secondary">Raffles</span>
       </nav>
@@ -73,7 +73,7 @@ export default function RaffleHelpPage() {
               key={item.step}
               className="rounded-xl border border-surface-border bg-surface-raised p-5"
             >
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-nimbus-500/10 text-nimbus-400">
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-nimbus-500/10 text-nimbus-600">
                 <span className="font-mono text-sm font-bold">{item.step}</span>
               </div>
               <h3 className="mb-2 font-semibold text-text-primary">{item.title}</h3>
@@ -101,7 +101,7 @@ export default function RaffleHelpPage() {
             Read the first 4 bytes of the seed as a big-endian 32-bit unsigned integer.
           </li>
           <li>
-            Compute <code className="rounded bg-surface-overlay px-1 py-0.5 text-nimbus-400">seedValue % totalTickets</code>{' '}
+            Compute <code className="rounded bg-surface-overlay px-1 py-0.5 text-nimbus-600">seedValue % totalTickets</code>{' '}
             to get the zero-based winning index.
           </li>
           <li>
@@ -111,7 +111,7 @@ export default function RaffleHelpPage() {
         </ol>
 
         <div className="mt-4 rounded-lg bg-surface-overlay p-3 font-mono text-xs text-text-muted">
-          <span className="text-nimbus-400">// Example verification (Node.js)</span>
+          <span className="text-nimbus-600">// Example verification (Node.js)</span>
           <br />
           {'const seed = "a3f9..."; // from raffle page'}
           <br />
@@ -171,7 +171,7 @@ export default function RaffleHelpPage() {
         >
           Browse Raffles
         </Link>
-        <Link href="/help/contact" className="text-sm text-text-muted hover:text-nimbus-400">
+        <Link href="/help/contact" className="text-sm text-text-muted hover:text-nimbus-600">
           Still have questions? Contact us
         </Link>
       </div>

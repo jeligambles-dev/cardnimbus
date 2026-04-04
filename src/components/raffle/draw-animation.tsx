@@ -73,9 +73,9 @@ export function DrawAnimation({ winnerName, ticketNumber }: DrawAnimationProps) 
                 ],
               }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="rounded-2xl border border-nimbus-500/50 bg-nimbus-950/50 px-10 py-8"
+              className="rounded-2xl border border-nimbus-500/50 bg-nimbus-50/50 px-10 py-8"
             >
-              <p className="text-sm font-medium text-nimbus-400">Winner</p>
+              <p className="text-sm font-medium text-nimbus-600">Winner</p>
               <p className="mt-2 text-4xl font-extrabold tracking-tight text-white">
                 {winnerName}
               </p>

@@ -44,7 +44,7 @@ export function toast(message: string, type?: ToastType) {
 const typeClasses: Record<ToastType, string> = {
   success: 'border-emerald-700 bg-emerald-950 text-emerald-300',
   error: 'border-red-700 bg-red-950 text-red-300',
-  info: 'border-nimbus-700 bg-nimbus-950 text-nimbus-300',
+  info: 'border-nimbus-400 bg-nimbus-50 text-nimbus-700',
 }
 
 const typeIcon: Record<ToastType, React.ReactNode> = {

@@ -17,7 +17,7 @@ export function ProgressBar({ filled, total, className = "" }: ProgressBarProps)
         <span className="text-text-secondary">
           {filled.toLocaleString()} / {total.toLocaleString()} tickets
         </span>
-        <span className="font-semibold text-nimbus-400">{pct.toFixed(1)}%</span>
+        <span className="font-semibold text-nimbus-600">{pct.toFixed(1)}%</span>
       </div>
       <div className="h-2 w-full overflow-hidden rounded-full bg-surface-overlay">
         <motion.div

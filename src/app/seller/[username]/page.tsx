@@ -91,7 +91,7 @@ export default async function SellerProfilePage({ params }: SellerPageProps) {
         <div className="rounded-2xl border border-surface-border bg-surface-raised p-8 mb-10">
           <div className="flex flex-col sm:flex-row items-start gap-6">
             {/* Avatar */}
-            <div className="relative w-20 h-20 rounded-full overflow-hidden bg-surface-overlay border-2 border-nimbus-700 flex-shrink-0">
+            <div className="relative w-20 h-20 rounded-full overflow-hidden bg-surface-overlay border-2 border-nimbus-400 flex-shrink-0">
               {sellerUser.avatar ? (
                 <Image
                   src={sellerUser.avatar}
@@ -101,7 +101,7 @@ export default async function SellerProfilePage({ params }: SellerPageProps) {
                   sizes="80px"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-nimbus-400">
+                <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-nimbus-600">
                   {(sellerUser.name ?? 'S').charAt(0).toUpperCase()}
                 </div>
               )}

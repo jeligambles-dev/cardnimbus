@@ -62,7 +62,7 @@ export function MakeOfferModal({
             {listingTitle}
           </p>
           <p className="text-xs text-text-muted">
-            Listed at <span className="font-semibold text-nimbus-400">{formatCurrency(listingPrice)}</span>
+            Listed at <span className="font-semibold text-nimbus-600">{formatCurrency(listingPrice)}</span>
           </p>
         </div>
 

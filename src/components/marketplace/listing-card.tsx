@@ -128,7 +128,7 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
 
             {/* Price */}
             <div className="flex items-baseline gap-2 mt-auto">
-              <span className="text-nimbus-400 font-bold text-base">
+              <span className="text-nimbus-600 font-bold text-base">
                 {formatCurrency(listing.price)}
               </span>
             </div>

@@ -32,9 +32,9 @@ export default function MysteryHelpPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Breadcrumb */}
       <nav className="mb-8 flex items-center gap-2 text-sm text-text-muted">
-        <Link href="/" className="hover:text-nimbus-400">Home</Link>
+        <Link href="/" className="hover:text-nimbus-600">Home</Link>
         <span>/</span>
-        <Link href="/help/faq" className="hover:text-nimbus-400">Help</Link>
+        <Link href="/help/faq" className="hover:text-nimbus-600">Help</Link>
         <span>/</span>
         <span className="text-text-secondary">Mystery</span>
       </nav>
@@ -78,7 +78,7 @@ export default function MysteryHelpPage() {
               key={item.step}
               className="rounded-xl border border-surface-border bg-surface-raised p-5"
             >
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-nimbus-500/10 text-nimbus-400">
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-nimbus-500/10 text-nimbus-600">
                 <span className="font-mono text-sm font-bold">{item.step}</span>
               </div>
               <h3 className="mb-2 font-semibold text-text-primary">{item.title}</h3>
@@ -115,7 +115,7 @@ export default function MysteryHelpPage() {
               ].map((row) => (
                 <tr key={row.tier} className="hover:bg-surface-overlay/50">
                   <td className="px-4 py-2.5 font-medium text-text-primary">{row.tier}</td>
-                  <td className="px-4 py-2.5 text-nimbus-400">{row.prob}</td>
+                  <td className="px-4 py-2.5 text-nimbus-600">{row.prob}</td>
                   <td className="px-4 py-2.5 text-text-secondary">{row.items}</td>
                 </tr>
               ))}
@@ -138,8 +138,8 @@ export default function MysteryHelpPage() {
             value as the version you purchased was advertised at.
           </p>
         </div>
-        <div className="rounded-xl border border-nimbus-800/30 bg-nimbus-950/20 p-5">
-          <h3 className="mb-2 font-semibold text-nimbus-400">Value Guarantee</h3>
+        <div className="rounded-xl border border-nimbus-300/30 bg-nimbus-50/20 p-5">
+          <h3 className="mb-2 font-semibold text-nimbus-600">Value Guarantee</h3>
           <p className="text-sm text-text-secondary">
             Every item in the pool has a <strong className="text-text-primary">locked value</strong>{' '}
             set at version creation time. That value is guaranteed regardless of what happens to
@@ -171,7 +171,7 @@ export default function MysteryHelpPage() {
         >
           Browse Mystery Packs
         </Link>
-        <Link href="/help/contact" className="text-sm text-text-muted hover:text-nimbus-400">
+        <Link href="/help/contact" className="text-sm text-text-muted hover:text-nimbus-600">
           Still have questions? Contact us
         </Link>
       </div>

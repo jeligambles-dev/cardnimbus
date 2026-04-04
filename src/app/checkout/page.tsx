@@ -215,7 +215,7 @@ export default function CheckoutPage() {
                       </p>
                     </div>
                     {method === 'stripe' && (
-                      <span className="ml-auto text-xs bg-nimbus-500/20 text-nimbus-400 px-2 py-1 rounded-full">
+                      <span className="ml-auto text-xs bg-nimbus-500/20 text-nimbus-600 px-2 py-1 rounded-full">
                         Recommended
                       </span>
                     )}
@@ -250,7 +250,7 @@ export default function CheckoutPage() {
               </div>
               <div className="border-t border-surface-border pt-4 flex justify-between font-bold text-text-primary">
                 <span>Total</span>
-                <span className="text-nimbus-400">{formatCurrency(subtotal)}</span>
+                <span className="text-nimbus-600">{formatCurrency(subtotal)}</span>
               </div>
               <Button
                 size="lg"

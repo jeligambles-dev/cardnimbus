@@ -64,7 +64,7 @@ export default async function AdminMysteryDetailPage({ params }: PageProps) {
           <div className="flex items-center gap-3">
             <Link
               href="/admin/mystery"
-              className="text-sm text-text-muted hover:text-nimbus-400"
+              className="text-sm text-text-muted hover:text-nimbus-600"
             >
               ← Back
             </Link>
@@ -127,7 +127,7 @@ export default async function AdminMysteryDetailPage({ params }: PageProps) {
                     className="rounded-lg border border-surface-border bg-surface-overlay px-3 py-1.5 text-sm"
                   >
                     <span className="font-medium text-text-primary">{rate.tierName}</span>
-                    <span className="ml-2 text-nimbus-400">
+                    <span className="ml-2 text-nimbus-600">
                       {(rate.chance * 100).toFixed(1)}%
                     </span>
                   </div>

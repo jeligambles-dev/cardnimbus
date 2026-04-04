@@ -39,7 +39,7 @@ export default async function DealsPage() {
               <span>30%+ below market</span>
             </span>
             <span className="inline-flex items-center gap-1">
-              <span className="rounded-full bg-nimbus-950 border border-nimbus-800 px-2 py-0.5 text-nimbus-400 font-medium">🔥 GREAT</span>
+              <span className="rounded-full bg-nimbus-50 border border-nimbus-300 px-2 py-0.5 text-nimbus-600 font-medium">🔥 GREAT</span>
               <span>20–30% below</span>
             </span>
             <span className="inline-flex items-center gap-1">

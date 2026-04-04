@@ -19,7 +19,7 @@ export async function FeaturedProducts() {
         </div>
         <Link
           href="/shop"
-          className="text-sm font-medium text-text-secondary transition-colors hover:text-nimbus-400"
+          className="text-sm font-medium text-text-secondary transition-colors hover:text-nimbus-600"
         >
           View all →
         </Link>
