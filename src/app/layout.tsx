@@ -7,6 +7,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toast";
 import { ChatWidget } from "@/components/support/chat-widget";
+import { EmailDiscountPopup } from "@/components/email-discount-popup";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -44,6 +45,7 @@ export default function RootLayout({
           <Footer />
           <Toaster />
           <ChatWidget />
+          <EmailDiscountPopup />
         </SessionProvider>
       </body>
     </html>
