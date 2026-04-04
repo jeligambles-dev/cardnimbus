@@ -1,33 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Nimbus (orange) palette ── */
-  --color-nimbus-50: #fff7ed;
-  --color-nimbus-100: #ffedd5;
-  --color-nimbus-200: #fed7aa;
-  --color-nimbus-300: #fdba74;
-  --color-nimbus-400: #fb923c;
-  --color-nimbus-500: #f97316;
-  --color-nimbus-600: #ea580c;
-  --color-nimbus-700: #c2410c;
-  --color-nimbus-800: #9a3412;
-  --color-nimbus-900: #7c2d12;
-  --color-nimbus-950: #431407;
+  /* ── Nimbus (red) palette — PRIMARY ACCENT ── */
+  --color-nimbus-50: #fef2f2;
+  --color-nimbus-100: #fee2e2;
+  --color-nimbus-200: #fecaca;
+  --color-nimbus-300: #fca5a5;
+  --color-nimbus-400: #f87171;
+  --color-nimbus-500: #ef4444;
+  --color-nimbus-600: #dc2626;
+  --color-nimbus-700: #b91c1c;
+  --color-nimbus-800: #991b1b;
+  --color-nimbus-900: #7f1d1d;
+  --color-nimbus-950: #450a0a;
 
-  /* ── Volt (green accent) palette ── */
-  --color-volt-400: #a3e635;
-  --color-volt-500: #84cc16;
+  /* ── Volt (emerald) accent ── */
+  --color-volt-400: #34d399;
+  --color-volt-500: #10b981;
 
-  /* ── Surface colors ── */
-  --color-surface: #0a0a0f;
-  --color-surface-raised: #12121a;
-  --color-surface-overlay: #1a1a25;
-  --color-surface-border: #2a2a3a;
+  /* ── Surface colors (light theme) ── */
+  --color-surface: #ffffff;
+  --color-surface-raised: #f9fafb;
+  --color-surface-overlay: #f3f4f6;
+  --color-surface-border: #e5e7eb;
 
   /* ── Text colors ── */
-  --color-text-primary: #f5f5f7;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #71717a;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
 
   /* ── Fonts ── */
   --font-display: var(--font-space-grotesk), system-ui, sans-serif;
@@ -56,14 +56,14 @@
   }
 
   @keyframes glow {
-    0%, 100% { box-shadow: 0 0 12px 2px #f9731640; }
-    50%       { box-shadow: 0 0 24px 6px #f9731680; }
+    0%, 100% { box-shadow: 0 0 12px 2px #ef444440; }
+    50%       { box-shadow: 0 0 24px 6px #ef444480; }
   }
 }
 
-/* ── Dark scheme ── */
+/* ── Light scheme ── */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 /* ── Custom scrollbar ── */
@@ -73,20 +73,20 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #12121a;
+  background: #f3f4f6;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2a2a3a;
+  background: #d1d5db;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #f97316;
+  background: #ef4444;
 }
 
 /* ── Selection ── */
 ::selection {
-  background-color: #f97316;
-  color: #fff7ed;
+  background-color: #ef4444;
+  color: #ffffff;
 }

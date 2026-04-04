@@ -110,7 +110,8 @@ function AuthButton() {
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-surface-border bg-surface/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-surface-border bg-surface/95 backdrop-blur-md">
+      {/* Top row: logo + nav links + actions */}
       <nav className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex shrink-0 items-center gap-2.5">
@@ -137,17 +138,19 @@ export function Navbar() {
           ))}
         </ul>
 
-        {/* Search — hidden below lg */}
-        <div className="hidden flex-1 justify-center lg:flex">
-          <SearchBar />
-        </div>
-
         {/* Right actions */}
         <div className="ml-auto flex items-center gap-2">
           <CartIcon />
           <AuthButton />
         </div>
       </nav>
+
+      {/* Search row — full width below nav */}
+      <div className="border-t border-surface-border bg-surface-raised/50 px-4 py-2.5 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl">
+          <SearchBar />
+        </div>
+      </div>
     </header>
   )
 }
