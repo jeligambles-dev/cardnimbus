@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Nimbus (red) palette — PRIMARY ACCENT ── */
-  --color-nimbus-50: #fef2f2;
-  --color-nimbus-100: #fee2e2;
-  --color-nimbus-200: #fecaca;
-  --color-nimbus-300: #fca5a5;
-  --color-nimbus-400: #f87171;
-  --color-nimbus-500: #ef4444;
-  --color-nimbus-600: #dc2626;
-  --color-nimbus-700: #b91c1c;
-  --color-nimbus-800: #991b1b;
-  --color-nimbus-900: #7f1d1d;
-  --color-nimbus-950: #450a0a;
+  /* ── Nimbus (pure red) palette — PRIMARY ACCENT ── */
+  --color-nimbus-50: #fff0f0;
+  --color-nimbus-100: #ffd6d6;
+  --color-nimbus-200: #ffb3b3;
+  --color-nimbus-300: #ff8080;
+  --color-nimbus-400: #ff3333;
+  --color-nimbus-500: #ff0000;
+  --color-nimbus-600: #cc0000;
+  --color-nimbus-700: #a30000;
+  --color-nimbus-800: #800000;
+  --color-nimbus-900: #660000;
+  --color-nimbus-950: #330000;
 
   /* ── Volt (emerald) accent ── */
   --color-volt-400: #34d399;
@@ -56,8 +56,8 @@
   }
 
   @keyframes glow {
-    0%, 100% { box-shadow: 0 0 12px 2px #ef444440; }
-    50%       { box-shadow: 0 0 24px 6px #ef444480; }
+    0%, 100% { box-shadow: 0 0 12px 2px #ff000040; }
+    50%       { box-shadow: 0 0 24px 6px #ff000080; }
   }
 }
 
@@ -82,11 +82,11 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ef4444;
+  background: #ff0000;
 }
 
 /* ── Selection ── */
 ::selection {
-  background-color: #ef4444;
+  background-color: #ff0000;
   color: #ffffff;
 }
