@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { HeroSection } from '@/components/home/hero-section'
 import { CategoryGrid } from '@/components/home/category-grid'
 import { FeaturedProducts } from '@/components/home/featured-products'
 
@@ -42,7 +41,6 @@ function SellYourCardsCTA() {
 export default function Home() {
   return (
     <>
-      <HeroSection />
       <CategoryGrid />
       <FeaturedProducts />
       <SellYourCardsCTA />
