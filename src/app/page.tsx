@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { HeroCarouselWrapper } from '@/components/home/hero-carousel-wrapper'
 import { CategoryGrid } from '@/components/home/category-grid'
 import { FeaturedProducts } from '@/components/home/featured-products'
 
@@ -41,6 +42,7 @@ function SellYourCardsCTA() {
 export default function Home() {
   return (
     <>
+      <HeroCarouselWrapper />
       <CategoryGrid />
       <FeaturedProducts />
       <SellYourCardsCTA />

@@ -1362,3 +1362,23 @@ model EmailSubscription {
   @@index([email])
   @@map("email_subscriptions")
 }
+
+// ──────────────────────────────────────
+// Homepage Hero Carousel (admin-managed)
+// ──────────────────────────────────────
+
+model HeroSlide {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String?
+  imageUrl    String
+  buttonLabel String
+  buttonLink  String
+  displayOrder Int     @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+  @@map("hero_slides")
+}
