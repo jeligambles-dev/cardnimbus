@@ -8,7 +8,6 @@ import { useCartStore } from '@/stores/cart-store'
 import { SearchBar } from '@/components/search/search-bar'
 
 const NAV_LINKS = [
-  { label: 'Shop', href: '/shop' },
   { label: 'Marketplace', href: '/marketplace' },
   { label: 'Raffles', href: '/raffles' },
   { label: 'Mystery', href: '/mystery' },
@@ -16,7 +15,6 @@ const NAV_LINKS = [
   { label: 'Boxes', href: '/shop?category=BOX' },
   { label: 'Slabs', href: '/shop?category=SLAB' },
   { label: 'Singles', href: '/shop?category=SINGLE' },
-  { label: 'Deals', href: '/deals' },
   { label: 'Sell Cards', href: '/sell-your-cards' },
 ]
 
