@@ -27,6 +27,8 @@ interface ListingCardProps {
     images: string[]
     dealScore: number | null
     dealScoreBand: string | null
+    grade?: number | null
+    gradingCompany?: string | null
     seller: {
       rating: number | null
       user: {
@@ -126,7 +128,11 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
               <span className="rounded bg-nimbus-100 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-nimbus-700 shrink-0">
                 {listing.category.replace(/_/g, ' ')}
               </span>
-              {listing.condition && (
+              {listing.category === 'SLAB' && listing.gradingCompany && listing.grade != null ? (
+                <span className="rounded bg-nimbus-500 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shrink-0">
+                  {listing.gradingCompany} {listing.grade.toFixed(1)}
+                </span>
+              ) : listing.condition && (
                 <span className="rounded bg-surface-overlay px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-text-secondary shrink-0">
                   {listing.condition}
                 </span>

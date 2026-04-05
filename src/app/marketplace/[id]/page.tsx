@@ -95,9 +95,13 @@ export default async function ListingPage({ params }: ListingPageProps) {
     printing?: string | null
   } | null
 
+  const slabInfo = listing as unknown as { grade?: number | null; gradingCompany?: string | null }
+  const isSlab = listing.category === 'SLAB'
   const detailRows = [
     { label: 'Category', value: (listing.category as string).replace(/_/g, ' ') },
-    { label: 'Condition', value: listing.condition ? (listing.condition as string) : null },
+    isSlab
+      ? { label: 'Grading', value: slabInfo.gradingCompany && slabInfo.grade ? `${slabInfo.gradingCompany} ${slabInfo.grade.toFixed(1)}` : null }
+      : { label: 'Condition', value: listing.condition ? (listing.condition as string) : null },
     { label: 'Set', value: card?.setName ?? null },
     { label: 'Card Number', value: card?.cardNumber ?? null },
     { label: 'Rarity', value: card?.rarity ?? null },
@@ -165,7 +169,13 @@ export default async function ListingPage({ params }: ListingPageProps) {
                 <Badge variant="default" size="md">
                   {(listing.category as string).replace(/_/g, ' ')}
                 </Badge>
-                {listing.condition && (
+                {listing.category === 'SLAB' && (listing as unknown as { gradingCompany?: string | null; grade?: number | null }).gradingCompany && (
+                  <Badge variant="nimbus" size="md">
+                    {(listing as unknown as { gradingCompany: string }).gradingCompany}{' '}
+                    {(listing as unknown as { grade: number }).grade?.toFixed(1)}
+                  </Badge>
+                )}
+                {listing.condition && listing.category !== 'SLAB' && (
                   <Badge variant="success" size="md">
                     {listing.condition as string}
                   </Badge>

@@ -760,6 +760,8 @@ model Listing {
   dealScoreBand               String?
   marketPriceSourceUpdatedAt  DateTime?
   condition                   CardCondition?
+  grade                       Float?
+  gradingCompany              String?
   category                    ProductCategory
   moderationStatus            ListingModerationStatus  @default(DRAFT)
   saleStatus                  ListingSaleStatus        @default(INACTIVE)

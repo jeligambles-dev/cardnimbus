@@ -37,6 +37,25 @@ const conditionOptions = [
   { value: 'HP', label: 'Heavily Played (HP)' },
 ]
 
+const GRADING_COMPANIES = ['PSA', 'BGS', 'ACE', 'CGC', 'TAG'] as const
+type GradingCompany = typeof GRADING_COMPANIES[number]
+
+const gradingCompanyOptions = [
+  { value: '', label: 'Select company' },
+  ...GRADING_COMPANIES.map((c) => ({ value: c, label: c })),
+]
+
+const gradeOptions = (() => {
+  const opts: { value: string; label: string }[] = [
+    { value: '', label: 'Select grade' },
+  ]
+  // 10, 9.5, 9, 8.5, ... 1.5, 1
+  for (let g = 10; g >= 1; g -= 0.5) {
+    opts.push({ value: g.toFixed(1), label: g.toFixed(1) })
+  }
+  return opts
+})()
+
 const categoryOptions = [
   { value: '', label: 'Select category' },
   { value: 'SINGLE', label: 'Single' },
@@ -228,6 +247,8 @@ export default function CreateListingPage() {
   const [price, setPrice] = useState('')
   const [condition, setCondition] = useState<Condition | ''>('')
   const [category, setCategory] = useState<Category | ''>('')
+  const [grade, setGrade] = useState<string>('')
+  const [gradingCompany, setGradingCompany] = useState<GradingCompany | ''>('')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [shipsToCountries, setShipsToCountries] = useState<string[]>([])
@@ -265,6 +286,10 @@ export default function CreateListingPage() {
     if (!price || parseFloat(price) <= 0) return toast('Please enter a valid price.', 'error')
     if (!userCountry) return toast('Please set your country in your account first.', 'error')
     if (shipsToCountries.length === 0) return toast('Select at least one country you ship to.', 'error')
+    if (category === 'SLAB') {
+      if (!gradingCompany) return toast('Please select a grading company.', 'error')
+      if (!grade) return toast('Please select a grade.', 'error')
+    }
 
     setSubmitting(true)
     try {
@@ -277,9 +302,11 @@ export default function CreateListingPage() {
           description: description.trim() || undefined,
           images,
           price: parseFloat(price),
-          condition: condition || undefined,
+          condition: category === 'SLAB' ? undefined : condition || undefined,
           category,
           shipsToCountries,
+          grade: category === 'SLAB' && grade ? parseFloat(grade) : undefined,
+          gradingCompany: category === 'SLAB' ? gradingCompany || undefined : undefined,
         }),
       })
       if (!res.ok) {
@@ -348,13 +375,31 @@ export default function CreateListingPage() {
                 value={category}
                 onChange={(e) => setCategory(e.target.value as Category | '')}
               />
-              <Select
-                label="Condition"
-                options={conditionOptions}
-                value={condition}
-                onChange={(e) => setCondition(e.target.value as Condition | '')}
-              />
+              {category === 'SLAB' ? (
+                <Select
+                  label="Grading Company"
+                  options={gradingCompanyOptions}
+                  value={gradingCompany}
+                  onChange={(e) => setGradingCompany(e.target.value as GradingCompany | '')}
+                />
+              ) : (
+                <Select
+                  label="Condition"
+                  options={conditionOptions}
+                  value={condition}
+                  onChange={(e) => setCondition(e.target.value as Condition | '')}
+                />
+              )}
             </div>
+
+            {category === 'SLAB' && (
+              <Select
+                label="Grade"
+                options={gradeOptions}
+                value={grade}
+                onChange={(e) => setGrade(e.target.value)}
+              />
+            )}
 
             <div>
               <Input

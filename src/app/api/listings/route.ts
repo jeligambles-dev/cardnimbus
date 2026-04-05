@@ -94,7 +94,26 @@ export async function POST(request: NextRequest) {
       shipsToCountries: Array.isArray(body.shipsToCountries)
         ? body.shipsToCountries.filter((c: unknown) => typeof c === "string")
         : undefined,
+      grade: typeof body.grade === "number" ? body.grade : undefined,
+      gradingCompany:
+        typeof body.gradingCompany === "string" ? body.gradingCompany : undefined,
     };
+
+    // Validate slab-specific fields
+    if (input.category === "SLAB") {
+      const ALLOWED_COMPANIES = ["PSA", "BGS", "ACE", "CGC", "TAG"];
+      if (!input.gradingCompany || !ALLOWED_COMPANIES.includes(input.gradingCompany)) {
+        throw new ValidationError("Slabs require a grading company (PSA, BGS, ACE, CGC, TAG)");
+      }
+      if (
+        input.grade === undefined ||
+        input.grade < 1 ||
+        input.grade > 10 ||
+        (input.grade * 2) % 1 !== 0
+      ) {
+        throw new ValidationError("Slabs require a grade between 1 and 10 in 0.5 increments");
+      }
+    }
 
     const listing = await createListing(sellerProfile.id, input);
     return Response.json(listing, { status: 201 });
