@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { SafeImage } from '@/components/safe-image'
 import { BadgeIcon } from '@/components/badges/badge-icon'
 import { DealBadge } from '@/components/deals/deal-badge'
 import { LikeButton } from '@/components/marketplace/like-button'
@@ -96,7 +96,7 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
 
           {/* IMAGE FRAME — Pokemon card 5:7 aspect ratio (2.5" × 3.5") */}
           <div className="relative aspect-[5/7] bg-gradient-to-br from-nimbus-500 via-nimbus-500 to-nimbus-600 overflow-hidden rounded-lg border-[3px] border-nimbus-600 shadow-inner">
-            <Image
+            <SafeImage
               src={mainImage}
               alt={listing.title}
               fill
