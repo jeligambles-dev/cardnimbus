@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { DealBadge } from '@/components/deals/deal-badge'
 import { ListingDetailActions } from '@/components/marketplace/listing-detail-actions'
 import { ListingSuggestions } from '@/components/marketplace/listing-suggestions'
+import { SellerRecentSales } from '@/components/marketplace/seller-recent-sales'
 import type { DealScoreBand } from '@/services/deal-score.service'
 
 interface ListingPageProps {
@@ -314,6 +315,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
                 View Profile
               </Link>
             </div>
+
+            {/* Seller's recent sales + reviews */}
+            <SellerRecentSales sellerProfileId={seller.id} />
           </div>
         </div>
       </div>
