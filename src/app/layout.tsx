@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
-import { Navbar } from "@/components/layout/navbar";
+import { SmartNav } from "@/components/layout/smart-nav";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toast";
 import { ChatWidget } from "@/components/support/chat-widget";
@@ -40,7 +40,7 @@ export default function RootLayout({
     >
       <body className="font-body flex min-h-screen flex-col bg-surface text-text-primary antialiased">
         <SessionProvider>
-          <Navbar />
+          <SmartNav />
           <main className="flex-1">{children}</main>
           <Footer />
           <Toaster />
