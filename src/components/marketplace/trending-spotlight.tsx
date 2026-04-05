@@ -41,24 +41,24 @@ export function TrendingSpotlight({ listings }: TrendingSpotlightProps) {
   if (listings.length === 0) return null;
 
   return (
-    <section className="bg-gradient-to-b from-nimbus-50 via-white to-transparent border-b border-surface-border">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <section className="bg-gradient-to-b from-nimbus-50 via-white to-transparent border-b-4 border-black">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
         {/* Header */}
-        <div className="mb-6 flex items-end justify-between gap-4">
+        <div className="mb-8 flex items-end justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-nimbus-100 border border-nimbus-300 px-3 py-1 mb-2">
-              <span className="relative flex h-2 w-2">
+            <div className="inline-flex items-center gap-2 rounded-full bg-nimbus-100 border-2 border-nimbus-300 px-4 py-1.5 mb-3">
+              <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-nimbus-500 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-nimbus-500" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-nimbus-500" />
               </span>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-nimbus-700">
+              <span className="text-xs font-bold uppercase tracking-[0.15em] text-nimbus-700">
                 Trending Now
               </span>
             </div>
-            <h2 className="text-2xl font-black tracking-tight text-text-primary sm:text-3xl">
+            <h2 className="text-4xl font-black tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
               Top Picks
             </h2>
-            <p className="text-sm text-text-secondary mt-1">
+            <p className="text-base text-text-secondary mt-2 sm:text-lg">
               The hottest cards moving fastest right now
             </p>
           </div>

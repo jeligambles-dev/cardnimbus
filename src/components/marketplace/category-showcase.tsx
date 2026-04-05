@@ -36,7 +36,7 @@ export async function CategoryShowcase() {
   if (tiles.length === 0) return null;
 
   return (
-    <section className="bg-white border-b border-surface-border">
+    <section className="bg-white border-b-4 border-black">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         {/* Header row */}
         <div className="mb-6 flex items-end justify-between gap-4">

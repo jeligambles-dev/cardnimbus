@@ -10,12 +10,16 @@ export const metadata = {
 export default async function AccountPage() {
   const session = await requireAuth()
   const user = session.user
-  const isSeller = (user as { role?: string }).role === 'SELLER' || (user as { role?: string }).role === 'ADMIN'
 
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h1 className="text-3xl font-bold text-text-primary mb-8 tracking-tight">My Account</h1>
+        <h1 className="text-3xl font-bold text-text-primary mb-2 tracking-tight">
+          My Account
+        </h1>
+        <p className="text-text-secondary text-sm mb-8">
+          Shop orders, wishlist, submissions, and preferences.
+        </p>
 
         {/* Profile */}
         <Card className="p-6 mb-6">
@@ -41,7 +45,7 @@ export default async function AccountPage() {
           </div>
         </Card>
 
-        {/* Quick Links */}
+        {/* Shop Quick Links */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Link href="/account/orders">
             <Card hover className="p-6">
@@ -50,36 +54,8 @@ export default async function AccountPage() {
                   📦
                 </div>
                 <div>
-                  <p className="font-bold text-text-primary">Orders</p>
-                  <p className="text-text-secondary text-sm">Track and manage your orders</p>
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link href="/account/notifications">
-            <Card hover className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
-                  🔔
-                </div>
-                <div>
-                  <p className="font-bold text-text-primary">Notifications</p>
-                  <p className="text-text-secondary text-sm">Stay up to date on activity</p>
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link href="/shop">
-            <Card hover className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
-                  🃏
-                </div>
-                <div>
-                  <p className="font-bold text-text-primary">Shop</p>
-                  <p className="text-text-secondary text-sm">Browse Pokemon cards</p>
+                  <p className="font-bold text-text-primary">Shop Orders</p>
+                  <p className="text-text-secondary text-sm">Track and manage your store orders</p>
                 </div>
               </div>
             </Card>
@@ -107,35 +83,7 @@ export default async function AccountPage() {
                 </div>
                 <div>
                   <p className="font-bold text-text-primary">Wishlist</p>
-                  <p className="text-text-secondary text-sm">Track cards and get price drop alerts</p>
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link href="/account/likes">
-            <Card hover className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
-                  💖
-                </div>
-                <div>
-                  <p className="font-bold text-text-primary">Liked Items</p>
-                  <p className="text-text-secondary text-sm">Listings you&apos;ve saved from the marketplace</p>
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link href="/account/following">
-            <Card hover className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
-                  👥
-                </div>
-                <div>
-                  <p className="font-bold text-text-primary">Following</p>
-                  <p className="text-text-secondary text-sm">Sellers you follow and their new listings</p>
+                  <p className="text-text-secondary text-sm">Products you want to track</p>
                 </div>
               </div>
             </Card>
@@ -148,8 +96,22 @@ export default async function AccountPage() {
                   📬
                 </div>
                 <div>
-                  <p className="font-bold text-text-primary">My Submissions</p>
+                  <p className="font-bold text-text-primary">Sell Cards to Us</p>
                   <p className="text-text-secondary text-sm">Check offers on cards you&apos;ve sent in</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/account/notifications">
+            <Card hover className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
+                  🔔
+                </div>
+                <div>
+                  <p className="font-bold text-text-primary">Notifications</p>
+                  <p className="text-text-secondary text-sm">Stay up to date on activity</p>
                 </div>
               </div>
             </Card>
@@ -168,50 +130,26 @@ export default async function AccountPage() {
               </div>
             </Card>
           </Link>
+        </div>
 
-          <Link href="/account/messages">
-            <Card hover className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
-                  💬
-                </div>
-                <div>
-                  <p className="font-bold text-text-primary">Messages</p>
-                  <p className="text-text-secondary text-sm">Chat with buyers and sellers</p>
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link href="/account/disputes">
-            <Card hover className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
-                  ⚖️
-                </div>
-                <div>
-                  <p className="font-bold text-text-primary">Disputes</p>
-                  <p className="text-text-secondary text-sm">Manage order disputes</p>
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          {isSeller && (
-            <Link href="/account/seller">
-              <Card hover className="p-6">
+        {/* Link to marketplace account */}
+        <div className="mt-8">
+          <Link href="/marketplace/account">
+            <Card hover className="p-5 bg-gradient-to-r from-emerald-50 to-white border-2 border-emerald-300">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-xl">
                     🏪
                   </div>
                   <div>
-                    <p className="font-bold text-text-primary">Seller Dashboard</p>
-                    <p className="text-text-secondary text-sm">Manage your listings and earnings</p>
+                    <p className="font-bold text-text-primary">Marketplace Account</p>
+                    <p className="text-text-secondary text-sm">Liked listings, followed sellers, messages, disputes</p>
                   </div>
                 </div>
-              </Card>
-            </Link>
-          )}
+                <span className="text-emerald-600 font-bold">→</span>
+              </div>
+            </Card>
+          </Link>
         </div>
       </div>
     </main>

@@ -27,7 +27,7 @@ function MarketplaceAuth() {
     return (
       <div className="group relative">
         <Link
-          href="/account"
+          href="/marketplace/account"
           className="flex items-center gap-2 rounded-xl border border-surface-border bg-surface-overlay px-3 py-1.5 text-sm font-medium text-text-primary group-hover:border-nimbus-500/50"
         >
           <span className="flex h-5 w-5 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white">

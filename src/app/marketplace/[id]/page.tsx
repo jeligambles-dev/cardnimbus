@@ -10,6 +10,7 @@ import { ListingDetailActions } from '@/components/marketplace/listing-detail-ac
 import { ListingSuggestions } from '@/components/marketplace/listing-suggestions'
 import { SellerRecentSales } from '@/components/marketplace/seller-recent-sales'
 import { FollowButton } from '@/components/marketplace/follow-button'
+import { PriceTrend } from '@/components/marketplace/price-trend'
 import type { DealScoreBand } from '@/services/deal-score.service'
 
 interface ListingPageProps {
@@ -169,8 +170,6 @@ export default async function ListingPage({ params }: ListingPageProps) {
               </Link>
             </div>
 
-            {/* Recent sales + reviews */}
-            <SellerRecentSales sellerProfileId={seller.id} />
           </aside>
 
           {/* Middle: Images + Description */}
@@ -224,6 +223,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
                 </p>
               </div>
             )}
+
+            {/* Price trend chart */}
+            <PriceTrend listingId={listing.id} currentPrice={listing.price} />
 
             {/* TCGPlayer Price Comparison */}
             {hasTcgPrices && (
@@ -314,6 +316,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
                 sellerUserId={seller.userId}
               />
             </div>
+
+            {/* Recent sales + reviews (back on the right) */}
+            <SellerRecentSales sellerProfileId={seller.id} />
           </div>
         </div>
       </div>
