@@ -257,17 +257,48 @@ export function Navbar() {
       {mobileOpen && (
         <div className="md:hidden bg-gradient-to-b from-nimbus-600 to-nimbus-700 border-b-2 border-nimbus-800">
           <ul className="flex flex-col gap-0.5 px-3 py-3">
-            {NAV_LINKS.map(({ label, href }) => (
-              <li key={label}>
-                <Link
-                  href={href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-lg px-4 py-3 text-sm font-bold text-white hover:bg-white/15"
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
+            {NAV_LINKS.map(({ label, href }) => {
+              if (label === 'Marketplace') {
+                return (
+                  <li key={label}>
+                    <Link
+                      href={href}
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2 rounded-lg bg-gradient-to-b from-emerald-500 to-emerald-600 px-4 py-3 text-sm font-bold text-white hover:from-emerald-400 hover:to-emerald-500"
+                    >
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      {label}
+                    </Link>
+                  </li>
+                )
+              }
+              if (label === 'Sell Cards') {
+                return (
+                  <li key={label}>
+                    <Link
+                      href={href}
+                      onClick={() => setMobileOpen(false)}
+                      className="block rounded-lg bg-white px-4 py-3 text-sm font-bold text-nimbus-600 hover:bg-white/90"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                )
+              }
+              return (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-sm font-bold text-white hover:bg-white/15"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </div>
       )}

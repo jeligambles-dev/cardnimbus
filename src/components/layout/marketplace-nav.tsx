@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -124,6 +125,11 @@ export function MarketplaceNav() {
   const pathname = usePathname();
   // Only the store homepage ("/") gets the big nav — marketplace always uses compact
   const isHome = false;
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   const isActive = (href: string) => {
     if (href === "/marketplace") return pathname === "/marketplace";
@@ -187,30 +193,93 @@ export function MarketplaceNav() {
             <Link
               href="/"
               aria-label="Back to store"
-              className="inline-flex h-9 w-9 sm:w-auto items-center justify-center sm:gap-1.5 rounded-xl border border-white/30 bg-white/10 backdrop-blur sm:px-3.5 text-xs font-semibold text-white transition-all duration-150 hover:border-white hover:bg-white hover:text-nimbus-600 hover:-translate-y-px"
+              className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-3.5 text-xs font-semibold text-white transition-all duration-150 hover:border-white hover:bg-white hover:text-nimbus-600 hover:-translate-y-px"
             >
-              <svg className="h-4 w-4 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              <span className="hidden sm:inline">Back to store</span>
+              Back to store
             </Link>
             <Link
               href="/sell"
               aria-label="Sell"
-              className="inline-flex h-9 w-9 sm:w-auto items-center justify-center sm:gap-1.5 rounded-xl sm:px-4 text-sm font-bold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(0,0,0,0.25)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
+              className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-xl px-4 text-sm font-bold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(0,0,0,0.25)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
-              <span className="hidden sm:inline">Sell</span>
+              Sell
             </Link>
             <MarketplaceAuth />
+            {/* Mobile menu button */}
+            <button
+              type="button"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Menu"
+              aria-expanded={mobileOpen}
+              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white transition-colors hover:bg-white hover:text-nimbus-600"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                {mobileOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
           </div>
         </nav>
       </div>
 
-      {/* Category tabs row — on red */}
-      <nav className="relative bg-gradient-to-b from-nimbus-500 to-nimbus-600 border-b-2 border-nimbus-700">
+      {/* Mobile menu drawer */}
+      {mobileOpen && (
+        <div className="md:hidden bg-gradient-to-b from-nimbus-600 to-nimbus-700 border-b-2 border-nimbus-800">
+          <ul className="flex flex-col gap-0.5 px-3 py-3">
+            {MARKETPLACE_LINKS.map(({ label, href }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block rounded-lg px-4 py-3 text-sm font-bold ${
+                    isActive(href)
+                      ? "bg-white text-nimbus-600"
+                      : "text-white hover:bg-white/15"
+                  }`}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+            <li className="mt-1 pt-1 border-t border-white/20">
+              <Link
+                href="/sell"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 rounded-lg bg-gradient-to-b from-emerald-500 to-emerald-600 px-4 py-3 text-sm font-bold text-white hover:from-emerald-400 hover:to-emerald-500"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                Sell on Marketplace
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 rounded-lg border border-white/30 bg-white/10 px-4 py-3 text-sm font-bold text-white hover:bg-white/20"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to store
+              </Link>
+            </li>
+          </ul>
+        </div>
+      )}
+
+      {/* Category tabs row — on red, hidden on mobile (links are in drawer) */}
+      <nav className="hidden md:block relative bg-gradient-to-b from-nimbus-500 to-nimbus-600 border-b-2 border-nimbus-700">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ul className="flex flex-wrap items-center gap-0.5 py-2 sm:flex-nowrap sm:overflow-x-auto sm:scrollbar-hide">
             {MARKETPLACE_LINKS.map(({ label, href }) => (
