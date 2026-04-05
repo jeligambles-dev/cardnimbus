@@ -16,7 +16,8 @@ const NAV_LINKS = [
   { label: 'Boxes', href: '/shop?category=BOX' },
   { label: 'Slabs', href: '/shop?category=SLAB' },
   { label: 'Singles', href: '/shop?category=SINGLE' },
-  { label: '🔥 Deals', href: '/deals' },
+  { label: 'Deals', href: '/deals' },
+  { label: 'Sell Cards', href: '/sell-your-cards' },
 ]
 
 function CartIcon() {
@@ -139,12 +140,6 @@ export function Navbar() {
 
         {/* Right actions */}
         <div className="ml-auto flex items-center gap-2">
-          <Link
-            href="/sell-your-cards"
-            className="rounded-xl bg-nimbus-500 px-4 py-1.5 text-sm font-semibold text-white shadow-lg shadow-nimbus-500/25 transition-colors hover:bg-nimbus-600"
-          >
-            Sell Cards
-          </Link>
           <CartIcon />
           <AuthButton />
         </div>
