@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma migrate deploy && next build",
+    "build": "prisma generate && prisma migrate deploy && (npx tsx prisma/seed-countries.ts || echo 'seed-countries skipped') && next build",
     "build:next": "next build",
     "start": "next start",
     "lint": "eslint",
