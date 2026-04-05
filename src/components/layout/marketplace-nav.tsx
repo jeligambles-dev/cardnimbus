@@ -121,7 +121,8 @@ function MarketplaceAuth() {
 
 export function MarketplaceNav() {
   const pathname = usePathname();
-  const isHome = pathname === "/marketplace";
+  // Only the store homepage ("/") gets the big nav — marketplace always uses compact
+  const isHome = false;
 
   const isActive = (href: string) => {
     if (href === "/marketplace") return pathname === "/marketplace";
