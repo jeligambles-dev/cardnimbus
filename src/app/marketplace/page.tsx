@@ -16,6 +16,8 @@ interface MarketplacePageProps {
     maxPrice?: string
     page?: string
     view?: string
+    minGrade?: string
+    gradingCompany?: string
   }>
 }
 
@@ -38,6 +40,13 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
   const minPrice = params.minPrice ? parseFloat(params.minPrice) : undefined
   const maxPrice = params.maxPrice ? parseFloat(params.maxPrice) : undefined
   const view = params.view ?? ''
+  const rawMinGrade = params.minGrade ?? ''
+  const rawGradingCompany = params.gradingCompany ?? ''
+  const ALLOWED_GRADING_COMPANIES = ['PSA', 'BGS', 'ACE', 'CGC', 'TAG']
+  const minGrade = rawMinGrade ? parseFloat(rawMinGrade) : undefined
+  const gradingCompany = ALLOWED_GRADING_COMPANIES.includes(rawGradingCompany)
+    ? rawGradingCompany
+    : undefined
 
   // Show listings only if any filter, view=all, or a non-default sort is set
   const hasFiltering =
@@ -45,6 +54,8 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
     !!rawCondition ||
     !!minPrice ||
     !!maxPrice ||
+    !!minGrade ||
+    !!gradingCompany ||
     view === 'all' ||
     rawSort !== 'newest' ||
     page > 1
@@ -57,8 +68,21 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
     ? (rawCondition as CardCondition)
     : undefined
 
+  // Only apply slab-specific filters when viewing slabs (or no category selected)
+  const applySlabFilters = !category || category === 'SLAB'
   const [{ items, total, totalPages }, trending] = await Promise.all([
-    getListings({ category, condition, minPrice, maxPrice }, page, 20),
+    getListings(
+      {
+        category,
+        condition: category === 'SLAB' ? undefined : condition,
+        minPrice,
+        maxPrice,
+        minGrade: applySlabFilters ? minGrade : undefined,
+        gradingCompany: applySlabFilters ? gradingCompany : undefined,
+      },
+      page,
+      20
+    ),
     getTrendingListings(3),
   ])
 
@@ -105,6 +129,8 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
               sortBy={rawSort}
               minPrice={params.minPrice ?? ''}
               maxPrice={params.maxPrice ?? ''}
+              minGrade={rawMinGrade}
+              gradingCompany={rawGradingCompany}
             />
           </Suspense>
         </div>

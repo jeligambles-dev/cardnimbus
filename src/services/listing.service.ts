@@ -41,6 +41,8 @@ export interface ListingFilters {
   minPrice?: number;
   maxPrice?: number;
   sellerId?: string;
+  minGrade?: number;
+  gradingCompany?: string;
 }
 
 // ─── Create ───────────────────────────────────────────────────────────────────
@@ -122,6 +124,8 @@ export async function getListings(
     ...(filters.category && { category: filters.category }),
     ...(filters.condition && { condition: filters.condition }),
     ...(filters.sellerId && { sellerId: filters.sellerId }),
+    ...(filters.minGrade !== undefined && { grade: { gte: filters.minGrade } }),
+    ...(filters.gradingCompany && { gradingCompany: filters.gradingCompany }),
     ...(filters.minPrice !== undefined || filters.maxPrice !== undefined
       ? {
           price: {
