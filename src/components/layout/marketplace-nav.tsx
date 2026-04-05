@@ -128,17 +128,28 @@ export function MarketplaceNav() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-surface-border bg-surface/95 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04),0_2px_16px_-8px_rgba(0,0,0,0.08)]">
       {/* Top row: logo + site link + auth */}
-      <div className="border-b border-surface-border">
-        <nav className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
+      <div className="relative overflow-hidden border-b border-surface-border bg-gradient-to-r from-white via-emerald-50/40 to-white">
+        {/* Subtle decorative glow */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-20 -left-20 h-48 w-48 rounded-full blur-3xl opacity-20"
+          style={{ background: "radial-gradient(circle, #10b981, transparent)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-20 right-20 h-48 w-48 rounded-full blur-3xl opacity-15"
+          style={{ background: "radial-gradient(circle, #ff0000, transparent)" }}
+        />
+        <nav className="relative mx-auto flex max-w-7xl items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
           <Link
             href="/marketplace"
-            className="group relative flex shrink-0 items-center transition-transform hover:scale-105"
+            className="group relative flex shrink-0 items-center transition-transform hover:scale-[1.02]"
           >
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 -z-10 blur-xl opacity-30"
+              className="pointer-events-none absolute inset-0 -z-10 blur-xl opacity-30 group-hover:opacity-50 transition-opacity"
               style={{
                 background:
                   "radial-gradient(ellipse 80% 80% at 50% 50%, #ff0000, transparent)",
@@ -153,23 +164,34 @@ export function MarketplaceNav() {
               alt="Card Nimbus"
               className="h-24 w-auto object-contain drop-shadow-md sm:h-32 lg:h-40"
             />
-            <span className="ml-3 rounded-lg bg-emerald-500 px-2.5 py-1 text-xs font-black uppercase tracking-wider text-white">
-              Marketplace
-            </span>
+            <div className="ml-3 flex flex-col items-start">
+              <span className="rounded-md bg-gradient-to-r from-emerald-500 to-emerald-600 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-white shadow-[0_2px_8px_-2px_rgba(16,185,129,0.5)] ring-1 ring-inset ring-white/20">
+                Marketplace
+              </span>
+              <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.15em] text-text-muted">
+                P2P · Buy · Sell
+              </span>
+            </div>
           </Link>
 
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2.5">
             <Link
               href="/"
-              className="hidden sm:flex items-center gap-1.5 rounded-lg border border-surface-border bg-white px-3 py-1.5 text-xs font-semibold text-text-secondary transition-colors hover:border-nimbus-400 hover:text-nimbus-600"
+              className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-xl border border-surface-border bg-white/80 backdrop-blur px-3.5 text-xs font-semibold text-text-secondary transition-all duration-150 hover:border-nimbus-400 hover:bg-white hover:text-nimbus-600 hover:-translate-y-px"
             >
-              ← Back to store
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to store
             </Link>
             <Link
               href="/sell"
-              className="inline-flex h-9 items-center rounded-xl px-4 text-sm font-semibold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(16,185,129,0.35)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl px-4 text-sm font-bold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(16,185,129,0.4)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
             >
-              Sell on Marketplace
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              Sell
             </Link>
             <MarketplaceAuth />
           </div>
@@ -177,16 +199,16 @@ export function MarketplaceNav() {
       </div>
 
       {/* Category tabs row */}
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <ul className="flex items-center gap-1 overflow-x-auto py-2 scrollbar-hide">
+      <nav className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <ul className="flex items-center gap-0.5 overflow-x-auto py-2.5 scrollbar-hide">
           {MARKETPLACE_LINKS.map(({ label, href }) => (
             <li key={href}>
               <Link
                 href={href}
-                className={`whitespace-nowrap rounded-lg px-3.5 py-1.5 text-sm font-semibold transition-colors ${
+                className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-bold transition-all duration-150 ${
                   isActive(href)
-                    ? "bg-emerald-500 text-white"
-                    : "text-text-secondary hover:bg-surface-overlay hover:text-text-primary"
+                    ? "bg-gradient-to-b from-emerald-500 to-emerald-600 text-white shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_2px_8px_-2px_rgba(16,185,129,0.4)] ring-1 ring-inset ring-white/10"
+                    : "text-text-secondary hover:bg-emerald-50 hover:text-emerald-700"
                 }`}
               >
                 {label}

@@ -94,7 +94,7 @@ export function SearchBar() {
         <div className="relative flex items-center">
           {/* Search icon */}
           <svg
-            className="pointer-events-none absolute left-3 h-4 w-4 text-text-muted"
+            className="pointer-events-none absolute left-3.5 h-5 w-5 text-text-muted"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -114,11 +114,11 @@ export function SearchBar() {
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setIsFocused(true)}
             placeholder="Search cards, sets, packs…"
-            className="w-full rounded-xl border border-surface-border bg-surface-overlay py-2 pl-9 pr-4 text-sm text-text-primary placeholder-text-muted outline-none transition-colors focus:border-nimbus-500 focus:ring-1 focus:ring-nimbus-500/40"
+            className="w-full h-11 rounded-xl border-2 border-surface-border bg-white pl-11 pr-4 text-sm font-semibold text-text-primary placeholder-text-muted placeholder:font-medium outline-none transition-all focus:border-nimbus-500 focus:ring-4 focus:ring-nimbus-500/10 focus:shadow-[0_4px_12px_-2px_rgba(255,0,0,0.15)]"
           />
           {isLoading && (
             <svg
-              className="absolute right-3 h-4 w-4 animate-spin text-nimbus-500"
+              className="absolute right-4 h-5 w-5 animate-spin text-nimbus-500"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -137,7 +137,7 @@ export function SearchBar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.15 }}
-            className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-surface-border bg-surface-raised shadow-2xl shadow-black/40"
+            className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border-2 border-nimbus-500/20 bg-white shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)]"
           >
             <ul>
               {results.map((result, i) => (
@@ -145,23 +145,23 @@ export function SearchBar() {
                   <button
                     type="button"
                     onClick={() => handleResultClick(result.slug)}
-                    className={`flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-surface-overlay ${
+                    className={`flex w-full items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-nimbus-50 ${
                       i < results.length - 1 ? 'border-b border-surface-border' : ''
                     }`}
                   >
-                    {/* Image */}
-                    <div className="h-10 w-8 shrink-0 overflow-hidden rounded-md bg-surface-overlay">
+                    {/* Image — bigger */}
+                    <div className="h-20 w-16 shrink-0 overflow-hidden rounded-lg border border-surface-border bg-surface-overlay">
                       {result.images?.[0] ? (
                         <Image
                           src={result.images[0]}
                           alt={result.name}
-                          width={32}
-                          height={40}
+                          width={64}
+                          height={80}
                           className="h-full w-full object-cover"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
-                          <svg className="h-4 w-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg className="h-6 w-6 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
                         </div>
@@ -169,13 +169,13 @@ export function SearchBar() {
                     </div>
                     {/* Text */}
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-text-primary">{result.name}</p>
+                      <p className="text-sm font-bold text-text-primary line-clamp-2 leading-snug">{result.name}</p>
                       {result.subtitle && (
-                        <p className="truncate text-xs text-text-muted">{result.subtitle}</p>
+                        <p className="mt-1 truncate text-xs text-text-muted uppercase tracking-wider font-semibold">{result.subtitle}</p>
                       )}
                     </div>
                     {/* Price */}
-                    <span className="shrink-0 text-sm font-semibold text-nimbus-500">
+                    <span className="shrink-0 text-lg font-black text-nimbus-600">
                       ${result.price.toFixed(2)}
                     </span>
                   </button>
@@ -187,7 +187,7 @@ export function SearchBar() {
               <button
                 type="button"
                 onClick={handleSubmit as unknown as React.MouseEventHandler}
-                className="flex w-full items-center justify-center gap-1.5 border-t border-surface-border px-3 py-2.5 text-xs font-medium text-nimbus-500 transition-colors hover:bg-surface-overlay"
+                className="flex w-full items-center justify-center gap-1.5 border-t-2 border-surface-border bg-nimbus-50 px-4 py-3 text-sm font-bold text-nimbus-600 transition-colors hover:bg-nimbus-100"
               >
                 View all results for &ldquo;{query}&rdquo;
                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
