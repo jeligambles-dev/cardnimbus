@@ -112,6 +112,7 @@ export async function getOpenQueue(page: number = 1, limit: number = 20) {
           in: [
             SupportConversationStatus.OPEN,
             SupportConversationStatus.WAITING_ON_AGENT,
+            SupportConversationStatus.WAITING_ON_CUSTOMER,
           ],
         },
       },
@@ -121,7 +122,7 @@ export async function getOpenQueue(page: number = 1, limit: number = 20) {
           take: 1,
         },
       },
-      orderBy: [{ startedAt: "asc" }],
+      orderBy: [{ lastMessageAt: "desc" }, { startedAt: "asc" }],
       skip,
       take: limit,
     }),
@@ -131,14 +132,31 @@ export async function getOpenQueue(page: number = 1, limit: number = 20) {
           in: [
             SupportConversationStatus.OPEN,
             SupportConversationStatus.WAITING_ON_AGENT,
+            SupportConversationStatus.WAITING_ON_CUSTOMER,
           ],
         },
       },
     }),
   ]);
 
+  // Fetch user info for conversations that have a userId
+  const userIds = conversations.map((c) => c.userId).filter((id): id is string => !!id);
+  const users =
+    userIds.length > 0
+      ? await db.user.findMany({
+          where: { id: { in: userIds } },
+          select: { id: true, name: true, email: true, avatar: true },
+        })
+      : [];
+  const userMap = new Map(users.map((u) => [u.id, u]));
+
+  const enriched = conversations.map((conv) => ({
+    ...conv,
+    user: conv.userId ? userMap.get(conv.userId) ?? null : null,
+  }));
+
   // Sort by priority desc, then startedAt asc in-process (Prisma lacks multi-key with enum sort)
-  const sorted = [...conversations].sort((a, b) => {
+  const sorted = enriched.sort((a, b) => {
     const pa = priorityOrder[a.priority] ?? 99;
     const pb = priorityOrder[b.priority] ?? 99;
     if (pa !== pb) return pa - pb;
