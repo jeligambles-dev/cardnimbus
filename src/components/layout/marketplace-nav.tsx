@@ -107,7 +107,7 @@ export function MarketplaceNav() {
               alt="Card Nimbus"
               className="h-16 w-auto object-contain"
             />
-            <span className="ml-3 rounded-lg bg-nimbus-500 px-2.5 py-1 text-xs font-black uppercase tracking-wider text-white">
+            <span className="ml-3 rounded-lg bg-emerald-500 px-2.5 py-1 text-xs font-black uppercase tracking-wider text-white">
               Marketplace
             </span>
           </Link>
@@ -121,7 +121,7 @@ export function MarketplaceNav() {
             </Link>
             <Link
               href="/sell"
-              className="rounded-xl bg-nimbus-500 px-4 py-1.5 text-sm font-semibold text-white shadow-lg shadow-nimbus-500/25 hover:bg-nimbus-600"
+              className="rounded-xl bg-emerald-500 px-4 py-1.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 hover:bg-emerald-600"
             >
               Sell on Marketplace
             </Link>
@@ -139,7 +139,7 @@ export function MarketplaceNav() {
                 href={href}
                 className={`whitespace-nowrap rounded-lg px-3.5 py-1.5 text-sm font-semibold transition-colors ${
                   isActive(href)
-                    ? "bg-nimbus-500 text-white"
+                    ? "bg-emerald-500 text-white"
                     : "text-text-secondary hover:bg-surface-overlay hover:text-text-primary"
                 }`}
               >
