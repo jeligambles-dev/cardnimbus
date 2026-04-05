@@ -162,7 +162,7 @@ export function MarketplaceNav() {
               transition={{ duration: 0.4 }}
               src="/logo.png"
               alt="Card Nimbus"
-              className="h-24 w-auto object-contain drop-shadow-md sm:h-32 lg:h-40"
+              className="h-32 w-auto object-contain drop-shadow-md sm:h-40 lg:h-48"
             />
             <div className="ml-3 flex flex-col items-start">
               <span className="rounded-md bg-gradient-to-r from-emerald-500 to-emerald-600 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-white shadow-[0_2px_8px_-2px_rgba(16,185,129,0.5)] ring-1 ring-inset ring-white/20">

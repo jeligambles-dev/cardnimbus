@@ -175,7 +175,7 @@ export function Navbar() {
             transition={{ duration: 0.5, ease: 'easeOut' }}
             src="/logo.png"
             alt="Card Nimbus"
-            className="h-24 w-auto object-contain drop-shadow-md sm:h-32 lg:h-40"
+            className="h-32 w-auto object-contain drop-shadow-md sm:h-40 lg:h-48"
           />
         </Link>
 

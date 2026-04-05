@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Badge } from '@/components/ui/badge'
 import { formatCurrency } from '@/lib/utils'
 
 interface ProductCardProps {
@@ -42,15 +41,35 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       <Link href={`/shop/${product.slug}`} className="group block">
         <div
           className={[
-            'relative bg-surface-raised border rounded-2xl overflow-hidden',
-            'transition-all duration-300',
-            'border-surface-border',
-            'group-hover:border-nimbus-600/60 group-hover:shadow-xl group-hover:shadow-nimbus-500/10',
+            'relative bg-white rounded-2xl overflow-hidden',
+            'border-[3px] border-nimbus-500',
+            'shadow-[0_4px_0_0_rgba(255,0,0,0.15)]',
+            'transition-all duration-200',
+            'group-hover:shadow-[0_8px_20px_-4px_rgba(255,0,0,0.35)]',
             'group-hover:-translate-y-1',
+            'group-hover:border-nimbus-600',
+            'p-2.5 flex flex-col gap-2',
           ].join(' ')}
         >
-          {/* Image */}
-          <div className="relative aspect-[3/4] bg-surface-overlay overflow-hidden">
+          {/* HEADER — Name + Price */}
+          <div className="flex items-start justify-between gap-2 px-1 pt-0.5">
+            <h3 className="text-[13px] font-black text-text-primary leading-tight line-clamp-2 flex-1 min-h-[2rem]">
+              {product.name}
+            </h3>
+            <div className="flex flex-col items-end shrink-0">
+              <span className="text-nimbus-600 font-black text-lg leading-none">
+                {formatCurrency(product.price)}
+              </span>
+              {product.compareAtPrice && product.compareAtPrice > product.price && (
+                <span className="text-[10px] text-text-muted line-through font-semibold mt-0.5">
+                  {formatCurrency(product.compareAtPrice)}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* IMAGE FRAME */}
+          <div className="relative aspect-[4/5] bg-gradient-to-br from-nimbus-500 via-nimbus-500 to-nimbus-600 overflow-hidden rounded-lg border-[3px] border-nimbus-600 shadow-inner">
             {mainImage ? (
               <Image
                 src={mainImage}
@@ -61,67 +80,47 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-3xl font-bold text-nimbus-500/40 select-none tracking-tight">
+                <span className="text-4xl font-black text-white/60 drop-shadow-md">
                   CN
-                </span>
-              </div>
-            )}
-
-            {/* Sold Out overlay */}
-            {soldOut && (
-              <div className="absolute inset-0 bg-surface/70 flex items-center justify-center">
-                <span className="text-sm font-bold text-text-secondary uppercase tracking-widest">
-                  Sold Out
                 </span>
               </div>
             )}
 
             {/* Discount badge */}
             {discountPct && (
-              <div className="absolute top-2 left-2">
-                <Badge variant="nimbus" size="sm">
+              <div className="absolute top-1.5 left-1.5 z-10">
+                <span className="rounded-md bg-gradient-to-b from-amber-400 to-amber-500 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-sm ring-1 ring-inset ring-white/20">
                   -{discountPct}%
-                </Badge>
+                </span>
+              </div>
+            )}
+
+            {/* Sold Out overlay */}
+            {soldOut && (
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                <span className="text-sm font-black text-white uppercase tracking-widest">
+                  Sold Out
+                </span>
               </div>
             )}
           </div>
 
-          {/* Body */}
-          <div className="p-3 flex flex-col gap-2">
-            {/* Badges */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <Badge variant="default" size="sm">
+          {/* INFO STRIP */}
+          <div className="flex items-center justify-between gap-2 px-1 py-1 border-y border-nimbus-200">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="rounded bg-nimbus-100 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-nimbus-700 shrink-0">
                 {product.category.replace(/_/g, ' ')}
-              </Badge>
-              {product.condition && (
-                <Badge variant="success" size="sm">
-                  {product.condition}
-                </Badge>
-              )}
-            </div>
-
-            {/* Name */}
-            <p className="text-sm font-semibold text-text-primary leading-snug line-clamp-2">
-              {product.name}
-            </p>
-
-            {/* Price */}
-            <div className="flex items-baseline gap-2 mt-auto">
-              <span className="text-nimbus-600 font-bold text-base">
-                {formatCurrency(product.price)}
               </span>
-              {product.compareAtPrice && product.compareAtPrice > product.price && (
-                <span className="text-xs text-text-muted line-through">
-                  {formatCurrency(product.compareAtPrice)}
+              {product.condition && (
+                <span className="rounded bg-surface-overlay px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-text-secondary shrink-0">
+                  {product.condition}
                 </span>
               )}
             </div>
-
-            {/* Low stock warning */}
             {lowStock && (
-              <p className="text-xs text-amber-400 font-medium">
-                Only {product.stock} left
-              </p>
+              <span className="text-[10px] font-black uppercase tracking-wider text-amber-600">
+                {product.stock} left
+              </span>
             )}
           </div>
         </div>
