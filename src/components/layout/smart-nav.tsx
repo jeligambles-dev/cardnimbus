@@ -6,11 +6,18 @@ import { MarketplaceNav } from "@/components/layout/marketplace-nav";
 
 export function SmartNav() {
   const pathname = usePathname();
+  const MARKETPLACE_ACCOUNT_PATHS = [
+    "/account/likes",
+    "/account/following",
+    "/account/messages",
+  ];
+
   const isMarketplace =
     pathname.startsWith("/marketplace") ||
     pathname.startsWith("/seller") ||
     pathname === "/sell" ||
-    pathname.startsWith("/sell/");
+    pathname.startsWith("/sell/") ||
+    MARKETPLACE_ACCOUNT_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
 
   return isMarketplace ? <MarketplaceNav /> : <Navbar />;
 }

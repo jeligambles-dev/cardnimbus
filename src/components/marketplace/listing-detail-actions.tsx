@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { MakeOfferModal } from './make-offer-modal'
 import { BuyNowButton } from './buy-now-button'
+import { SaveListingButton } from './save-listing-button'
 
 interface ListingDetailActionsProps {
   listingId: string
@@ -71,6 +72,7 @@ export function ListingDetailActions({
             {messaging ? 'Starting chat...' : 'Message Seller'}
           </Button>
         </div>
+        <SaveListingButton listingId={listingId} />
       </div>
 
       <MakeOfferModal
