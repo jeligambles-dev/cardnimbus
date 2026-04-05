@@ -202,7 +202,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
           {/* Right: Listing Info + Seller Sidebar */}
           <div className="flex flex-col gap-6">
             {/* Listing Details */}
-            <div className="rounded-2xl border border-surface-border bg-surface-raised p-6">
+            <div className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">
               {/* Badges */}
               <div className="flex items-center gap-2 flex-wrap mb-4">
                 <Badge variant="default" size="md">
@@ -247,7 +247,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
             </div>
 
             {/* Seller Info */}
-            <div className="rounded-2xl border border-surface-border bg-surface-raised p-6">
+            <div className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">
               <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-4">
                 Seller
               </h2>

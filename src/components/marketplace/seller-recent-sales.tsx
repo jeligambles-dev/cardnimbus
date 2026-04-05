@@ -49,7 +49,7 @@ export function SellerRecentSales({ sellerProfileId }: SellerRecentSalesProps) {
 
   if (loading) {
     return (
-      <div className="rounded-2xl border border-surface-border bg-surface-raised p-6">
+      <div className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">
         <div className="h-4 w-32 bg-surface-overlay rounded animate-pulse" />
       </div>
     );
@@ -60,13 +60,13 @@ export function SellerRecentSales({ sellerProfileId }: SellerRecentSalesProps) {
   }
 
   return (
-    <div className="rounded-2xl border border-surface-border bg-surface-raised p-6">
+    <div className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">
       <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-4">
         Recent Sales
       </h2>
       <div className="space-y-4">
         {sales.map((sale) => (
-          <div key={sale.id} className="rounded-xl border border-surface-border bg-white p-4">
+          <div key={sale.id} className="rounded-xl border-2 border-nimbus-200 bg-nimbus-50/30 p-4">
             {/* Item */}
             <div className="flex items-start gap-3">
               <div className="h-14 w-14 rounded-md overflow-hidden bg-surface-overlay shrink-0">
