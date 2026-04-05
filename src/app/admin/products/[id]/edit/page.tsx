@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { MultiImageUpload } from '@/components/admin/multi-image-upload'
 
 const CATEGORY_OPTIONS = [
   { value: 'PACK', label: 'Pack' },
@@ -38,7 +39,7 @@ export default function EditProductPage() {
     stock: '',
     description: '',
     condition: '',
-    images: '',
+    images: [] as string[],
     isActive: 'true',
   })
 
@@ -55,7 +56,7 @@ export default function EditProductPage() {
           stock: String(product.stock ?? '0'),
           description: product.description ?? '',
           condition: product.condition ?? '',
-          images: (product.images ?? []).join('\n'),
+          images: product.images ?? [],
           isActive: product.isActive ? 'true' : 'false',
         })
       } catch (err) {
@@ -84,10 +85,7 @@ export default function EditProductPage() {
         stock: parseInt(form.stock || '0', 10),
         description: form.description.trim() || null,
         condition: form.condition || null,
-        images: form.images
-          .split('\n')
-          .map((u) => u.trim())
-          .filter(Boolean),
+        images: form.images,
         isActive: form.isActive === 'true',
       }
 
@@ -179,17 +177,11 @@ export default function EditProductPage() {
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-text-secondary">
-              Image URLs <span className="text-text-muted">(one per line)</span>
-            </label>
-            <textarea
-              className="w-full rounded-xl border border-surface-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder-text-muted outline-none transition-colors focus:border-nimbus-500 focus:ring-2 focus:ring-nimbus-500/20"
-              rows={3}
-              value={form.images}
-              onChange={(e) => handleChange('images', e.target.value)}
-            />
-          </div>
+          <MultiImageUpload
+            label="Product Images"
+            value={form.images}
+            onChange={(urls) => setForm((prev) => ({ ...prev, images: urls }))}
+          />
 
           <Select
             label="Status"

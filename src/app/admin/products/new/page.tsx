@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { MultiImageUpload } from '@/components/admin/multi-image-upload'
 
 const CATEGORY_OPTIONS = [
   { value: 'PACK', label: 'Pack' },
@@ -34,7 +35,7 @@ export default function NewProductPage() {
     stock: '',
     description: '',
     condition: '',
-    images: '',
+    images: [] as string[],
   })
 
   function handleChange(field: string, value: string) {
@@ -54,10 +55,7 @@ export default function NewProductPage() {
         stock: parseInt(form.stock || '0', 10),
         description: form.description.trim() || undefined,
         condition: form.condition || undefined,
-        images: form.images
-          .split('\n')
-          .map((u) => u.trim())
-          .filter(Boolean),
+        images: form.images,
       }
 
       const res = await fetch('/api/admin/products', {
@@ -144,18 +142,11 @@ export default function NewProductPage() {
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-text-secondary">
-              Image URLs <span className="text-text-muted">(one per line)</span>
-            </label>
-            <textarea
-              className="w-full rounded-xl border border-surface-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder-text-muted outline-none transition-colors focus:border-nimbus-500 focus:ring-2 focus:ring-nimbus-500/20"
-              rows={3}
-              value={form.images}
-              onChange={(e) => handleChange('images', e.target.value)}
-              placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
-            />
-          </div>
+          <MultiImageUpload
+            label="Product Images"
+            value={form.images}
+            onChange={(urls) => setForm((prev) => ({ ...prev, images: urls }))}
+          />
 
           {error && (
             <p className="rounded-lg border border-red-800 bg-red-950 px-3 py-2 text-sm text-red-400">

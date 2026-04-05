@@ -1,21 +1,69 @@
-import Link from 'next/link'
-import { db } from '@/lib/db'
-import { formatCurrency } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+"use client";
 
-export default async function AdminProductsPage() {
-  const products = await db.product.findMany({
-    orderBy: { createdAt: 'desc' },
-    take: 100,
-  })
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { formatCurrency } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  condition: string | null;
+  isActive: boolean;
+}
+
+export default function AdminProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/products?limit=200");
+      const data = await res.json();
+      setProducts(data.products ?? []);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const toggleActive = async (product: Product) => {
+    await fetch(`/api/admin/products/${product.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isActive: !product.isActive }),
+    });
+    await load();
+  };
+
+  const handleDelete = async (product: Product) => {
+    if (!confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
+    const res = await fetch(`/api/admin/products/${product.id}`, {
+      method: "DELETE",
+    });
+    const data = await res.json();
+    if (data.deactivated) {
+      alert(data.message);
+    }
+    await load();
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-text-primary">Products</h1>
-          <p className="mt-1 text-sm text-text-secondary">{products.length} total products</p>
+          <p className="mt-1 text-sm text-text-secondary">
+            {products.length} total products
+          </p>
         </div>
         <Link href="/admin/products/new">
           <Button size="sm">+ New Product</Button>
@@ -35,7 +83,13 @@ export default async function AdminProductsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-surface-border">
-            {products.length === 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-text-muted">
+                  Loading...
+                </td>
+              </tr>
+            ) : products.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-4 py-8 text-center text-text-muted">
                   No products yet.
@@ -43,7 +97,10 @@ export default async function AdminProductsPage() {
               </tr>
             ) : (
               products.map((product) => (
-                <tr key={product.id} className="transition-colors hover:bg-surface-overlay/50">
+                <tr
+                  key={product.id}
+                  className="transition-colors hover:bg-surface-overlay/50"
+                >
                   <td className="px-4 py-3">
                     <p className="font-medium text-text-primary">{product.name}</p>
                     {product.condition && (
@@ -51,32 +108,48 @@ export default async function AdminProductsPage() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-text-secondary">{product.category}</td>
-                  <td className="px-4 py-3 text-text-primary">{formatCurrency(product.price)}</td>
+                  <td className="px-4 py-3 text-text-primary">
+                    {formatCurrency(product.price)}
+                  </td>
                   <td className="px-4 py-3">
                     <span
                       className={
                         product.stock <= 0
-                          ? 'text-red-400'
+                          ? "text-red-600"
                           : product.stock <= 5
-                          ? 'text-amber-400'
-                          : 'text-text-primary'
+                          ? "text-amber-600"
+                          : "text-text-primary"
                       }
                     >
                       {product.stock}
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <Badge variant={product.isActive ? 'success' : 'default'}>
-                      {product.isActive ? 'Active' : 'Inactive'}
+                    <Badge variant={product.isActive ? "success" : "default"}>
+                      {product.isActive ? "Active" : "Hidden"}
                     </Badge>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Link
-                      href={`/admin/products/${product.id}/edit`}
-                      className="text-xs font-medium text-nimbus-600 hover:text-nimbus-700 transition-colors"
-                    >
-                      Edit
-                    </Link>
+                    <div className="flex items-center justify-end gap-3">
+                      <Link
+                        href={`/admin/products/${product.id}/edit`}
+                        className="text-xs font-medium text-nimbus-600 hover:text-nimbus-700"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => toggleActive(product)}
+                        className="text-xs font-medium text-text-secondary hover:text-text-primary"
+                      >
+                        {product.isActive ? "Hide" : "Show"}
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product)}
+                        className="text-xs font-medium text-red-600 hover:text-red-700"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -85,5 +158,5 @@ export default async function AdminProductsPage() {
         </table>
       </div>
     </div>
-  )
+  );
 }
