@@ -140,16 +140,30 @@ export function Navbar() {
 
         {/* Desktop nav links */}
         <ul className="hidden items-center gap-1 md:flex">
-          {NAV_LINKS.map(({ label, href }) => (
-            <li key={label}>
-              <Link
-                href={href}
-                className="rounded-lg px-3 py-1.5 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-overlay hover:text-text-primary"
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+          {NAV_LINKS.map(({ label, href }) => {
+            if (label === 'Sell Cards') {
+              return (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="ml-2 rounded-lg bg-nimbus-500 px-4 py-1.5 text-sm font-semibold text-white shadow-lg shadow-nimbus-500/25 transition-colors hover:bg-nimbus-600"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              )
+            }
+            return (
+              <li key={label}>
+                <Link
+                  href={href}
+                  className="rounded-lg px-3 py-1.5 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-overlay hover:text-text-primary"
+                >
+                  {label}
+                </Link>
+              </li>
+            )
+          })}
         </ul>
 
         {/* Right actions */}
