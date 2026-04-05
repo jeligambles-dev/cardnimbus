@@ -1382,3 +1382,21 @@ model HeroSlide {
   @@index([isActive, displayOrder])
   @@map("hero_slides")
 }
+
+// ──────────────────────────────────────
+// Homepage Category Tiles (admin-managed)
+// ──────────────────────────────────────
+
+model CategoryTile {
+  id           String   @id @default(cuid())
+  label        String
+  imageUrl     String
+  href         String
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+  @@map("category_tiles")
+}
