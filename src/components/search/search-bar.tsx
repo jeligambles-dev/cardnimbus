@@ -36,7 +36,7 @@ export function SearchBar() {
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const debouncedQuery = useDebounce(query, 150)
+  const debouncedQuery = useDebounce(query, 120)
 
   const fetchResults = useCallback(async (q: string) => {
     if (!q.trim()) {
@@ -45,7 +45,7 @@ export function SearchBar() {
     }
     setIsLoading(true)
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&limit=5`)
+      const res = await fetch(`/api/search/quick?q=${encodeURIComponent(q)}&limit=6`)
       if (res.ok) {
         const data: SearchResponse = await res.json()
         setResults(data.hits ?? [])
@@ -83,13 +83,13 @@ export function SearchBar() {
   const handleResultClick = (slug: string) => {
     setIsFocused(false)
     setQuery('')
-    router.push(`/products/${slug}`)
+    router.push(`/shop/${slug}`)
   }
 
   const showDropdown = isFocused && results.length > 0
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-md">
+    <div ref={containerRef} className="relative w-full">
       <form onSubmit={handleSubmit} role="search">
         <div className="relative flex items-center">
           {/* Search icon */}
