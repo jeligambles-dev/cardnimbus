@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { formatCurrency } from '@/lib/utils'
 import { OrderStatus } from '@prisma/client'
+import { LeaveReviewForm } from '@/components/marketplace/leave-review-form'
 
 interface OrderDetailPageProps {
   params: Promise<{ id: string }>
@@ -142,6 +143,43 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
               </table>
             </div>
           </Card>
+
+          {/* Review section — only for delivered orders with a seller */}
+          {order.status === 'DELIVERED' && (() => {
+            const sellerId = order.items.find((i) => i.sellerId)?.sellerId
+            if (!sellerId || order.buyerId !== session.user.id) return null
+            const existingReview = order.reviews?.find((r) => r.type === 'BUYER_TO_SELLER')
+            if (existingReview) {
+              return (
+                <Card className="p-6">
+                  <h2 className="text-lg font-bold text-text-primary mb-2">Your Review</h2>
+                  <div className="flex gap-0.5 mb-2">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <svg
+                        key={i}
+                        className={`h-5 w-5 ${i <= existingReview.rating ? 'text-amber-400' : 'text-surface-border'}`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.953a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.953c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.286-3.953a1 1 0 00-.364-1.118L2.062 9.38c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.287-3.953z" />
+                      </svg>
+                    ))}
+                  </div>
+                  {existingReview.comment && (
+                    <p className="text-sm text-text-secondary">{existingReview.comment}</p>
+                  )}
+                </Card>
+              )
+            }
+            return (
+              <LeaveReviewForm
+                orderId={order.id}
+                revieweeId={sellerId}
+                revieweeName="the seller"
+                reviewType="BUYER_TO_SELLER"
+              />
+            )
+          })()}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Shipping Address */}

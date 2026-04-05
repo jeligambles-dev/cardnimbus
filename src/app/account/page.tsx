@@ -113,6 +113,34 @@ export default async function AccountPage() {
             </Card>
           </Link>
 
+          <Link href="/account/likes">
+            <Card hover className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
+                  💖
+                </div>
+                <div>
+                  <p className="font-bold text-text-primary">Liked Items</p>
+                  <p className="text-text-secondary text-sm">Listings you&apos;ve saved from the marketplace</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/account/following">
+            <Card hover className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">
+                  👥
+                </div>
+                <div>
+                  <p className="font-bold text-text-primary">Following</p>
+                  <p className="text-text-secondary text-sm">Sellers you follow and their new listings</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
           <Link href="/account/submissions">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">

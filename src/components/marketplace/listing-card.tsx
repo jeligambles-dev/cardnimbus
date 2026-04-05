@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { Badge } from '@/components/ui/badge'
 import { BadgeIcon } from '@/components/badges/badge-icon'
 import { DealBadge } from '@/components/deals/deal-badge'
+import { LikeButton } from '@/components/marketplace/like-button'
 import { formatCurrency } from '@/lib/utils'
 import type { DealScoreBand } from '@/services/deal-score.service'
 import type { BadgeCategory } from '@prisma/client'
@@ -105,6 +106,11 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
                 />
               </div>
             )}
+
+            {/* Like button overlay */}
+            <div className="absolute top-2 right-2">
+              <LikeButton listingId={listing.id} size="sm" />
+            </div>
           </div>
 
           {/* Body */}

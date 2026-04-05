@@ -53,6 +53,8 @@ model User {
 
   // Phase 5 relations
   userBadges           UserBadge[]
+  follows              SellerFollow[] @relation("UserFollows")
+  listingLikes         ListingLike[]  @relation("UserLikes")
 
   @@map("users")
 }
@@ -716,13 +718,17 @@ model SellerProfile {
   ratingCount        Int       @default(0)
   bio                String?   @db.Text
   responseTime       Int?
+  location           String?
+  isVerified         Boolean   @default(false)
+  isFeatured         Boolean   @default(false)
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
-  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tier     CommissionTier? @relation(fields: [tierId], references: [id])
-  listings Listing[]
-  payouts  Payout[]
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tier      CommissionTier? @relation(fields: [tierId], references: [id])
+  listings  Listing[]
+  payouts   Payout[]
+  followers SellerFollow[]
 
   @@map("seller_profiles")
 }
@@ -753,6 +759,7 @@ model Listing {
   offers        Offer[]
   conversations Conversation[]
   orderItems    OrderItem[]
+  likes         ListingLike[]
 
   @@index([sellerId])
   @@index([saleStatus])
@@ -1399,4 +1406,38 @@ model CategoryTile {
 
   @@index([isActive, displayOrder])
   @@map("category_tiles")
+}
+
+// ──────────────────────────────────────
+// Social: Following + Likes
+// ──────────────────────────────────────
+
+model SellerFollow {
+  id              String   @id @default(cuid())
+  followerId      String
+  sellerProfileId String
+  createdAt       DateTime @default(now())
+
+  follower      User          @relation("UserFollows", fields: [followerId], references: [id], onDelete: Cascade)
+  sellerProfile SellerProfile @relation(fields: [sellerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, sellerProfileId])
+  @@index([followerId])
+  @@index([sellerProfileId])
+  @@map("seller_follows")
+}
+
+model ListingLike {
+  id        String   @id @default(cuid())
+  userId    String
+  listingId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation("UserLikes", fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, listingId])
+  @@index([userId])
+  @@index([listingId])
+  @@map("listing_likes")
 }

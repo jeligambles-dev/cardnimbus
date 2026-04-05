@@ -4,9 +4,12 @@ import type { Metadata } from 'next'
 import { getPublicSellerProfile } from '@/services/seller.service'
 import { getSellerListings } from '@/services/listing.service'
 import { getUserBadges } from '@/services/badge.service'
-import { ListingCard } from '@/components/marketplace/listing-card'
+import { getReviewsForUser } from '@/services/review.service'
+import { getFollowerCount } from '@/services/follow.service'
 import { Badge } from '@/components/ui/badge'
 import { BadgeGrid } from '@/components/badges/badge-grid'
+import { FollowButton } from '@/components/marketplace/follow-button'
+import { SellerTabs } from '@/components/marketplace/seller-tabs'
 
 interface SellerPageProps {
   params: Promise<{ username: string }>
@@ -63,14 +66,23 @@ export default async function SellerProfilePage({ params }: SellerPageProps) {
   const sellerUser = profile.user as { name: string | null; avatar: string | null; createdAt: Date }
   const activeListingsCount = (profile._count as { listings: number }).listings
 
-  // Fetch active listings and badges
-  const [{ items: listings }, userBadges] = await Promise.all([
-    getSellerListings(profile.id, 1, 20),
+  // Fetch active listings, badges, reviews, follower count
+  const [{ items: listings }, userBadges, reviewsData, followerCount] = await Promise.all([
+    getSellerListings(profile.id, 1, 50),
     getUserBadges(profile.userId),
+    getReviewsForUser(profile.userId, 1, 50),
+    getFollowerCount(profile.id),
   ])
   const activeListings = listings.filter(
     (l) => l.moderationStatus === 'APPROVED' && l.saleStatus === 'ACTIVE'
   )
+  const soldListings = listings.filter((l) => l.saleStatus === 'SOLD')
+
+  // Rating breakdown
+  const ratingBreakdown: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+  for (const review of reviewsData.reviews) {
+    ratingBreakdown[review.rating] = (ratingBreakdown[review.rating] ?? 0) + 1
+  }
 
   // Map to badge grid shape
   const badgeEntries = userBadges.map((ub) => ({
@@ -131,6 +143,9 @@ export default async function SellerProfilePage({ params }: SellerPageProps) {
                 <span>
                   <span className="font-semibold text-text-primary">{activeListingsCount}</span> active listings
                 </span>
+                <span>
+                  <span className="font-semibold text-text-primary">{followerCount}</span> follower{followerCount !== 1 ? 's' : ''}
+                </span>
                 <span>Member since <span className="font-medium text-text-primary">{memberSince}</span></span>
                 {profile.responseTime && (
                   <span>
@@ -150,6 +165,11 @@ export default async function SellerProfilePage({ params }: SellerPageProps) {
                 </p>
               )}
             </div>
+
+            {/* Follow button */}
+            <div className="shrink-0">
+              <FollowButton sellerProfileId={profile.id} initialCount={followerCount} />
+            </div>
           </div>
         </div>
 
@@ -161,29 +181,15 @@ export default async function SellerProfilePage({ params }: SellerPageProps) {
           </div>
         )}
 
-        {/* Active Listings */}
-        <div>
-          <h2 className="text-xl font-bold text-text-primary mb-6">
-            Active Listings
-            {activeListings.length > 0 && (
-              <span className="ml-2 text-sm font-normal text-text-muted">
-                ({activeListings.length})
-              </span>
-            )}
-          </h2>
-
-          {activeListings.length === 0 ? (
-            <div className="text-center py-20 rounded-2xl border border-surface-border bg-surface-raised">
-              <p className="text-text-muted">No active listings at the moment.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {activeListings.map((listing, i) => (
-                <ListingCard key={listing.id} listing={listing} index={i} />
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Tabs: Active / Sold / Reviews */}
+        <SellerTabs
+          activeListings={activeListings as never}
+          soldListings={soldListings as never}
+          reviews={reviewsData.reviews as never}
+          rating={profile.rating}
+          ratingCount={profile.ratingCount}
+          ratingBreakdown={ratingBreakdown}
+        />
       </div>
     </main>
   )

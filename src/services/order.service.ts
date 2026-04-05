@@ -115,6 +115,7 @@ export async function getOrderById(orderId: string) {
       buyer: {
         select: { id: true, name: true, email: true },
       },
+      reviews: true,
     },
   });
 
