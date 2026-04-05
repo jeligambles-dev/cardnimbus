@@ -84,6 +84,17 @@ export async function getReviewsForUser(
       where: { revieweeId: userId, isVisible: true },
       include: {
         reviewer: { select: { id: true, name: true, avatar: true } },
+        order: {
+          include: {
+            items: {
+              select: {
+                titleSnapshot: true,
+                imageSnapshot: true,
+                conditionSnapshot: true,
+              },
+            },
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
       skip,

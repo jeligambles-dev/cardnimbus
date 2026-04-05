@@ -27,6 +27,26 @@ interface Review {
   comment: string | null;
   createdAt: string | Date;
   reviewer: { id: string; name: string | null; avatar: string | null };
+  order?: {
+    items: Array<{
+      titleSnapshot: string;
+      imageSnapshot: string | null;
+      conditionSnapshot: string | null;
+    }>;
+  };
+}
+
+function formatRelativeDate(date: Date | string): string {
+  const d = new Date(date);
+  const now = new Date();
+  const diffMs = now.getTime() - d.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays} days ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  if (diffDays < 365) return `${Math.floor(diffDays / 30)}mo ago`;
+  return d.toLocaleDateString();
 }
 
 interface SellerTabsProps {
@@ -153,59 +173,97 @@ export function SellerTabs({
             </div>
           ) : (
             <div className="space-y-4">
-              {reviews.map((review) => (
-                <div
-                  key={review.id}
-                  className="rounded-xl border border-surface-border bg-white p-5"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="h-10 w-10 rounded-full overflow-hidden bg-surface-overlay shrink-0">
-                      {review.reviewer.avatar ? (
-                        <Image
-                          src={review.reviewer.avatar}
-                          alt={review.reviewer.name ?? ""}
-                          width={40}
-                          height={40}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="h-full w-full flex items-center justify-center font-bold text-text-secondary">
-                          {(review.reviewer.name ?? "?").charAt(0).toUpperCase()}
+              {reviews.map((review) => {
+                const purchasedItem = review.order?.items?.[0];
+                return (
+                  <div
+                    key={review.id}
+                    className="rounded-xl border border-surface-border bg-white p-5"
+                  >
+                    {/* Header: reviewer + date + stars */}
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="h-10 w-10 rounded-full overflow-hidden bg-surface-overlay shrink-0">
+                        {review.reviewer.avatar ? (
+                          <Image
+                            src={review.reviewer.avatar}
+                            alt={review.reviewer.name ?? ""}
+                            width={40}
+                            height={40}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div className="h-full w-full flex items-center justify-center font-bold text-text-secondary">
+                            {(review.reviewer.name ?? "?").charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="font-semibold text-text-primary truncate">
+                            {review.reviewer.name ?? "Anonymous"}
+                          </p>
+                          <p className="text-xs text-text-muted shrink-0">
+                            {formatRelativeDate(review.createdAt)}
+                          </p>
                         </div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <p className="font-semibold text-text-primary">
-                          {review.reviewer.name ?? "Anonymous"}
-                        </p>
-                        <p className="text-xs text-text-muted">
-                          {new Date(review.createdAt).toLocaleDateString()}
-                        </p>
+                        <div className="flex gap-0.5 mt-1">
+                          {[1, 2, 3, 4, 5].map((i) => (
+                            <svg
+                              key={i}
+                              className={`h-4 w-4 ${
+                                i <= review.rating ? "text-amber-400" : "text-surface-border"
+                              }`}
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.953a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.953c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.286-3.953a1 1 0 00-.364-1.118L2.062 9.38c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.287-3.953z" />
+                            </svg>
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex gap-0.5 mt-1 mb-2">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                          <svg
-                            key={i}
-                            className={`h-4 w-4 ${
-                              i <= review.rating ? "text-amber-400" : "text-surface-border"
-                            }`}
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.953a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.953c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.286-3.953a1 1 0 00-.364-1.118L2.062 9.38c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.287-3.953z" />
-                          </svg>
-                        ))}
-                      </div>
-                      {review.comment && (
-                        <p className="text-sm text-text-secondary leading-relaxed">
-                          {review.comment}
-                        </p>
-                      )}
                     </div>
+
+                    {/* Purchased item */}
+                    {purchasedItem && (
+                      <div className="flex items-center gap-3 p-3 rounded-lg bg-surface-raised border border-surface-border mb-3">
+                        <div className="h-12 w-12 rounded-md overflow-hidden bg-surface-overlay shrink-0">
+                          {purchasedItem.imageSnapshot ? (
+                            <Image
+                              src={purchasedItem.imageSnapshot}
+                              alt={purchasedItem.titleSnapshot}
+                              width={48}
+                              height={48}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="h-full w-full flex items-center justify-center text-nimbus-500/40 font-bold text-xs">
+                              CN
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-text-muted mb-0.5">Purchased</p>
+                          <p className="text-sm font-medium text-text-primary truncate">
+                            {purchasedItem.titleSnapshot}
+                          </p>
+                          {purchasedItem.conditionSnapshot && (
+                            <p className="text-xs text-text-muted">
+                              {purchasedItem.conditionSnapshot}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Comment */}
+                    {review.comment && (
+                      <p className="text-sm text-text-secondary leading-relaxed">
+                        {review.comment}
+                      </p>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

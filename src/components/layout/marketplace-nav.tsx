@@ -105,7 +105,7 @@ export function MarketplaceNav() {
               transition={{ duration: 0.4 }}
               src="/logo.png"
               alt="Card Nimbus"
-              className="h-16 w-auto object-contain"
+              className="h-24 w-auto object-contain drop-shadow-md sm:h-32 lg:h-40"
             />
             <span className="ml-3 rounded-lg bg-emerald-500 px-2.5 py-1 text-xs font-black uppercase tracking-wider text-white">
               Marketplace

@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { BadgeIcon } from '@/components/badges/badge-icon'
 import { DealBadge } from '@/components/deals/deal-badge'
 import { LikeButton } from '@/components/marketplace/like-button'
+import { BuyNowButton } from '@/components/marketplace/buy-now-button'
 import { formatCurrency } from '@/lib/utils'
 import type { DealScoreBand } from '@/services/deal-score.service'
 import type { BadgeCategory } from '@prisma/client'
@@ -159,6 +160,9 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
               </div>
               <StarRating rating={listing.seller.rating} />
             </div>
+
+            {/* Buy now */}
+            <BuyNowButton listingId={listing.id} size="sm" />
           </div>
         </div>
       </Link>

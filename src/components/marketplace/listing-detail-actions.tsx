@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { MakeOfferModal } from './make-offer-modal'
+import { BuyNowButton } from './buy-now-button'
 
 interface ListingDetailActionsProps {
   listingId: string
@@ -17,30 +19,58 @@ export function ListingDetailActions({
   listingTitle,
   listingPrice,
 }: ListingDetailActionsProps) {
+  const router = useRouter()
   const [offerOpen, setOfferOpen] = useState(false)
+  const [messaging, setMessaging] = useState(false)
+
+  const handleMessageSeller = async () => {
+    if (messaging) return
+    setMessaging(true)
+    try {
+      const res = await fetch('/api/conversations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ listingId }),
+      })
+      if (res.status === 401) {
+        router.push(`/login?callbackUrl=${encodeURIComponent(`/marketplace/${listingId}`)}`)
+        return
+      }
+      const data = await res.json()
+      if (!res.ok) {
+        alert(data.error ?? 'Failed to start conversation')
+        setMessaging(false)
+        return
+      }
+      router.push(`/account/messages/${data.id}`)
+    } catch {
+      setMessaging(false)
+    }
+  }
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row gap-3 mt-6">
-        <Button
-          variant="primary"
-          size="lg"
-          className="flex-1"
-          onClick={() => setOfferOpen(true)}
-        >
-          Make an Offer
-        </Button>
-        <Button
-          variant="secondary"
-          size="lg"
-          className="flex-1"
-          onClick={() => {
-            // Message seller — conversation creation would be wired here
-            window.location.href = `/messages/new?listingId=${listingId}`
-          }}
-        >
-          Message Seller
-        </Button>
+      <div className="mt-6 space-y-3">
+        <BuyNowButton listingId={listingId} size="md" />
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Button
+            variant="primary"
+            size="lg"
+            className="flex-1"
+            onClick={() => setOfferOpen(true)}
+          >
+            Make an Offer
+          </Button>
+          <Button
+            variant="secondary"
+            size="lg"
+            className="flex-1"
+            onClick={handleMessageSeller}
+            disabled={messaging}
+          >
+            {messaging ? 'Starting chat...' : 'Message Seller'}
+          </Button>
+        </div>
       </div>
 
       <MakeOfferModal
