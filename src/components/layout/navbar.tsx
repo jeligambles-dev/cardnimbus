@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useSession, signIn } from 'next-auth/react'
+import { useSession, signIn, signOut } from 'next-auth/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/stores/cart-store'
 import { SearchBar } from '@/components/search/search-bar'
@@ -73,26 +73,69 @@ function AuthButton() {
 
   if (session?.user) {
     return (
-      <Link
-        href="/account"
-        className="flex items-center gap-2 rounded-xl border border-surface-border bg-surface-overlay px-3 py-1.5 text-sm font-medium text-text-primary transition-colors hover:border-nimbus-500/50 hover:text-nimbus-500"
-      >
-        {session.user.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={session.user.image}
-            alt={session.user.name ?? 'Account'}
-            className="h-5 w-5 rounded-full object-cover"
-          />
-        ) : (
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white">
-            {(session.user.name ?? session.user.email ?? 'U').charAt(0).toUpperCase()}
+      <div className="group relative">
+        <Link
+          href="/account"
+          className="flex items-center gap-2 rounded-xl border border-surface-border bg-surface-overlay px-3 py-1.5 text-sm font-medium text-text-primary transition-colors group-hover:border-nimbus-500/50 group-hover:text-nimbus-500"
+        >
+          {session.user.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={session.user.image}
+              alt={session.user.name ?? 'Account'}
+              className="h-5 w-5 rounded-full object-cover"
+            />
+          ) : (
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white">
+              {(session.user.name ?? session.user.email ?? 'U').charAt(0).toUpperCase()}
+            </span>
+          )}
+          <span className="hidden max-w-[80px] truncate sm:block">
+            {session.user.name?.split(' ')[0] ?? 'Account'}
           </span>
-        )}
-        <span className="hidden max-w-[80px] truncate sm:block">
-          {session.user.name?.split(' ')[0] ?? 'Account'}
-        </span>
-      </Link>
+        </Link>
+
+        {/* Hover dropdown */}
+        <div className="invisible absolute right-0 top-full z-50 w-48 pt-2 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
+          <div className="rounded-xl border border-surface-border bg-white p-1.5 shadow-xl">
+            <div className="px-3 py-2 border-b border-surface-border mb-1">
+              <p className="text-sm font-semibold text-text-primary truncate">
+                {session.user.name ?? 'Account'}
+              </p>
+              <p className="text-xs text-text-muted truncate">
+                {session.user.email}
+              </p>
+            </div>
+            <Link
+              href="/account"
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary hover:bg-surface-overlay"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              My Account
+            </Link>
+            <Link
+              href="/account/orders"
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary hover:bg-surface-overlay"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Orders
+            </Link>
+            <button
+              onClick={() => signOut({ callbackUrl: '/' })}
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
     )
   }
 
