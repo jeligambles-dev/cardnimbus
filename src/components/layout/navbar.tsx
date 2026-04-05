@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/stores/cart-store'
@@ -150,10 +151,12 @@ function AuthButton() {
 }
 
 export function Navbar() {
+  const pathname = usePathname()
+  const isHome = pathname === '/'
   return (
     <header className="sticky top-0 z-40 w-full border-b border-surface-border bg-surface/95 backdrop-blur-md">
       {/* Nav row: logo + links + actions — RED */}
-      <nav className="relative border-b-2 border-nimbus-700 bg-gradient-to-b from-nimbus-500 via-nimbus-500 to-nimbus-600 mx-auto flex max-w-none items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
+      <nav className={`relative border-b-2 border-nimbus-700 bg-gradient-to-b from-nimbus-500 via-nimbus-500 to-nimbus-600 mx-auto flex max-w-none items-center gap-4 px-4 sm:px-6 lg:px-8 ${isHome ? 'py-2' : 'py-1'}`}>
         {/* Prominent logo */}
         <Link
           href="/"
@@ -175,7 +178,7 @@ export function Navbar() {
             transition={{ duration: 0.5, ease: 'easeOut' }}
             src="/logo.png"
             alt="Card Nimbus"
-            className="h-32 w-auto object-contain drop-shadow-md sm:h-40 lg:h-48"
+            className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-16 sm:h-20 lg:h-24'}`}
           />
         </Link>
 
@@ -227,7 +230,7 @@ export function Navbar() {
       </nav>
 
       {/* Search row — black layer */}
-      <div className="bg-slate-900 border-b border-slate-800 px-4 py-3 sm:px-6 lg:px-8">
+      <div className={`bg-slate-900 border-b border-slate-800 px-4 sm:px-6 lg:px-8 ${isHome ? 'py-3' : 'py-2'}`}>
         <div className="mx-auto max-w-3xl">
           <SearchBar />
         </div>

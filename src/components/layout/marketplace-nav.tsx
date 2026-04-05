@@ -121,6 +121,7 @@ function MarketplaceAuth() {
 
 export function MarketplaceNav() {
   const pathname = usePathname();
+  const isHome = pathname === "/marketplace";
 
   const isActive = (href: string) => {
     if (href === "/marketplace") return pathname === "/marketplace";
@@ -142,7 +143,7 @@ export function MarketplaceNav() {
           style={{ background: "radial-gradient(circle, #ffffff, transparent)" }}
         />
         </div>
-        <nav className="relative mx-auto flex max-w-7xl items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
+        <nav className={`relative mx-auto flex max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8 ${isHome ? 'py-2' : 'py-1'}`}>
           <Link
             href="/marketplace"
             className="group relative flex shrink-0 items-center transition-transform hover:scale-[1.02]"
@@ -162,16 +163,22 @@ export function MarketplaceNav() {
               transition={{ duration: 0.4 }}
               src="/logo.png"
               alt="Card Nimbus"
-              className="h-32 w-auto object-contain drop-shadow-md sm:h-40 lg:h-48"
+              className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-16 sm:h-20 lg:h-24'}`}
             />
-            <div className="ml-3 flex flex-col items-start">
-              <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]">
+            {isHome ? (
+              <div className="ml-3 flex flex-col items-start">
+                <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]">
+                  Marketplace
+                </span>
+                <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.15em] text-white/70">
+                  P2P · Buy · Sell
+                </span>
+              </div>
+            ) : (
+              <span className="ml-2 rounded-md bg-white px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.15em] text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]">
                 Marketplace
               </span>
-              <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.15em] text-white/70">
-                P2P · Buy · Sell
-              </span>
-            </div>
+            )}
           </Link>
 
           <div className="ml-auto flex items-center gap-2.5">
@@ -221,7 +228,7 @@ export function MarketplaceNav() {
       </nav>
 
       {/* Search row — black layer */}
-      <div className="bg-slate-900 border-b border-slate-800 px-4 py-3 sm:px-6 lg:px-8">
+      <div className={`bg-slate-900 border-b border-slate-800 px-4 sm:px-6 lg:px-8 ${isHome ? 'py-3' : 'py-2'}`}>
         <div className="mx-auto max-w-3xl">
           <SearchBar />
         </div>
