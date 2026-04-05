@@ -8,7 +8,6 @@ import { SearchBar } from "@/components/search/search-bar";
 
 const MARKETPLACE_LINKS = [
   { label: "Browse", href: "/marketplace" },
-  { label: "Deals", href: "/marketplace?sort=deals" },
   { label: "Newest", href: "/marketplace?sort=newest" },
   { label: "Packs", href: "/marketplace?category=PACK" },
   { label: "Boxes", href: "/marketplace?category=BOOSTER_BOX" },
