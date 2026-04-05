@@ -28,6 +28,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         });
 
         if (!user || !user.passwordHash) return null;
+        if (user.bannedAt) {
+          throw new Error("Account suspended");
+        }
 
         const isValid = await bcrypt.compare(
           credentials.password as string,
@@ -54,6 +57,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user }) {
+      // Block OAuth sign-ins for banned users
+      if (user.id) {
+        const dbUser = await db.user.findUnique({
+          where: { id: user.id },
+          select: { bannedAt: true },
+        });
+        if (dbUser?.bannedAt) return false;
+      } else if (user.email) {
+        const dbUser = await db.user.findUnique({
+          where: { email: user.email },
+          select: { bannedAt: true },
+        });
+        if (dbUser?.bannedAt) return false;
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         // First sign-in: fetch role from DB and embed in token

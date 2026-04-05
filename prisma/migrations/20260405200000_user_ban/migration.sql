@@ -1,0 +1,2 @@
+ALTER TABLE "users" ADD COLUMN "bannedAt" TIMESTAMP(3);
+ALTER TABLE "users" ADD COLUMN "banReason" TEXT;

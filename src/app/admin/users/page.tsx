@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { Badge } from '@/components/ui/badge'
 import { countryByCode } from '@/lib/countries'
 import { ResetPasswordButton } from '@/components/admin/reset-password-button'
+import { BanUserButton } from '@/components/admin/ban-user-button'
 import { Role } from '@prisma/client'
 
 export const metadata = {
@@ -23,7 +24,8 @@ function roleBadge(role: Role) {
 }
 
 export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
-  await requireAdmin()
+  const session = await requireAdmin()
+  const currentAdminId = session.user.id
   const params = await searchParams
   const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1)
   const limit = 50
@@ -57,6 +59,8 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
         role: true,
         country: true,
         createdAt: true,
+        bannedAt: true,
+        banReason: true,
         _count: { select: { orders: true } },
       },
       orderBy: { createdAt: 'desc' },
@@ -168,7 +172,19 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3">{roleBadge(u.role)}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        {roleBadge(u.role)}
+                        {u.bannedAt && (
+                          <span
+                            className="inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-red-100 text-red-700 border border-red-300"
+                            title={u.banReason ?? 'Banned'}
+                          >
+                            Banned
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-4 py-3 text-text-secondary">
                       {country ? country.name : <span className="text-text-muted">—</span>}
                     </td>
@@ -177,7 +193,16 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
                       {new Date(u.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
-                      <ResetPasswordButton userId={u.id} userEmail={u.email} />
+                      <div className="flex items-center gap-1">
+                        <ResetPasswordButton userId={u.id} userEmail={u.email} />
+                        <BanUserButton
+                          userId={u.id}
+                          userEmail={u.email}
+                          isBanned={!!u.bannedAt}
+                          isAdmin={u.role === 'ADMIN'}
+                          isSelf={u.id === currentAdminId}
+                        />
+                      </div>
                     </td>
                   </tr>
                 )

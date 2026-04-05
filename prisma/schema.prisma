@@ -17,6 +17,8 @@ model User {
   avatar            String?
   country           String?
   role              Role      @default(BUYER)
+  bannedAt          DateTime?
+  banReason         String?
   twoFactorSecret   String?
   verificationLevel String    @default("UNVERIFIED")
   createdAt         DateTime  @default(now())
