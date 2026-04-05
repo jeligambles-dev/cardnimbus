@@ -1,8 +1,11 @@
 import { Suspense } from 'react'
 import { ProductCategory, CardCondition } from '@prisma/client'
 import { getListings } from '@/services/listing.service'
+import { getTrendingListings } from '@/services/trending.service'
 import { ListingCard } from '@/components/marketplace/listing-card'
 import { ListingFilters } from '@/components/marketplace/listing-filters'
+import { TrendingSpotlight } from '@/components/marketplace/trending-spotlight'
+import { CategoryShowcase } from '@/components/marketplace/category-showcase'
 
 interface MarketplacePageProps {
   searchParams: Promise<{
@@ -42,11 +45,10 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
     ? (rawCondition as CardCondition)
     : undefined
 
-  const { items, total, totalPages } = await getListings(
-    { category, condition, minPrice, maxPrice },
-    page,
-    20
-  )
+  const [{ items, total, totalPages }, trending] = await Promise.all([
+    getListings({ category, condition, minPrice, maxPrice }, page, 20),
+    getTrendingListings(3),
+  ])
 
   // Client-side sort workaround for deal_score (service returns createdAt desc by default)
   let sorted = [...items]
@@ -60,6 +62,14 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
 
   return (
     <main className="min-h-screen bg-surface">
+      {/* Trending spotlight — only on base marketplace page (no filters) */}
+      {!category && !condition && !minPrice && !maxPrice && page === 1 && (
+        <>
+          <TrendingSpotlight listings={trending as never} />
+          <CategoryShowcase />
+        </>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Header */}
         <div className="mb-8">
