@@ -1,6 +1,6 @@
 import sharp from "sharp";
 import { randomBytes } from "crypto";
-import { writeFile, unlink } from "fs/promises";
+import { writeFile, unlink, mkdir } from "fs/promises";
 import path from "path";
 import { ValidationError } from "@/lib/errors";
 
@@ -98,6 +98,10 @@ export async function processAndSaveImage(
   const uploadsBase = path.join(process.cwd(), "public", "uploads");
   const fullDir = path.join(uploadsBase, "full");
   const thumbDir = path.join(uploadsBase, "thumbs");
+
+  // Ensure directories exist (critical for Railway volume mount on first boot)
+  await mkdir(fullDir, { recursive: true });
+  await mkdir(thumbDir, { recursive: true });
 
   // Process full-size image: strip EXIF, resize to max 1600x1600 (fit inside, no enlargement), quality 85
   const fullImage = sharp(buffer).rotate(); // auto-rotate from EXIF before stripping
