@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ImageUpload } from "@/components/admin/image-upload";
 
 interface CategoryTile {
   id: string;
@@ -53,6 +54,10 @@ export default function AdminCategoryTilesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.imageUrl) {
+      alert("Please upload an image");
+      return;
+    }
     setLoading(true);
     try {
       const url = editing
@@ -119,20 +124,12 @@ export default function AdminCategoryTilesPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Image URL</label>
-            <input
-              type="url"
-              required
-              value={form.imageUrl}
-              onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-              className="w-full rounded-lg border border-surface-border bg-white px-3 py-2 text-sm font-mono"
-              placeholder="https://example.com/packs.jpg"
-            />
-            <p className="mt-1 text-xs text-text-muted">
-              Square image recommended (1:1 ratio)
-            </p>
-          </div>
+          <ImageUpload
+            label="Image"
+            value={form.imageUrl}
+            onChange={(url) => setForm({ ...form, imageUrl: url })}
+            hint="Square image recommended (1:1 ratio)"
+          />
 
           <div>
             <label className="block text-sm font-medium mb-1">Link</label>

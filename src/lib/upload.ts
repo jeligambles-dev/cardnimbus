@@ -1,6 +1,6 @@
 import sharp from "sharp";
 import { randomBytes } from "crypto";
-import { writeFile } from "fs/promises";
+import { writeFile, unlink } from "fs/promises";
 import path from "path";
 import { ValidationError } from "@/lib/errors";
 
@@ -146,6 +146,30 @@ export async function processAndSaveImage(
     height: height ?? 0,
     size: fullBuffer.length,
   };
+}
+
+/**
+ * Delete an uploaded image and its thumbnail by URL.
+ * Only deletes files under /uploads/ — safe to call with any URL
+ * (external URLs and unknown paths are silently ignored).
+ */
+export async function deleteUploadedImage(imageUrl: string): Promise<void> {
+  if (!imageUrl || !imageUrl.startsWith("/uploads/")) return;
+
+  // Extract filename from URL like /uploads/full/abc123.jpg
+  const match = imageUrl.match(/\/uploads\/(full|thumbs)\/([^/]+)$/);
+  if (!match) return;
+
+  const filename = match[2];
+  const uploadsBase = path.join(process.cwd(), "public", "uploads");
+  const fullPath = path.join(uploadsBase, "full", filename);
+  const thumbPath = path.join(uploadsBase, "thumbs", filename);
+
+  // Delete both full and thumbnail; ignore missing-file errors
+  await Promise.all([
+    unlink(fullPath).catch(() => {}),
+    unlink(thumbPath).catch(() => {}),
+  ]);
 }
 
 export async function processMultipleImages(

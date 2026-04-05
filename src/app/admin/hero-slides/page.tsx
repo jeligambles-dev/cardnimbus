@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ImageUpload } from "@/components/admin/image-upload";
 
 interface HeroSlide {
   id: string;
@@ -59,6 +60,10 @@ export default function AdminHeroSlidesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.imageUrl) {
+      alert("Please upload an image");
+      return;
+    }
     setLoading(true);
     try {
       const url = editing
@@ -137,20 +142,12 @@ export default function AdminHeroSlidesPage() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Image URL</label>
-            <input
-              type="url"
-              required
-              value={form.imageUrl}
-              onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-              className="w-full rounded-lg border border-surface-border bg-white px-3 py-2 text-sm font-mono"
-              placeholder="https://example.com/banner.jpg"
-            />
-            <p className="mt-1 text-xs text-text-muted">
-              Recommended: 2100×900px landscape image
-            </p>
-          </div>
+          <ImageUpload
+            label="Image"
+            value={form.imageUrl}
+            onChange={(url) => setForm({ ...form, imageUrl: url })}
+            hint="Recommended: 2100×900px landscape image"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>

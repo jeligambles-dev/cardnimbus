@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { getTileById, updateTile, deleteTile } from "@/services/category-tile.service";
 import { logAudit } from "@/lib/audit";
+import { deleteUploadedImage } from "@/lib/upload";
 import { errorResponse, UnauthorizedError, NotFoundError } from "@/lib/errors";
 
 async function requireAdmin() {
@@ -34,6 +35,15 @@ export async function PUT(
     const session = await requireAdmin();
     const { id } = await params;
     const body = await request.json();
+
+    // If imageUrl is being replaced, delete the old image
+    if (body.imageUrl) {
+      const existing = await getTileById(id);
+      if (existing && existing.imageUrl !== body.imageUrl) {
+        await deleteUploadedImage(existing.imageUrl);
+      }
+    }
+
     const tile = await updateTile(id, body);
     await logAudit({
       actorType: "ADMIN",
@@ -56,6 +66,13 @@ export async function DELETE(
   try {
     const session = await requireAdmin();
     const { id } = await params;
+
+    // Delete associated image before deleting tile
+    const existing = await getTileById(id);
+    if (existing) {
+      await deleteUploadedImage(existing.imageUrl);
+    }
+
     await deleteTile(id);
     await logAudit({
       actorType: "ADMIN",
