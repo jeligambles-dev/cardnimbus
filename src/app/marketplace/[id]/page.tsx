@@ -7,6 +7,7 @@ import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { DealBadge } from '@/components/deals/deal-badge'
 import { ListingDetailActions } from '@/components/marketplace/listing-detail-actions'
+import { ListingSuggestions } from '@/components/marketplace/listing-suggestions'
 import type { DealScoreBand } from '@/services/deal-score.service'
 
 interface ListingPageProps {
@@ -316,6 +317,12 @@ export default async function ListingPage({ params }: ListingPageProps) {
           </div>
         </div>
       </div>
+
+      {/* Suggestions: You may also like, More from seller, Recently viewed */}
+      <ListingSuggestions
+        listingId={listing.id}
+        sellerName={sellerUser.name ?? 'this seller'}
+      />
     </main>
   )
 }
