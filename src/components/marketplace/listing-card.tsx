@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Badge } from '@/components/ui/badge'
 import { BadgeIcon } from '@/components/badges/badge-icon'
 import { DealBadge } from '@/components/deals/deal-badge'
 import { LikeButton } from '@/components/marketplace/like-button'
@@ -73,15 +72,30 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
       <Link href={`/marketplace/${listing.id}`} className="group block">
         <div
           className={[
-            'relative bg-surface-raised border rounded-2xl overflow-hidden',
-            'transition-all duration-300',
-            'border-surface-border',
-            'group-hover:border-nimbus-600/60 group-hover:shadow-xl group-hover:shadow-nimbus-500/10',
+            'relative bg-white rounded-2xl overflow-hidden',
+            'border-[3px] border-nimbus-500',
+            'shadow-[0_4px_0_0_rgba(255,0,0,0.15)]',
+            'transition-all duration-200',
+            'group-hover:shadow-[0_8px_20px_-4px_rgba(255,0,0,0.35)]',
             'group-hover:-translate-y-1',
+            'group-hover:border-nimbus-600',
+            'p-2.5 flex flex-col gap-2',
           ].join(' ')}
         >
-          {/* Image */}
-          <div className="relative aspect-[3/4] bg-surface-overlay overflow-hidden">
+          {/* HEADER — Title + Price (like Pokemon card name + HP) */}
+          <div className="flex items-start justify-between gap-2 px-1 pt-0.5">
+            <h3 className="text-[13px] font-black text-text-primary leading-tight line-clamp-2 flex-1 min-h-[2rem]">
+              {listing.title}
+            </h3>
+            <div className="flex items-baseline gap-0.5 shrink-0">
+              <span className="text-nimbus-600 font-black text-lg leading-none">
+                {formatCurrency(listing.price)}
+              </span>
+            </div>
+          </div>
+
+          {/* IMAGE FRAME — thick nimbus border like card art */}
+          <div className="relative aspect-[4/5] bg-gradient-to-br from-nimbus-500 via-nimbus-500 to-nimbus-600 overflow-hidden rounded-lg border-[3px] border-nimbus-600 shadow-inner">
             {mainImage ? (
               <Image
                 src={mainImage}
@@ -92,7 +106,7 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-3xl font-bold text-nimbus-500/40 select-none tracking-tight">
+                <span className="text-4xl font-black text-white/60 select-none tracking-tight drop-shadow-md">
                   CN
                 </span>
               </div>
@@ -100,7 +114,7 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
 
             {/* Deal badge */}
             {listing.dealScoreBand && listing.dealScore !== null && (
-              <div className="absolute top-2 left-2">
+              <div className="absolute top-1.5 left-1.5 z-10">
                 <DealBadge
                   dealScoreBand={listing.dealScoreBand as DealScoreBand}
                   dealScore={listing.dealScore}
@@ -108,62 +122,49 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
               </div>
             )}
 
-            {/* Like button overlay */}
-            <div className="absolute top-2 right-2">
+            {/* Like button */}
+            <div className="absolute top-1.5 right-1.5 z-10">
               <LikeButton listingId={listing.id} size="sm" />
             </div>
           </div>
 
-          {/* Body */}
-          <div className="p-3 flex flex-col gap-2">
-            {/* Badges */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <Badge variant="default" size="sm">
+          {/* INFO STRIP — category + condition + seller (like card type/stats) */}
+          <div className="flex items-center justify-between gap-2 px-1 py-1 border-y border-nimbus-200">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="rounded bg-nimbus-100 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-nimbus-700 shrink-0">
                 {listing.category.replace(/_/g, ' ')}
-              </Badge>
+              </span>
               {listing.condition && (
-                <Badge variant="success" size="sm">
+                <span className="rounded bg-surface-overlay px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-text-secondary shrink-0">
                   {listing.condition}
-                </Badge>
+                </span>
               )}
             </div>
-
-            {/* Title */}
-            <p className="text-sm font-semibold text-text-primary leading-snug line-clamp-2">
-              {listing.title}
-            </p>
-
-            {/* Price */}
-            <div className="flex items-baseline gap-2 mt-auto">
-              <span className="text-nimbus-600 font-bold text-base">
-                {formatCurrency(listing.price)}
-              </span>
-            </div>
-
-            {/* Seller */}
-            <div className="flex items-center justify-between pt-1 border-t border-surface-border">
-              <div className="flex items-center gap-1 min-w-0">
-                <span className="text-xs text-text-muted truncate max-w-[80px]">{sellerName}</span>
-                {sellerBadges && sellerBadges.length > 0 && (
-                  <div className="flex items-center gap-0.5 shrink-0">
-                    {sellerBadges.slice(0, 2).map((b) => (
-                      <BadgeIcon
-                        key={b.name}
-                        name={b.name}
-                        icon={b.icon}
-                        category={b.category}
-                        size="small"
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-              <StarRating rating={listing.seller.rating} />
-            </div>
-
-            {/* Buy now */}
-            <BuyNowButton listingId={listing.id} size="sm" />
+            <StarRating rating={listing.seller.rating} />
           </div>
+
+          {/* SELLER STRIP */}
+          <div className="flex items-center justify-between gap-2 px-1">
+            <span className="text-[11px] text-text-secondary truncate font-semibold">
+              {sellerName}
+            </span>
+            {sellerBadges && sellerBadges.length > 0 && (
+              <div className="flex items-center gap-0.5 shrink-0">
+                {sellerBadges.slice(0, 2).map((b) => (
+                  <BadgeIcon
+                    key={b.name}
+                    name={b.name}
+                    icon={b.icon}
+                    category={b.category}
+                    size="small"
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Buy now button at the bottom */}
+          <BuyNowButton listingId={listing.id} size="sm" />
         </div>
       </Link>
     </motion.div>

@@ -41,17 +41,17 @@ export function TrendingSpotlight({ listings }: TrendingSpotlightProps) {
   if (listings.length === 0) return null;
 
   return (
-    <section className="bg-gradient-to-b from-emerald-50 via-white to-transparent border-b border-surface-border">
+    <section className="bg-gradient-to-b from-nimbus-50 via-white to-transparent border-b border-surface-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 border border-emerald-200 px-3 py-1 mb-2">
+            <div className="inline-flex items-center gap-2 rounded-full bg-nimbus-100 border border-nimbus-300 px-3 py-1 mb-2">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-nimbus-500 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-nimbus-500" />
               </span>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-nimbus-700">
                 Trending Now
               </span>
             </div>
@@ -72,7 +72,7 @@ export function TrendingSpotlight({ listings }: TrendingSpotlightProps) {
               <Link
                 key={listing.id}
                 href={`/marketplace/${listing.id}`}
-                className={`group relative block overflow-hidden rounded-2xl border-2 border-surface-border bg-white transition-all duration-300 hover:border-emerald-400 hover:shadow-2xl hover:${style.shadow} hover:-translate-y-1`}
+                className="group relative block overflow-hidden rounded-2xl border-2 border-nimbus-500 bg-white shadow-[0_4px_0_0_rgba(255,0,0,0.15)] transition-all duration-200 hover:border-nimbus-600 hover:shadow-[0_12px_28px_-4px_rgba(255,0,0,0.4)] hover:-translate-y-1"
               >
                 {/* Rank badge */}
                 <div
@@ -81,8 +81,8 @@ export function TrendingSpotlight({ listings }: TrendingSpotlightProps) {
                   {i + 1}
                 </div>
 
-                {/* Image */}
-                <div className="relative aspect-[4/3] bg-surface-overlay overflow-hidden">
+                {/* Red Image section */}
+                <div className="relative aspect-[4/3] bg-gradient-to-br from-nimbus-500 via-nimbus-500 to-nimbus-600 overflow-hidden border-b-2 border-nimbus-600">
                   {listing.images[0] ? (
                     <Image
                       src={listing.images[0]}
@@ -93,7 +93,7 @@ export function TrendingSpotlight({ listings }: TrendingSpotlightProps) {
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-4xl font-black text-emerald-500/30">CN</span>
+                      <span className="text-4xl font-black text-white/60 drop-shadow-md">CN</span>
                     </div>
                   )}
                   {/* Stats overlay */}
@@ -119,23 +119,26 @@ export function TrendingSpotlight({ listings }: TrendingSpotlightProps) {
                   </div>
                 </div>
 
-                {/* Info */}
+                {/* Info — white section */}
                 <div className="p-4">
-                  <h3 className="text-sm font-bold text-text-primary line-clamp-2 mb-2 min-h-[2.5rem]">
+                  <h3 className="text-sm font-bold text-text-primary line-clamp-2 mb-3 min-h-[2.5rem]">
                     {listing.title}
                   </h3>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-end justify-between">
                     <div>
-                      <p className="text-xs text-text-muted">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-text-muted">
                         by {listing.seller.user.name ?? "Seller"}
                       </p>
                       {listing.condition && (
-                        <p className="text-xs text-text-muted">{listing.condition}</p>
+                        <p className="text-xs text-text-secondary font-semibold">{listing.condition}</p>
                       )}
                     </div>
-                    <span className="font-black text-xl text-emerald-600">
-                      {formatCurrency(listing.price)}
-                    </span>
+                    <div className="flex flex-col items-end">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted">Price</span>
+                      <span className="font-black text-xl text-nimbus-600 leading-none">
+                        {formatCurrency(listing.price)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Link>

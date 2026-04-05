@@ -43,7 +43,7 @@ export function CategoryShowcase() {
           </div>
           <Link
             href="/marketplace?view=all"
-            className="group inline-flex h-10 shrink-0 items-center gap-1.5 rounded-xl border border-surface-border bg-white px-4 text-sm font-bold text-text-primary transition-all duration-150 hover:border-emerald-400 hover:text-emerald-600 hover:-translate-y-px active:translate-y-0"
+            className="group inline-flex h-10 shrink-0 items-center gap-1.5 rounded-xl border-2 border-nimbus-500 bg-white px-4 text-sm font-bold text-nimbus-600 shadow-[0_2px_0_0_rgba(255,0,0,0.15)] transition-all duration-150 hover:bg-nimbus-500 hover:text-white hover:-translate-y-px active:translate-y-0"
           >
             View Products
             <svg
