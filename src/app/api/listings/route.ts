@@ -91,6 +91,9 @@ export async function POST(request: NextRequest) {
         body.condition && body.condition in CardCondition
           ? (body.condition as CardCondition)
           : undefined,
+      shipsToCountries: Array.isArray(body.shipsToCountries)
+        ? body.shipsToCountries.filter((c: unknown) => typeof c === "string")
+        : undefined,
     };
 
     const listing = await createListing(sellerProfile.id, input);

@@ -12,6 +12,7 @@ import { SellerRecentSales } from '@/components/marketplace/seller-recent-sales'
 import { FollowButton } from '@/components/marketplace/follow-button'
 import { PriceTrend } from '@/components/marketplace/price-trend'
 import { ProductDetails } from '@/components/marketplace/product-details'
+import { ShippingInfo } from '@/components/marketplace/shipping-info'
 import type { DealScoreBand } from '@/services/deal-score.service'
 
 interface ListingPageProps {
@@ -79,7 +80,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
   }
 
   const seller = listing.seller
-  const sellerUser = seller.user as { name: string | null; avatar: string | null; createdAt: Date }
+  const sellerUser = seller.user as { name: string | null; avatar: string | null; createdAt: Date; country: string | null }
   const card = listing.card as {
     tcgPriceNM?: number | null
     tcgPriceLP?: number | null
@@ -285,6 +286,14 @@ export default async function ListingPage({ params }: ListingPageProps) {
         {/* Product Details — full width dark panel */}
         <div className="mb-10">
           <ProductDetails rows={detailRows} description={listing.description} />
+        </div>
+
+        {/* Shipping */}
+        <div className="mb-10">
+          <ShippingInfo
+            shipsToCountries={(listing as unknown as { shipsToCountries: string[] }).shipsToCountries ?? []}
+            sellerCountry={sellerUser.country}
+          />
         </div>
 
         {/* TCGPlayer price comparison */}

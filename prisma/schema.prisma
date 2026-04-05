@@ -15,6 +15,7 @@ model User {
   passwordHash      String?
   name              String?
   avatar            String?
+  country           String?
   role              Role      @default(BUYER)
   twoFactorSecret   String?
   verificationLevel String    @default("UNVERIFIED")
@@ -750,6 +751,7 @@ model Listing {
   moderationStatus            ListingModerationStatus  @default(DRAFT)
   saleStatus                  ListingSaleStatus        @default(INACTIVE)
   moderationNote              String?
+  shipsToCountries            String[]
   viewCount                   Int                      @default(0)
   createdAt                   DateTime                 @default(now())
   updatedAt                   DateTime                 @updatedAt

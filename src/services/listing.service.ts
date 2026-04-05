@@ -21,6 +21,7 @@ export interface CreateListingInput {
   price: number;
   condition?: CardCondition;
   category: ProductCategory;
+  shipsToCountries?: string[];
 }
 
 export interface UpdateListingInput {
@@ -83,6 +84,7 @@ export async function createListing(
       dealScoreBand,
       condition: input.condition,
       category: input.category,
+      shipsToCountries: input.shipsToCountries ?? [],
       moderationStatus: ListingModerationStatus.DRAFT,
       saleStatus: ListingSaleStatus.INACTIVE,
     },

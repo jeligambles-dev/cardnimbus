@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { toast } from '@/components/ui/toast'
 import { formatCurrency } from '@/lib/utils'
+import { CountrySelector } from '@/components/country-selector'
+import { CountrySelect } from '@/components/country-select'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -228,7 +230,22 @@ export default function CreateListingPage() {
   const [category, setCategory] = useState<Category | ''>('')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [shipsToCountries, setShipsToCountries] = useState<string[]>([])
+  const [userCountry, setUserCountry] = useState<string>('')
+  const [countryLoaded, setCountryLoaded] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+
+  // Load the user's current country from profile
+  useEffect(() => {
+    if (status !== 'authenticated') return
+    fetch('/api/account/profile')
+      .then((r) => r.json())
+      .then((data) => {
+        setUserCountry(data.country ?? '')
+        setCountryLoaded(true)
+      })
+      .catch(() => setCountryLoaded(true))
+  }, [status])
 
   // Derive suggested price from card + condition
   const suggestedPrice = (() => {
@@ -246,6 +263,8 @@ export default function CreateListingPage() {
     if (!title.trim()) return toast('Please enter a title.', 'error')
     if (!category) return toast('Please select a category.', 'error')
     if (!price || parseFloat(price) <= 0) return toast('Please enter a valid price.', 'error')
+    if (!userCountry) return toast('Please set your country in your account first.', 'error')
+    if (shipsToCountries.length === 0) return toast('Select at least one country you ship to.', 'error')
 
     setSubmitting(true)
     try {
@@ -260,6 +279,7 @@ export default function CreateListingPage() {
           price: parseFloat(price),
           condition: condition || undefined,
           category,
+          shipsToCountries,
         }),
       })
       if (!res.ok) {
@@ -380,6 +400,68 @@ export default function CreateListingPage() {
               <p className="text-xs text-text-muted">Add photos to attract buyers.</p>
             </div>
             <PhotoUpload images={images} onImagesChange={setImages} />
+          </div>
+
+          {/* Shipping */}
+          <div className="rounded-2xl border border-surface-border bg-surface-raised p-6 space-y-4">
+            <div>
+              <h2 className="text-base font-semibold text-text-primary mb-1">Shipping</h2>
+              <p className="text-xs text-text-muted">
+                Tell buyers where you can ship this item.
+              </p>
+            </div>
+
+            {/* Seller country */}
+            {countryLoaded && !userCountry && (
+              <div className="rounded-xl border-2 border-amber-400 bg-amber-50 p-4">
+                <p className="text-xs font-bold text-amber-900 uppercase tracking-wide mb-2">
+                  Set your country first
+                </p>
+                <p className="text-sm text-amber-900 mb-3">
+                  We need to know where you&apos;re shipping from before you can list items.
+                </p>
+                <CountrySelect
+                  label="Your country"
+                  value={userCountry}
+                  onChange={async (code) => {
+                    try {
+                      const res = await fetch('/api/account/profile', {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ country: code }),
+                      })
+                      if (res.ok) {
+                        setUserCountry(code)
+                        toast('Country saved.', 'success')
+                      }
+                    } catch {
+                      toast('Failed to save country.', 'error')
+                    }
+                  }}
+                  required
+                />
+              </div>
+            )}
+
+            {userCountry && (
+              <p className="text-xs text-text-muted">
+                Shipping from <span className="font-semibold text-text-primary">{userCountry}</span>.{' '}
+                <a href="/account" className="text-nimbus-600 hover:text-nimbus-700 underline">
+                  Change
+                </a>
+              </p>
+            )}
+
+            {/* Ships to countries */}
+            <div>
+              <label className="text-sm font-medium text-text-secondary block mb-2">
+                Ships to <span className="text-red-500">*</span>
+              </label>
+              <CountrySelector
+                selected={shipsToCountries}
+                onChange={setShipsToCountries}
+              />
+            </div>
           </div>
 
           {/* Commission + payout preview */}

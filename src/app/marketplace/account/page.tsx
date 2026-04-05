@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { requireAuth } from '@/lib/auth-guard'
 import { Card } from '@/components/ui/card'
 import { AvatarUpload } from '@/components/account/avatar-upload'
+import { CountryEditor } from '@/components/account/country-editor'
 import { db } from '@/lib/db'
 
 export const metadata = {
@@ -15,7 +16,7 @@ export default async function MarketplaceAccountPage() {
   const isSeller = role === 'SELLER' || role === 'ADMIN'
   const dbUser = await db.user.findUnique({
     where: { id: user.id },
-    select: { avatar: true, name: true, email: true },
+    select: { avatar: true, name: true, email: true, country: true },
   })
 
   return (
@@ -45,6 +46,9 @@ export default async function MarketplaceAccountPage() {
                 </span>
               )}
             </div>
+          </div>
+          <div className="mt-5 pt-5 border-t border-surface-border">
+            <CountryEditor initialCountry={dbUser?.country ?? null} />
           </div>
         </Card>
 
