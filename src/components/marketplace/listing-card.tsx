@@ -60,7 +60,7 @@ function StarRating({ rating }: { rating: number | null }) {
 }
 
 export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardProps) {
-  const mainImage = listing.images[0] ?? null
+  const mainImage = listing.images[0] ?? '/card-default.jpg'
   const sellerName = listing.seller.user.name ?? 'Seller'
 
   return (
@@ -94,23 +94,15 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
             </div>
           </div>
 
-          {/* IMAGE FRAME — thick nimbus border like card art */}
-          <div className="relative aspect-[4/5] bg-gradient-to-br from-nimbus-500 via-nimbus-500 to-nimbus-600 overflow-hidden rounded-lg border-[3px] border-nimbus-600 shadow-inner">
-            {mainImage ? (
-              <Image
-                src={mainImage}
-                alt={listing.title}
-                fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                className="object-cover transition-transform duration-300 group-hover:scale-110"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-4xl font-black text-white/60 select-none tracking-tight drop-shadow-md">
-                  CN
-                </span>
-              </div>
-            )}
+          {/* IMAGE FRAME — Pokemon card 5:7 aspect ratio (2.5" × 3.5") */}
+          <div className="relative aspect-[5/7] bg-gradient-to-br from-nimbus-500 via-nimbus-500 to-nimbus-600 overflow-hidden rounded-lg border-[3px] border-nimbus-600 shadow-inner">
+            <Image
+              src={mainImage}
+              alt={listing.title}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover transition-transform duration-300 group-hover:scale-110"
+            />
 
             {/* Deal badge */}
             {listing.dealScoreBand && listing.dealScore !== null && (
