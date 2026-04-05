@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { requireAuth } from '@/lib/auth-guard'
 import { Card } from '@/components/ui/card'
+import { AvatarUpload } from '@/components/account/avatar-upload'
+import { db } from '@/lib/db'
 
 export const metadata = {
   title: 'My Account — Card Nimbus',
@@ -10,6 +11,10 @@ export const metadata = {
 export default async function AccountPage() {
   const session = await requireAuth()
   const user = session.user
+  const dbUser = await db.user.findUnique({
+    where: { id: user.id },
+    select: { avatar: true, name: true, email: true },
+  })
 
   return (
     <main className="min-h-screen bg-surface">
@@ -23,19 +28,15 @@ export default async function AccountPage() {
 
         {/* Profile */}
         <Card className="p-6 mb-6">
-          <div className="flex items-center gap-5">
-            <div className="relative w-16 h-16 rounded-full overflow-hidden bg-surface-overlay border border-surface-border flex-shrink-0">
-              {user.image ? (
-                <Image src={user.image} alt={user.name ?? 'Avatar'} fill className="object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-nimbus-600">
-                  {(user.name ?? user.email).charAt(0).toUpperCase()}
-                </div>
-              )}
-            </div>
-            <div>
-              <p className="text-xl font-bold text-text-primary">{user.name ?? 'Anonymous'}</p>
-              <p className="text-text-secondary text-sm">{user.email}</p>
+          <div className="flex items-start justify-between gap-5 flex-wrap">
+            <AvatarUpload
+              currentAvatar={dbUser?.avatar ?? user.image ?? null}
+              userName={dbUser?.name ?? user.name ?? ''}
+              userEmail={dbUser?.email ?? user.email}
+            />
+            <div className="text-right">
+              <p className="text-xl font-bold text-text-primary">{dbUser?.name ?? user.name ?? 'Anonymous'}</p>
+              <p className="text-text-secondary text-sm">{dbUser?.email ?? user.email}</p>
               {(user as { role?: string }).role && (
                 <span className="mt-1 inline-flex items-center text-xs px-2 py-0.5 rounded-full bg-nimbus-50 text-nimbus-600 border border-nimbus-300">
                   {(user as { role?: string }).role}
