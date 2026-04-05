@@ -15,6 +15,7 @@ interface MarketplacePageProps {
     minPrice?: string
     maxPrice?: string
     page?: string
+    view?: string
   }>
 }
 
@@ -36,6 +37,17 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
   const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1)
   const minPrice = params.minPrice ? parseFloat(params.minPrice) : undefined
   const maxPrice = params.maxPrice ? parseFloat(params.maxPrice) : undefined
+  const view = params.view ?? ''
+
+  // Show listings only if any filter, view=all, or a non-default sort is set
+  const hasFiltering =
+    !!rawCategory ||
+    !!rawCondition ||
+    !!minPrice ||
+    !!maxPrice ||
+    view === 'all' ||
+    rawSort !== 'newest' ||
+    page > 1
 
   const category = VALID_CATEGORIES.includes(rawCategory)
     ? (rawCategory as ProductCategory)
@@ -62,14 +74,15 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
 
   return (
     <main className="min-h-screen bg-surface">
-      {/* Trending spotlight — only on base marketplace page (no filters) */}
-      {!category && !condition && !minPrice && !maxPrice && page === 1 && (
+      {/* Homepage: Trending + Categories, no listings grid */}
+      {!hasFiltering && (
         <>
           <TrendingSpotlight listings={trending as never} />
           <CategoryShowcase />
         </>
       )}
 
+      {hasFiltering && (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Header */}
         <div className="mb-8">
@@ -135,6 +148,7 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
           </div>
         )}
       </div>
+      )}
     </main>
   )
 }

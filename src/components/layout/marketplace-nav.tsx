@@ -7,8 +7,9 @@ import { motion } from "framer-motion";
 import { SearchBar } from "@/components/search/search-bar";
 
 const MARKETPLACE_LINKS = [
-  { label: "Browse", href: "/marketplace" },
-  { label: "Newest", href: "/marketplace?sort=newest" },
+  { label: "Home", href: "/marketplace" },
+  { label: "Browse", href: "/marketplace?view=all" },
+  { label: "Newest", href: "/marketplace?view=all&sortBy=newest" },
   { label: "Packs", href: "/marketplace?category=PACK" },
   { label: "Boxes", href: "/marketplace?category=BOOSTER_BOX" },
   { label: "Slabs", href: "/marketplace?category=SLAB" },

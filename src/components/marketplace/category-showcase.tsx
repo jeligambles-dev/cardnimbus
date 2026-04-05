@@ -1,40 +1,54 @@
 import Link from "next/link";
+import { db } from "@/lib/db";
 
-const CATEGORIES = [
-  {
-    name: "Packs",
-    href: "/marketplace?category=PACK",
-    image: "https://images.unsplash.com/photo-1627646811101-07c40bafcfb4?w=600&h=600&fit=crop",
-    gradient: "from-red-500 to-rose-600",
-  },
-  {
-    name: "Booster Boxes",
-    href: "/marketplace?category=BOOSTER_BOX",
-    image: "https://images.unsplash.com/photo-1613771404721-1f92d799e49f?w=600&h=600&fit=crop",
-    gradient: "from-amber-500 to-orange-600",
-  },
-  {
-    name: "Slabs",
-    href: "/marketplace?category=SLAB",
-    image: "https://images.unsplash.com/photo-1606503153255-59d8b8b82176?w=600&h=600&fit=crop",
-    gradient: "from-yellow-400 to-amber-500",
-  },
-  {
-    name: "Singles",
-    href: "/marketplace?category=SINGLE",
-    image: "https://images.unsplash.com/photo-1609604266590-ccfaa49b1d4f?w=600&h=600&fit=crop",
-    gradient: "from-blue-500 to-cyan-500",
-  },
+const CATEGORIES: Array<{
+  name: string;
+  key: "PACK" | "BOOSTER_BOX" | "SLAB" | "SINGLE";
+  gradient: string;
+}> = [
+  { name: "Packs", key: "PACK", gradient: "from-red-500 to-rose-600" },
+  { name: "Booster Boxes", key: "BOOSTER_BOX", gradient: "from-amber-500 to-orange-600" },
+  { name: "Slabs", key: "SLAB", gradient: "from-yellow-400 to-amber-500" },
+  { name: "Singles", key: "SINGLE", gradient: "from-blue-500 to-cyan-500" },
 ];
 
-export function CategoryShowcase() {
+async function getCategoryImages() {
+  // Get one product image per category from the store
+  const categoryImages: Record<string, string | null> = {
+    PACK: null,
+    BOOSTER_BOX: null,
+    SLAB: null,
+    SINGLE: null,
+  };
+
+  for (const key of Object.keys(categoryImages) as Array<keyof typeof categoryImages>) {
+    const product = await db.product.findFirst({
+      where: {
+        category: key as never,
+        isActive: true,
+        images: { isEmpty: false },
+      },
+      orderBy: { createdAt: "desc" },
+      select: { images: true },
+    });
+    if (product?.images[0]) {
+      categoryImages[key] = product.images[0];
+    }
+  }
+
+  return categoryImages;
+}
+
+export async function CategoryShowcase() {
+  const categoryImages = await getCategoryImages();
+
   return (
     <section className="bg-white border-b border-surface-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         {/* Header row */}
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 mb-1">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-nimbus-600 mb-1">
               Shop by category
             </p>
             <h2 className="text-2xl font-black tracking-tight text-text-primary sm:text-3xl">
@@ -60,28 +74,37 @@ export function CategoryShowcase() {
 
         {/* Category tiles */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {CATEGORIES.map((cat) => (
-            <Link
-              key={cat.name}
-              href={cat.href}
-              className="group relative block overflow-hidden rounded-2xl border-2 border-surface-border bg-white transition-all duration-300 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1"
-            >
-              <div className={`relative aspect-square bg-gradient-to-br ${cat.gradient} overflow-hidden`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="absolute inset-0 h-full w-full object-cover mix-blend-overlay opacity-60 transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-4">
-                  <h3 className="text-lg font-black tracking-tight text-white drop-shadow-lg">
-                    {cat.name}
-                  </h3>
+          {CATEGORIES.map((cat) => {
+            const img = categoryImages[cat.key];
+            return (
+              <Link
+                key={cat.name}
+                href={`/marketplace?view=all&category=${cat.key}`}
+                className="group relative block overflow-hidden rounded-2xl border-2 border-nimbus-500 bg-white shadow-[0_4px_0_0_rgba(255,0,0,0.15)] transition-all duration-200 hover:border-nimbus-600 hover:shadow-[0_8px_20px_-4px_rgba(255,0,0,0.35)] hover:-translate-y-1"
+              >
+                <div className={`relative aspect-square bg-gradient-to-br ${cat.gradient} overflow-hidden`}>
+                  {img ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={img}
+                      alt={cat.name}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-4xl font-black text-white/60 drop-shadow-md">CN</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-4">
+                    <h3 className="text-lg font-black tracking-tight text-white drop-shadow-lg">
+                      {cat.name}
+                    </h3>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
