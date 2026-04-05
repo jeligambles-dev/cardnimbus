@@ -114,14 +114,13 @@ export function Navbar() {
       {/* Top row: logo + nav links + actions */}
       <nav className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex shrink-0 items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-nimbus-400 to-nimbus-600 text-sm font-bold text-white shadow-lg shadow-nimbus-500/30">
-            CN
-          </div>
-          <span className="hidden text-sm font-bold sm:block">
-            Card{' '}
-            <span className="text-nimbus-500">Nimbus</span>
-          </span>
+        <Link href="/" className="flex shrink-0 items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt="Card Nimbus"
+            className="h-10 w-auto object-contain"
+          />
         </Link>
 
         {/* Desktop nav links */}
