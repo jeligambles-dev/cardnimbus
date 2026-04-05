@@ -37,7 +37,7 @@ function MarketplaceAuth() {
             {session.user.name?.split(" ")[0] ?? "Account"}
           </span>
         </Link>
-        <div className="invisible absolute right-0 top-full z-50 w-64 pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+        <div className="invisible absolute right-0 top-full z-[60] w-64 pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
           <div className="rounded-xl border border-surface-border bg-white p-1.5 shadow-xl">
             {/* Buyer section */}
             <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-muted">
@@ -130,8 +130,12 @@ export function MarketplaceNav() {
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04),0_2px_16px_-8px_rgba(0,0,0,0.08)]">
       {/* Top row: logo + site link + auth */}
-      <div className="relative overflow-hidden border-b border-surface-border bg-gradient-to-r from-white via-emerald-50/40 to-white">
-        {/* Subtle decorative glow */}
+      <div className="relative border-b border-surface-border bg-gradient-to-r from-white via-emerald-50/40 to-white">
+        {/* Subtle decorative glow — clipped to not overflow */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-full overflow-hidden"
+        >
         <div
           aria-hidden
           className="pointer-events-none absolute -top-20 -left-20 h-48 w-48 rounded-full blur-3xl opacity-20"
@@ -142,6 +146,7 @@ export function MarketplaceNav() {
           className="pointer-events-none absolute -top-20 right-20 h-48 w-48 rounded-full blur-3xl opacity-15"
           style={{ background: "radial-gradient(circle, #ff0000, transparent)" }}
         />
+        </div>
         <nav className="relative mx-auto flex max-w-7xl items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
           <Link
             href="/marketplace"

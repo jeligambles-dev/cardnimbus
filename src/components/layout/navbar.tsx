@@ -96,7 +96,7 @@ function AuthButton() {
         </Link>
 
         {/* Hover dropdown */}
-        <div className="invisible absolute right-0 top-full z-50 w-48 pt-2 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
+        <div className="invisible absolute right-0 top-full z-[60] w-48 pt-2 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
           <div className="rounded-xl border border-surface-border bg-white p-1.5 shadow-xl">
             <div className="px-3 py-2 border-b border-surface-border mb-1">
               <p className="text-sm font-semibold text-text-primary truncate">
