@@ -95,7 +95,7 @@ export async function processAndSaveImage(
   const ext = mimeToExt(mime);
   const filename = generateFilename(ext);
 
-  const uploadsBase = path.join(process.cwd(), "public", "uploads");
+  const uploadsBase = process.env.UPLOADS_DIR ?? path.join(process.cwd(), "uploads");
   const fullDir = path.join(uploadsBase, "full");
   const thumbDir = path.join(uploadsBase, "thumbs");
 
@@ -144,8 +144,8 @@ export async function processAndSaveImage(
 
   return {
     filename: savedFilename,
-    url: `/uploads/full/${savedFilename}`,
-    thumbnailUrl: `/uploads/thumbs/${savedFilename}`,
+    url: `/api/uploads/full/${savedFilename}`,
+    thumbnailUrl: `/api/uploads/thumbs/${savedFilename}`,
     width: width ?? 0,
     height: height ?? 0,
     size: fullBuffer.length,
@@ -158,14 +158,14 @@ export async function processAndSaveImage(
  * (external URLs and unknown paths are silently ignored).
  */
 export async function deleteUploadedImage(imageUrl: string): Promise<void> {
-  if (!imageUrl || !imageUrl.startsWith("/uploads/")) return;
+  if (!imageUrl) return;
 
-  // Extract filename from URL like /uploads/full/abc123.jpg
-  const match = imageUrl.match(/\/uploads\/(full|thumbs)\/([^/]+)$/);
+  // Match /api/uploads/full/abc.jpg or legacy /uploads/full/abc.jpg
+  const match = imageUrl.match(/\/(?:api\/)?uploads\/(full|thumbs)\/([^/?#]+)/);
   if (!match) return;
 
   const filename = match[2];
-  const uploadsBase = path.join(process.cwd(), "public", "uploads");
+  const uploadsBase = process.env.UPLOADS_DIR ?? path.join(process.cwd(), "uploads");
   const fullPath = path.join(uploadsBase, "full", filename);
   const thumbPath = path.join(uploadsBase, "thumbs", filename);
 
