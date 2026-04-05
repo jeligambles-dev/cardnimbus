@@ -49,10 +49,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 
-USER nextjs
-
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+ENV UPLOADS_DIR=/app/uploads
 
-CMD ["sh", "-c", "node_modules/.bin/prisma migrate deploy && node_modules/.bin/next start"]
+# Run as root so we can chown the volume mount on startup, then drop privileges
+CMD ["sh", "-c", "mkdir -p /app/uploads/full /app/uploads/thumbs && chown -R nextjs:nodejs /app/uploads && node_modules/.bin/prisma migrate deploy && su nextjs -s /bin/sh -c 'node_modules/.bin/next start'"]
