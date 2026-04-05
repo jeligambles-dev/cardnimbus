@@ -77,6 +77,32 @@ async function main() {
   }
   console.log(`  → updated ${listingCount} listings`);
 
+  console.log("Seeding slab grading…");
+
+  const GRADING_COMPANIES = ["PSA", "BGS", "CGC", "ACE", "TAG"];
+  // Grades weighted toward higher values (what most sellers list)
+  const GRADE_POOL = [10, 10, 10, 9.5, 9.5, 9, 9, 8.5, 8, 7.5, 7, 6];
+
+  const slabs = await db.listing.findMany({
+    where: {
+      category: "SLAB",
+      OR: [{ grade: null }, { gradingCompany: null }],
+    },
+    select: { id: true },
+  });
+
+  let slabCount = 0;
+  for (let i = 0; i < slabs.length; i++) {
+    const company = GRADING_COMPANIES[i % GRADING_COMPANIES.length];
+    const grade = GRADE_POOL[i % GRADE_POOL.length];
+    await db.listing.update({
+      where: { id: slabs[i].id },
+      data: { grade, gradingCompany: company },
+    });
+    slabCount++;
+  }
+  console.log(`  → updated ${slabCount} slab listings`);
+
   console.log("Done.");
 }
 
