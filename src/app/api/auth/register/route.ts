@@ -4,11 +4,12 @@ import { db } from '@/lib/db'
 import { createSignupCoupon } from '@/services/coupon.service'
 import { sendWelcomeEmail } from '@/lib/email'
 import { errorResponse, ValidationError } from '@/lib/errors'
+import { countryByCode } from '@/lib/countries'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, email, password } = body ?? {}
+    const { name, email, password, country } = body ?? {}
 
     // Validate inputs
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
@@ -22,6 +23,10 @@ export async function POST(request: NextRequest) {
     }
 
     const normalizedEmail = email.trim().toLowerCase()
+    const normalizedCountry =
+      country && typeof country === 'string' && countryByCode(country)
+        ? country
+        : null
 
     // Check for existing user
     const existing = await db.user.findUnique({ where: { email: normalizedEmail } })
@@ -38,19 +43,28 @@ export async function POST(request: NextRequest) {
         name: name.trim(),
         email: normalizedEmail,
         passwordHash,
+        country: normalizedCountry,
       },
     })
 
-    // Create signup coupon
-    const coupon = await createSignupCoupon(user.id)
+    // Create signup coupon (non-blocking — don't fail registration if this throws)
+    let couponCode: string | null = null
+    try {
+      const coupon = await createSignupCoupon(user.id)
+      couponCode = coupon.code
+    } catch (err) {
+      console.error('[register] createSignupCoupon failed:', err)
+    }
 
     // Send welcome email (fire-and-forget)
-    sendWelcomeEmail(user.email, { name: user.name ?? 'there', couponCode: coupon.code }).catch(
-      (err) => console.error('[register] sendWelcomeEmail failed:', err)
-    )
+    sendWelcomeEmail(user.email, {
+      name: user.name ?? 'there',
+      couponCode: couponCode ?? '',
+    }).catch((err) => console.error('[register] sendWelcomeEmail failed:', err))
 
     return Response.json({ success: true }, { status: 201 })
   } catch (error) {
+    console.error('[register] error:', error)
     return errorResponse(error)
   }
 }

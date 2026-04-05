@@ -3,6 +3,7 @@ import { requireAdmin } from '@/lib/auth-guard'
 import { db } from '@/lib/db'
 import { Badge } from '@/components/ui/badge'
 import { countryByCode } from '@/lib/countries'
+import { ResetPasswordButton } from '@/components/admin/reset-password-button'
 import { Role } from '@prisma/client'
 
 export const metadata = {
@@ -134,12 +135,13 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
                 <th className="text-left px-4 py-3 font-semibold">Country</th>
                 <th className="text-left px-4 py-3 font-semibold">Orders</th>
                 <th className="text-left px-4 py-3 font-semibold">Joined</th>
+                <th className="text-left px-4 py-3 font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-12 text-center text-text-muted">
+                  <td colSpan={6} className="px-4 py-12 text-center text-text-muted">
                     No users found.
                   </td>
                 </tr>
@@ -173,6 +175,9 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
                     <td className="px-4 py-3 text-text-secondary">{u._count.orders}</td>
                     <td className="px-4 py-3 text-text-secondary">
                       {new Date(u.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <ResetPasswordButton userId={u.id} userEmail={u.email} />
                     </td>
                   </tr>
                 )

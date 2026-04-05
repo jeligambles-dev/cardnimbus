@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { CountrySelect } from '@/components/country-select'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -12,7 +13,8 @@ export default function SignupPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; general?: string }>({})
+  const [country, setCountry] = useState('')
+  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; country?: string; general?: string }>({})
   const [loading, setLoading] = useState(false)
 
   function validate() {
@@ -20,6 +22,7 @@ export default function SignupPage() {
     if (!name.trim()) next.name = 'Name is required'
     if (!email.trim()) next.email = 'Email is required'
     if (password.length < 12) next.password = 'Password must be at least 12 characters'
+    if (!country) next.country = 'Country is required'
     return next
   }
 
@@ -37,7 +40,7 @@ export default function SignupPage() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, country }),
       })
 
       const data = await res.json()
@@ -108,6 +111,17 @@ export default function SignupPage() {
               autoComplete="new-password"
               minLength={12}
             />
+            <div>
+              <CountrySelect
+                label="Country"
+                value={country}
+                onChange={setCountry}
+                required
+              />
+              {errors.country && (
+                <p className="mt-1 text-xs text-red-500">{errors.country}</p>
+              )}
+            </div>
             <Button
               type="submit"
               variant="primary"

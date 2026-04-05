@@ -131,21 +131,29 @@ function ConversationPanel({
     }
   }, [messages]);
 
+  const [sendError, setSendError] = useState<string | null>(null);
+
   const sendReply = async () => {
     if (!reply.trim() || sending) return;
     setSending(true);
+    setSendError(null);
     try {
       const res = await fetch(`/api/support/${conversation.id}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: reply }),
+        body: JSON.stringify({ content: reply, messageType: "TEXT" }),
       });
       if (res.ok) {
         const msg = await res.json();
         setMessages((prev) => [...prev, msg]);
         setReply("");
         onAction();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setSendError(data.error ?? `Failed (${res.status})`);
       }
+    } catch (e) {
+      setSendError(e instanceof Error ? e.message : "Network error");
     } finally {
       setSending(false);
     }
@@ -244,6 +252,9 @@ function ConversationPanel({
 
       {/* Input */}
       <div className="border-t border-surface-border p-3 bg-white">
+        {sendError && (
+          <p className="mb-2 text-xs text-red-600 font-medium">Couldn&apos;t send: {sendError}</p>
+        )}
         <div className="flex gap-2">
           <Input
             value={reply}
