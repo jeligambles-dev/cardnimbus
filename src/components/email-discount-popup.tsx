@@ -207,7 +207,7 @@ export function EmailDiscountPopup() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={reopenPopup}
-            className="fixed bottom-6 left-6 z-40 flex items-center gap-2 rounded-full bg-nimbus-500 px-12 py-6 text-lg font-bold text-white shadow-xl shadow-nimbus-500/40 transition-colors hover:bg-nimbus-600"
+            className="fixed bottom-6 left-6 z-40 flex items-center gap-2 rounded-full px-12 py-6 text-lg font-bold text-white bg-gradient-to-b from-nimbus-500 to-nimbus-600 shadow-[0_1px_0_0_rgba(255,255,255,0.3)_inset,0_8px_24px_-4px_rgba(255,0,0,0.5)] ring-1 ring-inset ring-white/20 hover:from-nimbus-400 hover:to-nimbus-500 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
           >
             <span>Get 5% Off</span>
           </motion.button>

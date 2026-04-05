@@ -61,10 +61,10 @@ export function FollowButton({
     <button
       onClick={toggle}
       disabled={loading}
-      className={`rounded-xl px-5 py-2 text-sm font-bold transition-all disabled:opacity-60 ${
+      className={`h-10 px-5 rounded-xl text-sm font-bold transition-all duration-150 disabled:opacity-60 ${
         following
-          ? "border-2 border-surface-border bg-white text-text-primary hover:border-red-400 hover:text-red-600"
-          : "bg-nimbus-500 text-white shadow-lg shadow-nimbus-500/25 hover:bg-nimbus-600"
+          ? "border border-surface-border bg-white text-text-primary hover:border-red-400 hover:text-red-600 hover:-translate-y-px active:translate-y-0"
+          : "text-white bg-gradient-to-b from-nimbus-500 to-nimbus-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(255,0,0,0.35)] ring-1 ring-inset ring-white/10 hover:from-nimbus-400 hover:to-nimbus-500 hover:-translate-y-px active:translate-y-0"
       }`}
     >
       {following ? "Following" : "Follow"}

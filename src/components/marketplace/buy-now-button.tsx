@@ -47,13 +47,13 @@ export function BuyNowButton({ listingId, size = "sm" }: BuyNowButtonProps) {
     }
   };
 
-  const sizeClass = size === "sm" ? "py-1.5 text-xs" : "py-2.5 text-sm";
+  const sizeClass = size === "sm" ? "h-8 text-xs" : "h-11 text-sm";
 
   return (
     <button
       onClick={handleClick}
       disabled={loading}
-      className={`w-full rounded-lg bg-emerald-500 ${sizeClass} font-bold text-white shadow-md shadow-emerald-500/25 transition-colors hover:bg-emerald-600 disabled:opacity-60`}
+      className={`w-full ${sizeClass} rounded-xl font-bold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(16,185,129,0.35)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150 disabled:opacity-60 disabled:translate-y-0`}
     >
       {loading ? "Loading..." : "Buy Now"}
     </button>

@@ -111,7 +111,7 @@ function MarketplaceAuth() {
   return (
     <button
       onClick={() => signIn()}
-      className="rounded-xl bg-nimbus-500 px-4 py-1.5 text-sm font-semibold text-white shadow-lg shadow-nimbus-500/25 hover:bg-nimbus-600"
+      className="h-9 px-5 rounded-xl text-sm font-semibold text-white bg-gradient-to-b from-nimbus-500 to-nimbus-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(255,0,0,0.35)] ring-1 ring-inset ring-white/10 hover:from-nimbus-400 hover:to-nimbus-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
     >
       Sign In
     </button>
@@ -166,7 +166,7 @@ export function MarketplaceNav() {
             </Link>
             <Link
               href="/sell"
-              className="rounded-xl bg-emerald-500 px-4 py-1.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 hover:bg-emerald-600"
+              className="inline-flex h-9 items-center rounded-xl px-4 text-sm font-semibold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(16,185,129,0.35)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
             >
               Sell on Marketplace
             </Link>
