@@ -209,7 +209,6 @@ export function EmailDiscountPopup() {
             onClick={reopenPopup}
             className="fixed bottom-5 left-5 z-40 flex items-center gap-2 rounded-full bg-nimbus-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-nimbus-500/30 transition-colors hover:bg-nimbus-600"
           >
-            <span className="text-base">🎁</span>
             <span>Get 5% Off</span>
           </motion.button>
         )}

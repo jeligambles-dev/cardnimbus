@@ -111,18 +111,37 @@ function AuthButton() {
 export function Navbar() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-surface-border bg-surface/95 backdrop-blur-md">
-      {/* Top row: logo + nav links + actions */}
-      <nav className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link href="/" className="flex shrink-0 items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo.png"
-            alt="Card Nimbus"
-            className="h-10 w-auto object-contain"
-          />
-        </Link>
+      {/* Logo hero row — centered, prominent */}
+      <div className="relative overflow-hidden border-b border-surface-border bg-gradient-to-b from-nimbus-50 to-white">
+        {/* Decorative radial glow */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse 50% 80% at 50% 100%, color-mix(in srgb, #ff0000 12%, transparent), transparent)',
+          }}
+        />
+        <div className="relative mx-auto flex max-w-7xl items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
+          <Link
+            href="/"
+            className="group inline-flex items-center transition-transform duration-200 hover:scale-105"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <motion.img
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+              src="/logo.png"
+              alt="Card Nimbus"
+              className="h-20 w-auto object-contain drop-shadow-lg sm:h-24 lg:h-28"
+            />
+          </Link>
+        </div>
+      </div>
 
+      {/* Nav row: links + actions */}
+      <nav className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         {/* Desktop nav links */}
         <ul className="hidden items-center gap-1 md:flex">
           {NAV_LINKS.map(({ label, href }) => (
