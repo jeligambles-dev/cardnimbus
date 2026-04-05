@@ -194,6 +194,33 @@ export default async function ListingPage({ params }: ListingPageProps) {
               {card?.setName && (
                 <p className="text-sm text-text-muted">{card.setName}</p>
               )}
+
+              {/* Grading panel — slabs only */}
+              {isSlab && slabInfo.gradingCompany && slabInfo.grade != null && (
+                <div className="mt-3 flex items-center gap-3 rounded-xl border-2 border-nimbus-500 bg-gradient-to-r from-nimbus-50 via-white to-white p-3">
+                  <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-lg bg-nimbus-500 text-white">
+                    <span className="text-[10px] font-black uppercase tracking-wider leading-none">
+                      {slabInfo.gradingCompany}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-text-muted">
+                      Grade
+                    </p>
+                    <p className="text-3xl font-black leading-none text-nimbus-600">
+                      {slabInfo.grade.toFixed(1)}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-text-muted">
+                      Certified
+                    </p>
+                    <p className="text-sm font-bold text-text-primary">
+                      {slabInfo.gradingCompany} Graded
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">

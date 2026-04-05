@@ -96,6 +96,21 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
             </div>
           </div>
 
+          {/* GRADING PANEL — only for slabs */}
+          {listing.category === 'SLAB' && listing.gradingCompany && listing.grade != null && (
+            <div className="flex items-center gap-2 mx-1 rounded-lg border-2 border-nimbus-500 bg-gradient-to-r from-nimbus-50 to-white px-2 py-1.5">
+              <span className="flex h-6 items-center rounded bg-nimbus-500 px-1.5 text-[10px] font-black uppercase tracking-wider text-white">
+                {listing.gradingCompany}
+              </span>
+              <span className="flex h-6 items-center text-[15px] font-black leading-none text-nimbus-600">
+                {listing.grade.toFixed(1)}
+              </span>
+              <span className="ml-auto text-[9px] font-bold uppercase tracking-wider text-text-muted">
+                Grade
+              </span>
+            </div>
+          )}
+
           {/* IMAGE FRAME — Pokemon card 5:7 aspect ratio (2.5" × 3.5") */}
           <div className="relative aspect-[5/7] bg-gradient-to-br from-nimbus-500 via-nimbus-500 to-nimbus-600 overflow-hidden rounded-lg shadow-inner">
             <SafeImage
