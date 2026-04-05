@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { requireAuth } from '@/lib/auth-guard'
-import { getSellerProfile } from '@/services/seller.service'
+import { getOrCreateSellerProfile } from '@/services/seller.service'
 import { getSellerListings } from '@/services/listing.service'
 import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -36,7 +36,7 @@ export default async function SellerListingsPage({ searchParams }: ListingsPageP
 
   let profile
   try {
-    profile = await getSellerProfile(userId)
+    profile = await getOrCreateSellerProfile(userId)
   } catch {
     notFound()
   }

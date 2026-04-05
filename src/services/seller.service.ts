@@ -52,6 +52,16 @@ export async function getSellerProfile(userId: string) {
   return profile;
 }
 
+export async function getOrCreateSellerProfile(userId: string) {
+  const existing = await db.sellerProfile.findUnique({
+    where: { userId },
+    include: { tier: true },
+  });
+  if (existing) return existing;
+
+  return createSellerProfile(userId);
+}
+
 export async function getPublicSellerProfile(sellerProfileId: string) {
   const profile = await db.sellerProfile.findUnique({
     where: { id: sellerProfileId },

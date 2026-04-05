@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { requireAuth } from '@/lib/auth-guard'
-import { getSellerProfile } from '@/services/seller.service'
+import { getOrCreateSellerProfile } from '@/services/seller.service'
 import { getSellerListings } from '@/services/listing.service'
 import { getPayoutSummary } from '@/services/payout.service'
 import { getUserBadges } from '@/services/badge.service'
@@ -161,7 +161,7 @@ export default async function SellerDashboardPage() {
 
   let profile
   try {
-    profile = await getSellerProfile(userId)
+    profile = await getOrCreateSellerProfile(userId)
   } catch {
     return (
       <main className="min-h-screen bg-surface">

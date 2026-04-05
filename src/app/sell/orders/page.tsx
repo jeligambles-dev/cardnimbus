@@ -1,5 +1,5 @@
 import { requireAuth } from '@/lib/auth-guard'
-import { getSellerProfile } from '@/services/seller.service'
+import { getOrCreateSellerProfile } from '@/services/seller.service'
 import { db } from '@/lib/db'
 import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -28,7 +28,7 @@ export default async function SellerOrdersPage({ searchParams }: OrdersPageProps
 
   let profile
   try {
-    profile = await getSellerProfile(userId)
+    profile = await getOrCreateSellerProfile(userId)
   } catch {
     notFound()
   }

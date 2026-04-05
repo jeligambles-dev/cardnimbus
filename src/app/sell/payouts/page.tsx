@@ -1,5 +1,5 @@
 import { requireAuth } from '@/lib/auth-guard'
-import { getSellerProfile } from '@/services/seller.service'
+import { getOrCreateSellerProfile } from '@/services/seller.service'
 import { getSellerPayouts, getPayoutSummary } from '@/services/payout.service'
 import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -27,7 +27,7 @@ export default async function SellerPayoutsPage({ searchParams }: PayoutsPagePro
 
   let profile
   try {
-    profile = await getSellerProfile(userId)
+    profile = await getOrCreateSellerProfile(userId)
   } catch {
     notFound()
   }
