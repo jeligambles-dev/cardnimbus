@@ -77,7 +77,8 @@ function AuthButton() {
       <div className="group relative">
         <Link
           href="/account"
-          className="flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-3 py-1.5 text-sm font-bold text-white transition-colors group-hover:bg-white group-hover:text-nimbus-600"
+          aria-label="Account"
+          className="flex h-9 items-center gap-2 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-2 sm:px-3 text-sm font-bold text-white transition-colors group-hover:bg-white group-hover:text-nimbus-600"
         >
           {session.user.image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -153,10 +154,17 @@ function AuthButton() {
 export function Navbar() {
   const pathname = usePathname()
   const isHome = pathname === '/'
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname])
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-surface-border bg-surface/95 backdrop-blur-md">
       {/* Nav row: logo + links + actions — RED */}
-      <nav className={`relative border-b-2 border-nimbus-700 bg-gradient-to-b from-nimbus-500 via-nimbus-500 to-nimbus-600 mx-auto flex max-w-none items-center gap-4 px-4 sm:px-6 lg:px-8 ${isHome ? 'py-2' : 'py-1'}`}>
+      <nav className={`relative border-b-2 border-nimbus-700 bg-gradient-to-b from-nimbus-500 via-nimbus-500 to-nimbus-600 mx-auto flex max-w-none items-center gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8 ${isHome ? 'py-2' : 'py-1'}`}>
         {/* Prominent logo */}
         <Link
           href="/"
@@ -178,7 +186,7 @@ export function Navbar() {
             transition={{ duration: 0.5, ease: 'easeOut' }}
             src="/logo.png"
             alt="Card Nimbus"
-            className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-16 sm:h-20 lg:h-24'}`}
+            className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-24 sm:h-40 lg:h-48' : 'h-11 sm:h-20 lg:h-24'}`}
           />
         </Link>
 
@@ -223,11 +231,46 @@ export function Navbar() {
         </ul>
 
         {/* Right actions */}
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
           <CartIcon />
           <AuthButton />
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Menu"
+            aria-expanded={mobileOpen}
+            className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white transition-colors hover:bg-white hover:text-nimbus-600"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              {mobileOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </div>
       </nav>
+
+      {/* Mobile menu drawer */}
+      {mobileOpen && (
+        <div className="md:hidden bg-gradient-to-b from-nimbus-600 to-nimbus-700 border-b-2 border-nimbus-800">
+          <ul className="flex flex-col gap-0.5 px-3 py-3">
+            {NAV_LINKS.map(({ label, href }) => (
+              <li key={label}>
+                <Link
+                  href={href}
+                  onClick={() => setMobileOpen(false)}
+                  className="block rounded-lg px-4 py-3 text-sm font-bold text-white hover:bg-white/15"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Search row — black layer */}
       <div className={`bg-slate-900 border-b border-slate-800 px-4 sm:px-6 lg:px-8 ${isHome ? 'py-3' : 'py-2'}`}>

@@ -28,7 +28,8 @@ function MarketplaceAuth() {
       <div className="group relative">
         <Link
           href="/marketplace/account"
-          className="flex items-center gap-2 rounded-xl border border-surface-border bg-surface-overlay px-3 py-1.5 text-sm font-medium text-text-primary group-hover:border-nimbus-500/50"
+          aria-label="Account"
+          className="flex h-9 items-center gap-2 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-2 sm:px-3 text-sm font-medium text-white group-hover:border-white group-hover:bg-white group-hover:text-nimbus-600"
         >
           <span className="flex h-5 w-5 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white">
             {(session.user.name ?? session.user.email ?? "U").charAt(0).toUpperCase()}
@@ -144,7 +145,7 @@ export function MarketplaceNav() {
           style={{ background: "radial-gradient(circle, #ffffff, transparent)" }}
         />
         </div>
-        <nav className={`relative mx-auto flex max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8 ${isHome ? 'py-2' : 'py-1'}`}>
+        <nav className={`relative mx-auto flex max-w-7xl items-center gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8 ${isHome ? 'py-2' : 'py-1'}`}>
           <Link
             href="/marketplace"
             className="group relative flex shrink-0 items-center transition-transform hover:scale-[1.02]"
@@ -164,7 +165,7 @@ export function MarketplaceNav() {
               transition={{ duration: 0.4 }}
               src="/logo.png"
               alt="Card Nimbus"
-              className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-16 sm:h-20 lg:h-24'}`}
+              className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-11 sm:h-20 lg:h-24'}`}
             />
             {isHome ? (
               <div className="ml-3 flex flex-col items-start">
@@ -176,30 +177,32 @@ export function MarketplaceNav() {
                 </span>
               </div>
             ) : (
-              <span className="ml-2 rounded-md bg-white px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.15em] text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]">
+              <span className="ml-2 hidden sm:inline-block rounded-md bg-white px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.15em] text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]">
                 Marketplace
               </span>
             )}
           </Link>
 
-          <div className="ml-auto flex items-center gap-2.5">
+          <div className="ml-auto flex items-center gap-1.5 sm:gap-2.5">
             <Link
               href="/"
-              className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-3.5 text-xs font-semibold text-white transition-all duration-150 hover:border-white hover:bg-white hover:text-nimbus-600 hover:-translate-y-px"
+              aria-label="Back to store"
+              className="inline-flex h-9 w-9 sm:w-auto items-center justify-center sm:gap-1.5 rounded-xl border border-white/30 bg-white/10 backdrop-blur sm:px-3.5 text-xs font-semibold text-white transition-all duration-150 hover:border-white hover:bg-white hover:text-nimbus-600 hover:-translate-y-px"
             >
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg className="h-4 w-4 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Back to store
+              <span className="hidden sm:inline">Back to store</span>
             </Link>
             <Link
               href="/sell"
-              className="inline-flex h-9 items-center gap-1.5 rounded-xl px-4 text-sm font-bold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(0,0,0,0.25)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
+              aria-label="Sell"
+              className="inline-flex h-9 w-9 sm:w-auto items-center justify-center sm:gap-1.5 rounded-xl sm:px-4 text-sm font-bold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(0,0,0,0.25)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
-              Sell
+              <span className="hidden sm:inline">Sell</span>
             </Link>
             <MarketplaceAuth />
           </div>
