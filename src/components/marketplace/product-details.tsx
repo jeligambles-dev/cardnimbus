@@ -25,16 +25,16 @@ export function ProductDetails({ rows, description }: ProductDetailsProps) {
       : description;
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-950 p-6">
-      <h2 className="text-lg font-bold text-white mb-5">Product Details</h2>
+    <section className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">
+      <h2 className="text-lg font-black text-text-primary mb-5">Product Details</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-4">
         {/* Left: metadata */}
         {visibleRows.length > 0 && (
           <dl className="space-y-3">
             {visibleRows.map((row) => (
               <div key={row.label} className="grid grid-cols-[120px_1fr] gap-4">
-                <dt className="text-sm text-slate-400">{row.label}</dt>
-                <dd className="text-sm font-medium text-white">{row.value}</dd>
+                <dt className="text-sm text-text-muted">{row.label}</dt>
+                <dd className="text-sm font-semibold text-text-primary">{row.value}</dd>
               </div>
             ))}
           </dl>
@@ -43,15 +43,15 @@ export function ProductDetails({ rows, description }: ProductDetailsProps) {
         {/* Right: description */}
         {description && (
           <div className={visibleRows.length === 0 ? "md:col-span-2" : ""}>
-            <p className="text-sm font-semibold text-white mb-2">Product Description</p>
-            <p className="text-sm text-slate-400 leading-relaxed whitespace-pre-wrap">
+            <p className="text-sm font-bold text-text-primary mb-2">Product Description</p>
+            <p className="text-sm text-text-secondary leading-relaxed whitespace-pre-wrap">
               {displayDescription}
             </p>
             {hasLongDescription && (
               <button
                 type="button"
                 onClick={() => setExpanded(!expanded)}
-                className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-white hover:text-slate-300 transition-colors"
+                className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-nimbus-600 hover:text-nimbus-700 transition-colors"
               >
                 {expanded ? "Read Less" : "Read More"}
                 <svg

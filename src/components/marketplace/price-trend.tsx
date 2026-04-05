@@ -158,9 +158,9 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
 
   if (loading) {
     return (
-      <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6">
-        <div className="h-5 w-40 bg-slate-800 rounded animate-pulse" />
-        <div className="mt-6 h-48 bg-slate-800 rounded animate-pulse" />
+      <div className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">
+        <div className="h-5 w-40 bg-surface-overlay rounded animate-pulse" />
+        <div className="mt-6 h-48 bg-surface-overlay rounded animate-pulse" />
       </div>
     );
   }
@@ -227,14 +227,14 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
       : null;
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-950 overflow-hidden">
+    <section className="rounded-2xl border-2 border-nimbus-500 bg-white shadow-[0_4px_0_0_rgba(255,0,0,0.12)] overflow-hidden">
       {/* Header */}
       <div className="p-6 pb-0">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-lg font-bold text-white">Price History</h2>
+          <h2 className="text-lg font-black text-text-primary">Price History</h2>
           <button
             type="button"
-            className="text-sm text-slate-400 hover:text-white transition-colors flex items-center gap-1"
+            className="text-sm font-semibold text-nimbus-600 hover:text-nimbus-700 transition-colors flex items-center gap-1"
           >
             View Sales
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -244,16 +244,16 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
         </div>
 
         {/* Range tabs */}
-        <div className="mt-4 inline-flex items-center rounded-full border border-slate-800 bg-slate-900 p-1">
+        <div className="mt-4 inline-flex items-center rounded-full border border-surface-border bg-surface-overlay p-1">
           {RANGES.map((r) => (
             <button
               key={r.key}
               type="button"
               onClick={() => setRange(r.key)}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${
                 range === r.key
-                  ? "bg-white text-slate-900"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-nimbus-500 text-white shadow-sm"
+                  : "text-text-muted hover:text-text-primary"
               }`}
             >
               {r.label}
@@ -267,8 +267,8 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
         <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto">
           <defs>
             <linearGradient id="priceAreaDark" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#34d399" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
+              <stop offset="0%" stopColor="#ff0000" stopOpacity="0.20" />
+              <stop offset="100%" stopColor="#ff0000" stopOpacity="0" />
             </linearGradient>
           </defs>
 
@@ -282,7 +282,7 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
                   x2={width - padR}
                   y1={y}
                   y2={y}
-                  stroke="#1e293b"
+                  stroke="#e5e7eb"
                   strokeWidth="1"
                 />
                 <text
@@ -290,7 +290,7 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
                   y={y + 4}
                   textAnchor="end"
                   fontSize="11"
-                  fill="#64748b"
+                  fill="#94a3b8"
                   fontFamily="system-ui"
                 >
                   {formatMoney(v)}
@@ -307,7 +307,7 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
               y={height - 8}
               textAnchor={i === 0 ? "start" : i === xTicks.length - 1 ? "end" : "middle"}
               fontSize="11"
-              fill="#64748b"
+              fill="#94a3b8"
               fontFamily="system-ui"
             >
               {t.date ? formatDateShort(t.date) : ""}
@@ -322,8 +322,8 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
             <path
               d={linePath}
               fill="none"
-              stroke="#34d399"
-              strokeWidth="2"
+              stroke="#ff0000"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -336,7 +336,7 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
               x2={hoverPoint.x}
               y1={padT}
               y2={height - padB}
-              stroke="#475569"
+              stroke="#cbd5e1"
               strokeDasharray="3 3"
               strokeWidth="1"
             />
@@ -354,7 +354,7 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
                 style={{ cursor: "crosshair" }}
               />
               {hover === i && (
-                <circle cx={c.x} cy={c.y} r={5} fill="#34d399" stroke="#0f172a" strokeWidth="2" />
+                <circle cx={c.x} cy={c.y} r={5} fill="#ff0000" stroke="#ffffff" strokeWidth="2" />
               )}
             </g>
           ))}
@@ -363,14 +363,14 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
         {/* Tooltip */}
         {hoverPoint && (
           <div
-            className="pointer-events-none absolute z-10 rounded-lg bg-white text-slate-900 px-3 py-2 text-xs font-bold shadow-xl -translate-x-1/2 -translate-y-full mb-2"
+            className="pointer-events-none absolute z-10 rounded-lg bg-slate-900 text-white px-3 py-2 text-xs font-bold shadow-xl -translate-x-1/2 -translate-y-full mb-2"
             style={{
               left: `${(hoverPoint.x / width) * 100}%`,
               top: `${(hoverPoint.y / height) * 100}%`,
             }}
           >
             ${hoverPoint.price.toFixed(2)}
-            <div className="text-[10px] font-normal text-slate-500">
+            <div className="text-[10px] font-normal text-white/70">
               {new Date(hoverPoint.date).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
@@ -382,8 +382,8 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
       </div>
 
       {/* Historical Data */}
-      <div className="p-6 pt-4 border-t border-slate-800 mt-2">
-        <h3 className="text-sm font-bold text-white mb-3">Historical Data</h3>
+      <div className="p-6 pt-4 border-t border-surface-border mt-2">
+        <h3 className="text-sm font-black text-text-primary mb-3">Historical Data</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {yearSummary && (
             <StatTile
@@ -429,11 +429,11 @@ export function PriceTrend({ listingId, currentPrice, retailPrice }: PriceTrendP
 
 function StatTile({ value, label, sub }: { value: string; label: string; sub?: string }) {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-3">
-      <p className="text-lg font-bold text-white leading-tight">{value}</p>
-      <p className="text-xs text-slate-400 mt-1">
-        <span className="font-medium text-slate-300">{label}</span>
-        {sub && <span className="text-slate-500"> | {sub}</span>}
+    <div className="rounded-xl border border-surface-border bg-surface-overlay px-4 py-3">
+      <p className="text-lg font-black text-text-primary leading-tight">{value}</p>
+      <p className="text-xs text-text-muted mt-1">
+        <span className="font-semibold text-text-secondary">{label}</span>
+        {sub && <span className="text-text-muted"> | {sub}</span>}
       </p>
     </div>
   );

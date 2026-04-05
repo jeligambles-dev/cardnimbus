@@ -14,25 +14,31 @@ export async function GET(
     });
     if (!listing) throw new NotFoundError("Listing");
 
-    // Find sold items with matching cardId OR title (fallback)
+    // Match sold items on:
+    // - exact titleSnapshot match, OR
+    // - same cardId (for SINGLEs with linked card), OR
+    // - matching listing.title + category (fuzzy, case-insensitive) for sealed products
+    const orConditions: Array<Record<string, unknown>> = [
+      { titleSnapshot: { equals: listing.title, mode: "insensitive" } },
+      {
+        listing: {
+          title: { equals: listing.title, mode: "insensitive" },
+          category: listing.category,
+        },
+      },
+    ];
+
+    if (listing.cardId) {
+      orConditions.push({ listing: { cardId: listing.cardId } });
+    }
+
     const items = await db.orderItem.findMany({
       where: {
         order: {
           status: { in: ["DELIVERED", "PAID", "SHIPPED", "PROCESSING"] },
           type: "MARKETPLACE",
         },
-        OR: [
-          { titleSnapshot: listing.title },
-          ...(listing.cardId
-            ? [
-                {
-                  listing: {
-                    cardId: listing.cardId,
-                  },
-                },
-              ]
-            : []),
-        ],
+        OR: orConditions,
       },
       select: {
         priceAtPurchase: true,

@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 
 const STORAGE_KEY = "cn_email_popup_state";
 
-type State = "unseen" | "minimized" | "claimed";
+type State = "unseen" | "minimized" | "claimed" | "dismissed";
 
 export function EmailDiscountPopup() {
+  const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState<State>("unseen");
   const [email, setEmail] = useState("");
@@ -24,6 +26,8 @@ export function EmailDiscountPopup() {
     const stored = localStorage.getItem(STORAGE_KEY) as State | null;
     if (stored === "claimed") {
       setState("claimed");
+    } else if (stored === "dismissed") {
+      setState("dismissed");
     } else if (stored === "minimized") {
       setState("minimized");
     } else {
@@ -32,6 +36,12 @@ export function EmailDiscountPopup() {
       return () => clearTimeout(timer);
     }
   }, []);
+
+  const dismissFloating = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setState("dismissed");
+    localStorage.setItem(STORAGE_KEY, "dismissed");
+  };
 
   const closePopup = () => {
     setOpen(false);
@@ -79,6 +89,9 @@ export function EmailDiscountPopup() {
   };
 
   if (!mounted) return null;
+
+  // Hide entirely for logged-in users
+  if (status === "authenticated" && session?.user) return null;
 
   return (
     <>
@@ -200,17 +213,33 @@ export function EmailDiscountPopup() {
       {/* Floating "Get 5% off" button when minimized */}
       <AnimatePresence>
         {!open && state === "minimized" && (
-          <motion.button
+          <motion.div
             initial={{ opacity: 0, x: -20, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: -20, scale: 0.9 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={reopenPopup}
-            className="fixed bottom-6 left-6 z-40 flex items-center gap-2 rounded-full px-12 py-6 text-lg font-bold text-white bg-gradient-to-b from-nimbus-500 to-nimbus-600 shadow-[0_1px_0_0_rgba(255,255,255,0.3)_inset,0_8px_24px_-4px_rgba(255,0,0,0.5)] ring-1 ring-inset ring-white/20 hover:from-nimbus-400 hover:to-nimbus-500 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+            className="fixed bottom-4 left-4 z-40 sm:bottom-6 sm:left-6"
           >
-            <span>Get 5% Off</span>
-          </motion.button>
+            <div className="relative">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={reopenPopup}
+                className="flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-white bg-gradient-to-b from-nimbus-500 to-nimbus-600 shadow-[0_1px_0_0_rgba(255,255,255,0.3)_inset,0_8px_24px_-4px_rgba(255,0,0,0.5)] ring-1 ring-inset ring-white/20 hover:from-nimbus-400 hover:to-nimbus-500 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 sm:px-8 sm:py-4 sm:text-base"
+              >
+                <span>Get 5% Off</span>
+              </motion.button>
+              <button
+                type="button"
+                onClick={dismissFloating}
+                aria-label="Dismiss offer"
+                className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white text-nimbus-600 shadow-md ring-2 ring-nimbus-600 hover:bg-nimbus-50 transition-colors"
+              >
+                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

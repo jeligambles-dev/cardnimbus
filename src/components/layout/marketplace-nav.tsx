@@ -208,12 +208,12 @@ export function MarketplaceNav() {
       {/* Category tabs row — on red */}
       <nav className="relative bg-gradient-to-b from-nimbus-500 to-nimbus-600 border-b-2 border-nimbus-700">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ul className="flex items-center gap-0.5 overflow-x-auto py-2 scrollbar-hide">
+          <ul className="flex flex-wrap items-center gap-0.5 py-2 sm:flex-nowrap sm:overflow-x-auto sm:scrollbar-hide">
             {MARKETPLACE_LINKS.map(({ label, href }) => (
               <li key={href}>
                 <Link
                   href={href}
-                  className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-bold transition-all duration-150 ${
+                  className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold transition-all duration-150 sm:px-4 sm:py-2 sm:text-sm ${
                     isActive(href)
                       ? "bg-white text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]"
                       : "text-white/85 hover:bg-white/15 hover:text-white"
