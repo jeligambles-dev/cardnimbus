@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
@@ -212,6 +213,14 @@ function PhotoUpload({
 
 export default function CreateListingPage() {
   const router = useRouter()
+  const { status } = useSession()
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login?callbackUrl=/sell')
+    }
+  }, [status, router])
+
   const [card, setCard] = useState<CardResult | null>(null)
   const [images, setImages] = useState<string[]>([])
   const [price, setPrice] = useState('')
@@ -265,6 +274,17 @@ export default function CreateListingPage() {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  // Loading / unauthenticated state
+  if (status === 'loading' || status === 'unauthenticated') {
+    return (
+      <main className="min-h-screen bg-surface flex items-center justify-center">
+        <div className="text-text-muted text-sm">
+          {status === 'loading' ? 'Loading...' : 'Redirecting to sign in...'}
+        </div>
+      </main>
+    )
   }
 
   return (
