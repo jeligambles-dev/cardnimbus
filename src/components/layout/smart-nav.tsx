@@ -10,6 +10,8 @@ export function SmartNav() {
     "/account/likes",
     "/account/following",
     "/account/messages",
+    "/account/orders",
+    "/account/disputes",
   ];
 
   const isMarketplace =

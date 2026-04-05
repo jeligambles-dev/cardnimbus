@@ -95,7 +95,7 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
           </div>
 
           {/* IMAGE FRAME — Pokemon card 5:7 aspect ratio (2.5" × 3.5") */}
-          <div className="relative aspect-[5/7] bg-gradient-to-br from-nimbus-500 via-nimbus-500 to-nimbus-600 overflow-hidden rounded-lg border-[3px] border-nimbus-600 shadow-inner">
+          <div className="relative aspect-[5/7] bg-gradient-to-br from-nimbus-500 via-nimbus-500 to-nimbus-600 overflow-hidden rounded-lg shadow-inner">
             <SafeImage
               src={mainImage}
               alt={listing.title}

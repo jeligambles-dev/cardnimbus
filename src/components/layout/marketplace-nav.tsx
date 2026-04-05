@@ -130,7 +130,7 @@ export function MarketplaceNav() {
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04),0_2px_16px_-8px_rgba(0,0,0,0.08)]">
       {/* Top row: logo + site link + auth */}
-      <div className="relative border-b border-surface-border bg-gradient-to-r from-white via-emerald-50/40 to-white">
+      <div className="relative border-b-2 border-nimbus-700 bg-gradient-to-b from-nimbus-500 via-nimbus-500 to-nimbus-600">
         {/* Subtle decorative glow — clipped to not overflow */}
         <div
           aria-hidden
@@ -138,13 +138,8 @@ export function MarketplaceNav() {
         >
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-20 -left-20 h-48 w-48 rounded-full blur-3xl opacity-20"
-          style={{ background: "radial-gradient(circle, #10b981, transparent)" }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-20 right-20 h-48 w-48 rounded-full blur-3xl opacity-15"
-          style={{ background: "radial-gradient(circle, #ff0000, transparent)" }}
+          className="pointer-events-none absolute -top-20 -left-20 h-48 w-48 rounded-full blur-3xl opacity-30"
+          style={{ background: "radial-gradient(circle, #ffffff, transparent)" }}
         />
         </div>
         <nav className="relative mx-auto flex max-w-7xl items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
@@ -170,10 +165,10 @@ export function MarketplaceNav() {
               className="h-32 w-auto object-contain drop-shadow-md sm:h-40 lg:h-48"
             />
             <div className="ml-3 flex flex-col items-start">
-              <span className="rounded-md bg-gradient-to-r from-emerald-500 to-emerald-600 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-white shadow-[0_2px_8px_-2px_rgba(16,185,129,0.5)] ring-1 ring-inset ring-white/20">
+              <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]">
                 Marketplace
               </span>
-              <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.15em] text-text-muted">
+              <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.15em] text-white/70">
                 P2P · Buy · Sell
               </span>
             </div>
@@ -182,7 +177,7 @@ export function MarketplaceNav() {
           <div className="ml-auto flex items-center gap-2.5">
             <Link
               href="/"
-              className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-xl border border-surface-border bg-white/80 backdrop-blur px-3.5 text-xs font-semibold text-text-secondary transition-all duration-150 hover:border-nimbus-400 hover:bg-white hover:text-nimbus-600 hover:-translate-y-px"
+              className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-3.5 text-xs font-semibold text-white transition-all duration-150 hover:border-white hover:bg-white hover:text-nimbus-600 hover:-translate-y-px"
             >
               <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -191,7 +186,7 @@ export function MarketplaceNav() {
             </Link>
             <Link
               href="/sell"
-              className="inline-flex h-9 items-center gap-1.5 rounded-xl px-4 text-sm font-bold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(16,185,129,0.4)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl px-4 text-sm font-bold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(0,0,0,0.25)] ring-1 ring-inset ring-white/10 hover:from-emerald-400 hover:to-emerald-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -203,28 +198,30 @@ export function MarketplaceNav() {
         </nav>
       </div>
 
-      {/* Category tabs row */}
-      <nav className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <ul className="flex items-center gap-0.5 overflow-x-auto py-2.5 scrollbar-hide">
-          {MARKETPLACE_LINKS.map(({ label, href }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-bold transition-all duration-150 ${
-                  isActive(href)
-                    ? "bg-gradient-to-b from-emerald-500 to-emerald-600 text-white shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_2px_8px_-2px_rgba(16,185,129,0.4)] ring-1 ring-inset ring-white/10"
-                    : "text-text-secondary hover:bg-emerald-50 hover:text-emerald-700"
-                }`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {/* Category tabs row — on red */}
+      <nav className="relative bg-gradient-to-b from-nimbus-500 to-nimbus-600 border-b-2 border-nimbus-700">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ul className="flex items-center gap-0.5 overflow-x-auto py-2 scrollbar-hide">
+            {MARKETPLACE_LINKS.map(({ label, href }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-bold transition-all duration-150 ${
+                    isActive(href)
+                      ? "bg-white text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]"
+                      : "text-white/85 hover:bg-white/15 hover:text-white"
+                  }`}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </nav>
 
-      {/* Search row */}
-      <div className="border-t border-surface-border bg-surface-raised/50 px-4 py-2.5 sm:px-6 lg:px-8">
+      {/* Search row — black layer */}
+      <div className="bg-slate-900 border-b border-slate-800 px-4 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <SearchBar />
         </div>

@@ -9,6 +9,7 @@ import { DealBadge } from '@/components/deals/deal-badge'
 import { ListingDetailActions } from '@/components/marketplace/listing-detail-actions'
 import { ListingSuggestions } from '@/components/marketplace/listing-suggestions'
 import { SellerRecentSales } from '@/components/marketplace/seller-recent-sales'
+import { FollowButton } from '@/components/marketplace/follow-button'
 import type { DealScoreBand } from '@/services/deal-score.service'
 
 interface ListingPageProps {
@@ -103,9 +104,77 @@ export default async function ListingPage({ params }: ListingPageProps) {
           <span className="text-text-secondary truncate max-w-xs">{listing.title}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Left: Images + Description */}
-          <div className="lg:col-span-2 flex flex-col gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left: Seller info + Recent sales */}
+          <aside className="lg:col-span-1 order-2 lg:order-1 flex flex-col gap-6">
+            {/* Seller Info */}
+            <div className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">
+              <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-4">
+                Seller
+              </h2>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden bg-surface-overlay border border-surface-border flex-shrink-0">
+                  {sellerUser.avatar ? (
+                    <Image
+                      src={sellerUser.avatar}
+                      alt={sellerUser.name ?? 'Seller'}
+                      fill
+                      className="object-cover"
+                      sizes="48px"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-lg font-bold text-nimbus-600">
+                      {(sellerUser.name ?? 'S').charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <p className="font-semibold text-text-primary">{sellerUser.name ?? 'Anonymous'}</p>
+                  {(seller as unknown as { tier?: { name: string } | null }).tier && (
+                    <Badge variant="nimbus" size="sm" className="mt-1">
+                      {(seller as unknown as { tier: { name: string } }).tier.name}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2 mb-4">
+                <StarRating rating={seller.rating} count={seller.ratingCount} />
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-text-muted">Total sales</span>
+                  <span className="text-text-primary font-medium">{seller.totalSales}</span>
+                </div>
+                {seller.responseTime && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-text-muted">Avg. response</span>
+                    <span className="text-text-primary font-medium">
+                      {seller.responseTime < 60
+                        ? `${seller.responseTime}m`
+                        : `${Math.round(seller.responseTime / 60)}h`}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Follow / track seller */}
+              <div className="mb-3">
+                <FollowButton sellerProfileId={seller.id} />
+              </div>
+
+              <Link
+                href={`/seller/${seller.id}`}
+                className="block w-full text-center py-2 px-4 rounded-xl border border-surface-border text-sm text-text-secondary hover:text-text-primary hover:border-nimbus-500/50 transition-colors"
+              >
+                View Profile
+              </Link>
+            </div>
+
+            {/* Recent sales + reviews */}
+            <SellerRecentSales sellerProfileId={seller.id} />
+          </aside>
+
+          {/* Middle: Images + Description */}
+          <div className="lg:col-span-1 order-1 lg:order-2 flex flex-col gap-8">
             {/* Image Gallery */}
             <div className="flex flex-col gap-3">
               {/* Main image */}
@@ -199,8 +268,8 @@ export default async function ListingPage({ params }: ListingPageProps) {
             )}
           </div>
 
-          {/* Right: Listing Info + Seller Sidebar */}
-          <div className="flex flex-col gap-6">
+          {/* Right: Listing Info + Actions */}
+          <div className="lg:col-span-1 order-3 lg:order-3 flex flex-col gap-6">
             {/* Listing Details */}
             <div className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">
               {/* Badges */}
@@ -245,79 +314,6 @@ export default async function ListingPage({ params }: ListingPageProps) {
                 sellerUserId={seller.userId}
               />
             </div>
-
-            {/* Seller Info */}
-            <div className="rounded-2xl border-2 border-nimbus-500 bg-white p-6 shadow-[0_4px_0_0_rgba(255,0,0,0.12)]">
-              <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wide mb-4">
-                Seller
-              </h2>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden bg-surface-overlay border border-surface-border flex-shrink-0">
-                  {sellerUser.avatar ? (
-                    <Image
-                      src={sellerUser.avatar}
-                      alt={sellerUser.name ?? 'Seller'}
-                      fill
-                      className="object-cover"
-                      sizes="48px"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-lg font-bold text-nimbus-600">
-                      {(sellerUser.name ?? 'S').charAt(0).toUpperCase()}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <p className="font-semibold text-text-primary">{sellerUser.name ?? 'Anonymous'}</p>
-                  {(seller as unknown as { tier?: { name: string } | null }).tier && (
-                    <Badge variant="nimbus" size="sm" className="mt-1">
-                      {(seller as unknown as { tier: { name: string } }).tier.name}
-                    </Badge>
-                  )}
-                </div>
-              </div>
-
-              <div className="space-y-2 mb-4">
-                <StarRating rating={seller.rating} count={seller.ratingCount} />
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-text-muted">Total sales</span>
-                  <span className="text-text-primary font-medium">{seller.totalSales}</span>
-                </div>
-                {seller.responseTime && (
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-text-muted">Avg. response</span>
-                    <span className="text-text-primary font-medium">
-                      {seller.responseTime < 60
-                        ? `${seller.responseTime}m`
-                        : `${Math.round(seller.responseTime / 60)}h`}
-                    </span>
-                  </div>
-                )}
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-text-muted">Verification</span>
-                  <Badge
-                    variant={
-                      (sellerUser as unknown as { verificationLevel?: string }).verificationLevel === 'VERIFIED'
-                        ? 'success'
-                        : 'default'
-                    }
-                    size="sm"
-                  >
-                    {(sellerUser as unknown as { verificationLevel?: string }).verificationLevel ?? 'UNVERIFIED'}
-                  </Badge>
-                </div>
-              </div>
-
-              <Link
-                href={`/seller/${seller.id}`}
-                className="block w-full text-center py-2 px-4 rounded-xl border border-surface-border text-sm text-text-secondary hover:text-text-primary hover:border-nimbus-500/50 transition-colors"
-              >
-                View Profile
-              </Link>
-            </div>
-
-            {/* Seller's recent sales + reviews */}
-            <SellerRecentSales sellerProfileId={seller.id} />
           </div>
         </div>
       </div>

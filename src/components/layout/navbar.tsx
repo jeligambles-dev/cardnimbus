@@ -29,7 +29,7 @@ function CartIcon() {
     <Link
       href="/cart"
       aria-label={`Cart (${count} items)`}
-      className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-surface-border bg-surface-overlay text-text-secondary transition-colors hover:border-nimbus-500/50 hover:text-text-primary"
+      className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white transition-colors hover:bg-white hover:text-nimbus-600"
     >
       <svg
         className="h-5 w-5"
@@ -76,7 +76,7 @@ function AuthButton() {
       <div className="group relative">
         <Link
           href="/account"
-          className="flex items-center gap-2 rounded-xl border border-surface-border bg-surface-overlay px-3 py-1.5 text-sm font-medium text-text-primary transition-colors group-hover:border-nimbus-500/50 group-hover:text-nimbus-500"
+          className="flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-3 py-1.5 text-sm font-bold text-white transition-colors group-hover:bg-white group-hover:text-nimbus-600"
         >
           {session.user.image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -152,20 +152,20 @@ function AuthButton() {
 export function Navbar() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-surface-border bg-surface/95 backdrop-blur-md">
-      {/* Nav row: logo + links + actions */}
-      <nav className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
+      {/* Nav row: logo + links + actions — RED */}
+      <nav className="relative border-b-2 border-nimbus-700 bg-gradient-to-b from-nimbus-500 via-nimbus-500 to-nimbus-600 mx-auto flex max-w-none items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
         {/* Prominent logo */}
         <Link
           href="/"
           className="group relative flex shrink-0 items-center transition-transform duration-200 hover:scale-105"
         >
-          {/* Red glow behind logo */}
+          {/* White glow behind logo */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 blur-xl opacity-40 transition-opacity duration-300 group-hover:opacity-70"
+            className="pointer-events-none absolute inset-0 -z-10 blur-xl opacity-30 transition-opacity duration-300 group-hover:opacity-50"
             style={{
               background:
-                'radial-gradient(ellipse 80% 80% at 50% 50%, #ff0000, transparent)',
+                'radial-gradient(ellipse 80% 80% at 50% 50%, #ffffff, transparent)',
             }}
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -187,7 +187,7 @@ export function Navbar() {
                 <li key={label}>
                   <Link
                     href={href}
-                    className="ml-2 inline-flex h-9 items-center rounded-xl px-4 text-sm font-semibold text-white bg-gradient-to-b from-nimbus-500 to-nimbus-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(255,0,0,0.35)] ring-1 ring-inset ring-white/10 hover:from-nimbus-400 hover:to-nimbus-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
+                    className="ml-2 inline-flex h-9 items-center rounded-xl bg-white px-4 text-sm font-bold text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)] hover:-translate-y-px active:translate-y-0 transition-all duration-150"
                   >
                     {label}
                   </Link>
@@ -210,7 +210,7 @@ export function Navbar() {
               <li key={label}>
                 <Link
                   href={href}
-                  className="rounded-lg px-3 py-1.5 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-overlay hover:text-text-primary"
+                  className="rounded-lg px-3 py-1.5 text-sm font-bold text-white/85 transition-colors hover:bg-white/15 hover:text-white"
                 >
                   {label}
                 </Link>
@@ -226,8 +226,8 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Search row — full width below nav */}
-      <div className="border-t border-surface-border bg-surface-raised/50 px-4 py-2.5 sm:px-6 lg:px-8">
+      {/* Search row — black layer */}
+      <div className="bg-slate-900 border-b border-slate-800 px-4 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <SearchBar />
         </div>
