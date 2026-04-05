@@ -43,13 +43,13 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="mb-4 flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-nimbus-400 to-nimbus-600 text-sm font-bold text-white shadow-lg shadow-nimbus-500/30">
-                CN
-              </div>
-              <span className="text-sm font-bold text-text-primary">
-                Card <span className="text-nimbus-500">Nimbus</span>
-              </span>
+            <Link href="/" className="mb-4 inline-block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.png"
+                alt="Card Nimbus"
+                className="h-20 w-auto object-contain"
+              />
             </Link>
             <p className="text-sm leading-relaxed text-text-muted">
               The boldest Pokémon card marketplace in the hobby. Shop packs, boxes, slabs, and singles with confidence.
