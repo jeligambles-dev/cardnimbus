@@ -362,6 +362,39 @@ export default function CreateListingPage() {
             <PhotoUpload images={images} onImagesChange={setImages} />
           </div>
 
+          {/* Commission + payout preview */}
+          {(() => {
+            const priceNum = parseFloat(price)
+            if (!priceNum || priceNum <= 0) return null
+            const commissionRate = 0.10
+            const commission = Math.round(priceNum * commissionRate * 100) / 100
+            const payout = Math.round((priceNum - commission) * 100) / 100
+            return (
+              <div className="rounded-2xl border-2 border-emerald-500/30 bg-emerald-50 p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <h3 className="text-sm font-bold text-emerald-900 uppercase tracking-wider">Payout Breakdown</h3>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-text-secondary">Sale price</span>
+                    <span className="font-semibold text-text-primary">{formatCurrency(priceNum)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-text-secondary">Marketplace fee (10%)</span>
+                    <span className="font-semibold text-red-600">−{formatCurrency(commission)}</span>
+                  </div>
+                  <div className="pt-2 border-t border-emerald-500/30 flex items-center justify-between">
+                    <span className="font-bold text-text-primary">You&apos;ll receive</span>
+                    <span className="font-black text-lg text-emerald-700">{formatCurrency(payout)}</span>
+                  </div>
+                </div>
+              </div>
+            )
+          })()}
+
           <Button
             type="submit"
             variant="primary"

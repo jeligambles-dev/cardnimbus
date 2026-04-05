@@ -194,6 +194,18 @@ export function Navbar() {
                 </li>
               )
             }
+            if (label === 'Marketplace') {
+              return (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="rounded-lg bg-emerald-500 px-4 py-1.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-colors hover:bg-emerald-600"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              )
+            }
             return (
               <li key={label}>
                 <Link
