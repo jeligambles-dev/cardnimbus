@@ -186,7 +186,7 @@ export function Navbar() {
             transition={{ duration: 0.5, ease: 'easeOut' }}
             src="/logo.png"
             alt="Card Nimbus"
-            className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-24 sm:h-40 lg:h-48' : 'h-11 sm:h-20 lg:h-24'}`}
+            className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-11 sm:h-20 lg:h-24'}`}
           />
         </Link>
 
