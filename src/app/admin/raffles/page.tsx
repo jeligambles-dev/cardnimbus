@@ -81,7 +81,12 @@ export default async function AdminRafflesPage() {
               raffles.map((raffle) => (
                 <tr key={raffle.id} className="transition-colors hover:bg-surface-overlay/50">
                   <td className="px-4 py-3">
-                    <p className="font-medium text-text-primary">{raffle.title}</p>
+                    <Link
+                      href={`/admin/raffles/${raffle.id}`}
+                      className="font-medium text-text-primary hover:text-nimbus-600 transition-colors"
+                    >
+                      {raffle.title}
+                    </Link>
                     {raffle.winner && (
                       <p className="text-xs text-emerald-400">
                         Winner: {raffle.winner.name ?? raffle.winner.email}

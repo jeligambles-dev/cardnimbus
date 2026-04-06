@@ -10,8 +10,6 @@ import { Card } from '@/components/ui/card'
 import { CountrySelectGrouped } from '@/components/country-select-grouped'
 import { formatCurrency } from '@/lib/utils'
 
-type PaymentMethod = 'stripe' | 'paypal'
-
 interface ShippingForm {
   fullName: string
   line1: string
@@ -37,7 +35,6 @@ export default function CheckoutPage() {
   const { items, total, clearCart } = useCartStore()
   const [form, setForm] = useState<ShippingForm>(EMPTY_FORM)
   const [errors, setErrors] = useState<Partial<ShippingForm>>({})
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('stripe')
   const [loading, setLoading] = useState(false)
   const [apiError, setApiError] = useState('')
 
@@ -67,12 +64,7 @@ export default function CheckoutPage() {
     setLoading(true)
     setApiError('')
     try {
-      const endpoint =
-        paymentMethod === 'stripe'
-          ? '/api/checkout/stripe'
-          : '/api/checkout/paypal'
-
-      const res = await fetch(endpoint, {
+      const res = await fetch('/api/checkout/stripe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -185,42 +177,13 @@ export default function CheckoutPage() {
             {/* Payment Method */}
             <Card className="p-6">
               <h2 className="text-lg font-bold text-text-primary mb-5">Payment Method</h2>
-              <div className="space-y-3">
-                {(['stripe', 'paypal'] as PaymentMethod[]).map((method) => (
-                  <label
-                    key={method}
-                    className={[
-                      'flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-colors',
-                      paymentMethod === method
-                        ? 'border-nimbus-500 bg-nimbus-500/10'
-                        : 'border-surface-border hover:border-surface-border/80',
-                    ].join(' ')}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      value={method}
-                      checked={paymentMethod === method}
-                      onChange={() => setPaymentMethod(method)}
-                      className="accent-nimbus-500"
-                    />
-                    <div>
-                      <p className="font-semibold text-text-primary capitalize">
-                        {method === 'stripe' ? 'Credit / Debit Card' : 'PayPal'}
-                      </p>
-                      <p className="text-xs text-text-secondary mt-0.5">
-                        {method === 'stripe'
-                          ? 'Powered by Stripe — all major cards accepted'
-                          : 'Pay with your PayPal account'}
-                      </p>
-                    </div>
-                    {method === 'stripe' && (
-                      <span className="ml-auto text-xs bg-nimbus-500/20 text-nimbus-600 px-2 py-1 rounded-full">
-                        Recommended
-                      </span>
-                    )}
-                  </label>
-                ))}
+              <div className="flex items-center gap-4 p-4 rounded-xl border border-nimbus-500 bg-nimbus-500/10">
+                <div>
+                  <p className="font-semibold text-text-primary">Credit / Debit Card</p>
+                  <p className="text-xs text-text-secondary mt-0.5">
+                    Powered by Stripe — all major cards accepted
+                  </p>
+                </div>
               </div>
             </Card>
 

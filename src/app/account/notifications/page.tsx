@@ -36,7 +36,7 @@ export default function NotificationsPage() {
   useEffect(() => {
     void (async () => {
       try {
-        const res = await fetch('/api/account/notifications?page=1')
+        const res = await fetch('/api/notifications?page=1')
         if (res.ok) {
           const data = await res.json()
           setNotifications(data.notifications ?? [])
@@ -51,7 +51,7 @@ export default function NotificationsPage() {
   async function markAllRead() {
     setMarkingAll(true)
     try {
-      await fetch('/api/account/notifications/mark-all-read', { method: 'POST' })
+      await fetch('/api/notifications/read-all', { method: 'POST' })
       setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
       setUnreadCount(0)
     } catch {
@@ -66,7 +66,7 @@ export default function NotificationsPage() {
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     )
     setUnreadCount((c) => Math.max(0, c - 1))
-    await fetch(`/api/account/notifications/${id}/read`, { method: 'POST' }).catch(() => {})
+    await fetch(`/api/notifications/${id}/read`, { method: 'POST' }).catch(() => {})
   }
 
   return (
