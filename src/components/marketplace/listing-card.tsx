@@ -138,7 +138,7 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
           </div>
 
           {/* INFO STRIP — category + condition + seller (like card type/stats) */}
-          <div className="flex items-center justify-between gap-2 px-1 py-1 border-y border-black/20">
+          <div className="flex items-center justify-between gap-2 px-1 py-1 border-y border-black">
             <div className="flex items-center gap-1.5 min-w-0">
               <span className="rounded bg-nimbus-100 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-nimbus-700 shrink-0">
                 {listing.category.replace(/_/g, ' ')}
@@ -157,7 +157,7 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
           </div>
 
           {/* SELLER STRIP */}
-          <div className="flex items-center justify-between gap-2 px-1">
+          <div className="flex items-center justify-between gap-2 px-1 pb-1 border-b border-black">
             <span className="text-[11px] text-text-secondary truncate font-semibold">
               {sellerName}
             </span>
