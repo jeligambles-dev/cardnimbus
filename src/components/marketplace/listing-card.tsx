@@ -154,33 +154,35 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
                 </span>
               )}
             </div>
-            <StarRating rating={listing.seller.rating} />
           </div>
 
           {/* SELLER STRIP */}
-          <div className="flex items-center justify-between gap-2 px-1 pb-1 border-b border-black">
-            <div className="flex items-center gap-1.5 min-w-0">
-              {listing.seller.user.avatar ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={listing.seller.user.avatar}
-                  alt={sellerName}
-                  className="h-4 w-4 rounded-full object-cover shrink-0"
-                />
-              ) : (
-                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-nimbus-500 text-[7px] font-bold text-white shrink-0">
-                  {sellerName.charAt(0).toUpperCase()}
+          <div className="flex flex-col gap-0.5 px-1 pb-1 border-b border-black">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 min-w-0">
+                {listing.seller.user.avatar ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={listing.seller.user.avatar}
+                    alt={sellerName}
+                    className="h-4 w-4 rounded-full object-cover shrink-0"
+                  />
+                ) : (
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-nimbus-500 text-[7px] font-bold text-white shrink-0">
+                    {sellerName.charAt(0).toUpperCase()}
+                  </span>
+                )}
+                <span className="text-[11px] text-text-secondary truncate font-semibold">
+                  {sellerName}
+                </span>
+              </div>
+              {listing.seller.user.country && (
+                <span className="text-[9px] font-bold text-text-muted uppercase shrink-0">
+                  {listing.seller.user.country}
                 </span>
               )}
-              <span className="text-[11px] text-text-secondary truncate font-semibold">
-                {sellerName}
-              </span>
             </div>
-            {listing.seller.user.country && (
-              <span className="text-[9px] font-bold text-text-muted uppercase shrink-0">
-                {listing.seller.user.country}
-              </span>
-            )}
+            <StarRating rating={listing.seller.rating} />
             {sellerBadges && sellerBadges.length > 0 && (
               <div className="flex items-center gap-0.5 shrink-0">
                 {sellerBadges.slice(0, 2).map((b) => (

@@ -188,10 +188,6 @@ export function MarketplaceNav() {
               alt="Card Nimbus"
               className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-11 sm:h-20 lg:h-24'}`}
             />
-            <div className="flex flex-col ml-2 justify-end mb-1">
-              <span className="text-xs font-bold text-white leading-tight">Card Nimbus</span>
-              <StoreRating />
-            </div>
             {isHome ? (
               <div className="ml-3 flex flex-col items-start">
                 <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]">
