@@ -188,7 +188,8 @@ export function MarketplaceNav() {
               alt="Card Nimbus"
               className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-11 sm:h-20 lg:h-24'}`}
             />
-            <div className="flex flex-col ml-1 mt-auto mb-1">
+            <div className="flex flex-col ml-2 justify-end mb-1">
+              <span className="text-xs font-bold text-white leading-tight">Card Nimbus</span>
               <StoreRating />
             </div>
             {isHome ? (
