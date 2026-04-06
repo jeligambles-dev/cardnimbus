@@ -69,12 +69,17 @@ export function TrendingSpotlight({ listings }: TrendingSpotlightProps) {
         {/* Cards — same sizing as marketplace listing grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {listings.slice(0, 3).map((listing, i) => (
-            <div key={listing.id} className="relative">
-              {/* Rank badge */}
-              <div
-                className={`absolute -top-2 -left-2 z-20 flex h-9 w-9 items-center justify-center rounded-xl ${RANK_COLORS[i]} text-white font-black text-sm shadow-lg ring-2 ring-white`}
-              >
-                {i + 1}
+            <div key={listing.id}>
+              {/* Rank badge above card */}
+              <div className="flex items-center gap-2 mb-2">
+                <div
+                  className={`flex h-7 w-7 items-center justify-center rounded-lg ${RANK_COLORS[i]} text-white font-black text-xs shadow-md ring-2 ring-white`}
+                >
+                  {i + 1}
+                </div>
+                <span className="text-xs font-bold text-text-muted uppercase tracking-wider">
+                  #{i + 1} Trending
+                </span>
               </div>
               <ListingCard listing={listing} index={i} />
             </div>
