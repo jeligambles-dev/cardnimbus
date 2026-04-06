@@ -82,16 +82,16 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
             'group-hover:shadow-[0_8px_20px_-4px_rgba(255,0,0,0.35)]',
             'group-hover:-translate-y-1',
             'group-hover:border-nimbus-600',
-            'p-2.5 flex flex-col gap-2',
+            'p-1.5 flex flex-col gap-1.5',
           ].join(' ')}
         >
           {/* HEADER — Title + Price (like Pokemon card name + HP) */}
           <div className="flex items-start justify-between gap-2 px-1 pt-0.5">
-            <h3 className="text-[13px] font-black text-gold-600 leading-tight line-clamp-2 flex-1 min-h-[2rem]">
+            <h3 className="text-[11px] font-black text-gold-600 leading-tight line-clamp-2 flex-1 min-h-[1.5rem]">
               {listing.title}
             </h3>
             <div className="flex items-baseline gap-0.5 shrink-0">
-              <span className="text-nimbus-600 font-black text-lg leading-none">
+              <span className="text-nimbus-600 font-black text-sm leading-none">
                 {formatCurrency(listing.price)}
               </span>
             </div>

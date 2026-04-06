@@ -44,7 +44,7 @@ function Section({
           <p className="mt-1 text-sm text-text-secondary">{subtitle}</p>
         )}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
         {listings.map((listing, i) => (
           <ListingCard key={listing.id} listing={listing} index={i} />
         ))}

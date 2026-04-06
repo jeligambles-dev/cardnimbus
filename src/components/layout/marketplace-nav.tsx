@@ -128,7 +128,7 @@ function MarketplaceAuth() {
   return (
     <button
       onClick={() => signIn()}
-      className="h-9 px-5 rounded-xl text-sm font-semibold text-white bg-gradient-to-b from-nimbus-500 to-nimbus-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(255,0,0,0.35)] ring-1 ring-inset ring-white/10 hover:from-nimbus-400 hover:to-nimbus-500 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
+      className="h-9 px-5 rounded-xl text-sm font-semibold text-white bg-black shadow-[0_4px_12px_-2px_rgba(0,0,0,0.4)] hover:bg-black/80 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
     >
       Sign In
     </button>
