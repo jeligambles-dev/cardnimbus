@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { requireAuth } from '@/lib/auth-guard'
+import { BackHeader } from '@/components/ui/back-header'
 import { getUserDisputes } from '@/services/dispute.service'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
@@ -40,8 +41,9 @@ export default async function AccountDisputesPage({ searchParams }: DisputesPage
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <BackHeader title="My Disputes" href="/marketplace/account" />
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-text-primary tracking-tight">My Disputes</h1>
+          <h1 className="hidden md:block text-3xl font-bold text-text-primary tracking-tight">My Disputes</h1>
           <p className="mt-1 text-sm text-text-secondary">{total} dispute{total !== 1 ? 's' : ''} filed</p>
         </div>
 

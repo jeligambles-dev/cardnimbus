@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { BackHeader } from '@/components/ui/back-header'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -72,6 +73,7 @@ export default function NotificationsPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <BackHeader title="Notifications" href="/account" />
         {/* Header */}
         <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
           <div className="flex items-center gap-3 flex-wrap">
@@ -81,7 +83,7 @@ export default function NotificationsPage() {
               </Link>
               <span className="text-surface-border">/</span>
             </div>
-            <h1 className="text-3xl font-bold text-text-primary tracking-tight">
+            <h1 className="hidden md:block text-3xl font-bold text-text-primary tracking-tight">
               Notifications
             </h1>
             {unreadCount > 0 && (

@@ -33,9 +33,14 @@ function MarketplaceAuth() {
           aria-label="Account"
           className="flex h-9 items-center gap-2 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-2 sm:px-3 text-sm font-medium text-white group-hover:border-white group-hover:bg-white group-hover:text-nimbus-600"
         >
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white">
-            {(session.user.name ?? session.user.email ?? "U").charAt(0).toUpperCase()}
-          </span>
+          {session.user.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={session.user.image} alt="" className="h-6 w-6 rounded-full object-cover" />
+          ) : (
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white">
+              {(session.user.name ?? session.user.email ?? "U").charAt(0).toUpperCase()}
+            </span>
+          )}
           <span className="hidden max-w-[80px] truncate sm:block">
             {session.user.name?.split(" ")[0] ?? "Account"}
           </span>

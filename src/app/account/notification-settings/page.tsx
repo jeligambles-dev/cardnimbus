@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { BackHeader } from '@/components/ui/back-header'
 import { toast } from '@/components/ui/toast'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -99,6 +100,7 @@ export default function NotificationSettingsPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
+        <BackHeader title="Notification Settings" href="/account" />
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-text-secondary">
           <Link href="/account" className="hover:text-text-primary transition-colors">Account</Link>
@@ -107,7 +109,7 @@ export default function NotificationSettingsPage() {
         </nav>
 
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-text-primary">Notification Settings</h1>
+          <h1 className="hidden md:block text-2xl font-bold text-text-primary">Notification Settings</h1>
           <p className="mt-1 text-text-secondary">
             Choose how and where you receive notifications.
           </p>

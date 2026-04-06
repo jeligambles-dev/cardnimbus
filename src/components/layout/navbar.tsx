@@ -86,10 +86,10 @@ function AuthButton() {
             <img
               src={session.user.image}
               alt={session.user.name ?? 'Account'}
-              className="h-5 w-5 rounded-full object-cover"
+              className="h-6 w-6 rounded-full object-cover"
             />
           ) : (
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-nimbus-500 text-[10px] font-bold text-white">
               {(session.user.name ?? session.user.email ?? 'U').charAt(0).toUpperCase()}
             </span>
           )}

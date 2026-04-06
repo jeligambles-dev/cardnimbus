@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { requireAuth } from '@/lib/auth-guard'
+import { BackHeader } from '@/components/ui/back-header'
 import { getOrCreateSellerProfile } from '@/services/seller.service'
 import { getReviewsForUser } from '@/services/review.service'
 import { db } from '@/lib/db'
@@ -68,9 +69,10 @@ export default async function SellerReviewsPage({ searchParams }: ReviewsPagePro
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <BackHeader title="Reviews" href="/marketplace/account" />
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-text-primary">Reviews</h1>
+          <h1 className="hidden md:block text-2xl font-bold text-text-primary">Reviews</h1>
           <p className="text-sm text-text-muted mt-1">
             Reviews you&apos;ve received and orders awaiting your review.
           </p>

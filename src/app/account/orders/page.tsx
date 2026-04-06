@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { requireAuth } from '@/lib/auth-guard'
+import { BackHeader } from '@/components/ui/back-header'
 import { getUserOrders } from '@/services/order.service'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
@@ -41,7 +42,8 @@ export default async function AccountOrdersPage({ searchParams }: OrdersPageProp
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="flex items-center gap-3 mb-8">
+        <BackHeader title="Orders" href="/marketplace/account" />
+        <div className="hidden md:flex items-center gap-3 mb-8">
           <Link
             href="/account"
             className="text-text-secondary hover:text-text-primary transition-colors text-sm"

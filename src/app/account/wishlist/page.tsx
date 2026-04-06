@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { requireAuth } from '@/lib/auth-guard'
+import { BackHeader } from '@/components/ui/back-header'
 import { getUserWishlist } from '@/services/wishlist.service'
 import { formatCurrency } from '@/lib/utils'
 import { RemoveWishlistItem } from '@/components/wishlist/remove-wishlist-item'
@@ -41,6 +42,7 @@ export default async function WishlistPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+        <BackHeader title="Wishlist" href="/account" />
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-text-secondary">
           <Link href="/account" className="hover:text-text-primary transition-colors">Account</Link>
@@ -50,7 +52,7 @@ export default async function WishlistPage() {
 
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary">Wishlist</h1>
+            <h1 className="hidden md:block text-2xl font-bold text-text-primary">Wishlist</h1>
             <p className="mt-1 text-sm text-text-secondary">{items.length} saved item{items.length !== 1 ? 's' : ''}</p>
           </div>
         </div>

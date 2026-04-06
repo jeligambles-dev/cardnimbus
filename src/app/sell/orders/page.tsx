@@ -1,5 +1,6 @@
 import { requireAuth } from '@/lib/auth-guard'
 import { getOrCreateSellerProfile } from '@/services/seller.service'
+import { BackHeader } from '@/components/ui/back-header'
 import { db } from '@/lib/db'
 import { formatCurrency } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -66,9 +67,10 @@ export default async function SellerOrdersPage({ searchParams }: OrdersPageProps
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <BackHeader title="Sales & Payouts" href="/marketplace/account" />
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-text-primary">Seller Orders</h1>
+          <h1 className="hidden md:block text-2xl font-bold text-text-primary">Seller Orders</h1>
           <p className="text-sm text-text-muted mt-1">
             Incoming orders to fulfill.
           </p>
