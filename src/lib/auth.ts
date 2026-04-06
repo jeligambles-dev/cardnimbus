@@ -94,14 +94,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id as string;
         (session.user as any).role = token.role as string;
 
-        // Always fetch latest avatar from DB so uploaded photos show immediately
+        // Always fetch latest user data from DB so role/avatar/name are current
         try {
           const dbUser = await db.user.findUnique({
             where: { id: token.id as string },
-            select: { avatar: true, name: true },
+            select: { avatar: true, name: true, role: true },
           });
-          if (dbUser?.avatar) session.user.image = dbUser.avatar;
-          if (dbUser?.name) session.user.name = dbUser.name;
+          if (dbUser) {
+            if (dbUser.avatar) session.user.image = dbUser.avatar;
+            if (dbUser.name) session.user.name = dbUser.name;
+            (session.user as any).role = dbUser.role;
+          }
         } catch {
           // ignore — use whatever's in token
         }

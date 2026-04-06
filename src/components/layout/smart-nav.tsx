@@ -15,6 +15,9 @@ export function SmartNav() {
     "/account/offers",
   ];
 
+  // Admin has its own layout — no nav
+  if (pathname.startsWith("/admin")) return null;
+
   const isMarketplace =
     pathname.startsWith("/marketplace") ||
     pathname.startsWith("/seller") ||
