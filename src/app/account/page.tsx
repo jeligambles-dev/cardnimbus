@@ -96,7 +96,7 @@ export default async function AccountPage() {
             </Card>
           </Link>
 
-          <Link href="/account/submissions">
+          <Link href="/sell-your-cards">
             <Card hover className="p-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-nimbus-500/15 border border-nimbus-300 flex items-center justify-center text-2xl">

@@ -7,6 +7,7 @@ import { useCartStore } from '@/stores/cart-store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
+import { CountrySelectGrouped } from '@/components/country-select-grouped'
 import { formatCurrency } from '@/lib/utils'
 
 type PaymentMethod = 'stripe' | 'paypal'
@@ -171,12 +172,11 @@ export default function CheckoutPage() {
                     error={errors.postalCode}
                     placeholder="10001"
                   />
-                  <Input
+                  <CountrySelectGrouped
                     label="Country"
                     value={form.country}
-                    onChange={(e) => updateField('country', e.target.value)}
+                    onChange={(v) => updateField('country', v)}
                     error={errors.country}
-                    placeholder="US"
                   />
                 </div>
               </div>
