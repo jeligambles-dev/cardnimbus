@@ -158,6 +158,60 @@ export default function AdminSettingsPage() {
           )}
         </Card>
 
+        {/* Email Templates */}
+        <Card className="p-6 mb-6">
+          <h2 className="text-lg font-bold text-text-primary mb-1">Email Templates</h2>
+          <p className="text-sm text-text-muted mb-6">
+            Customize offer notification emails. Use {'{{variables}}'} — they&apos;re replaced with actual values.
+          </p>
+          <div className="space-y-6">
+            <EmailTemplate
+              title="Offer Received (to seller)"
+              vars="{{listingTitle}}, {{amount}}, {{offersUrl}}"
+              subjectKey="email.offer_received.subject"
+              bodyKey="email.offer_received.body"
+              defaultSubject='New offer on {{listingTitle}}'
+              defaultBody='You received an offer of {{amount}} on your listing "{{listingTitle}}". Review it and respond to the buyer.'
+              settings={settings}
+              onSave={updateSetting}
+              saving={saving}
+            />
+            <EmailTemplate
+              title="Offer Accepted (to buyer)"
+              vars="{{listingTitle}}, {{amount}}, {{offersUrl}}"
+              subjectKey="email.offer_accepted.subject"
+              bodyKey="email.offer_accepted.body"
+              defaultSubject='Your offer on {{listingTitle}} was accepted!'
+              defaultBody='Great news! The seller accepted your offer of {{amount}} on "{{listingTitle}}". Complete the purchase to secure the item.'
+              settings={settings}
+              onSave={updateSetting}
+              saving={saving}
+            />
+            <EmailTemplate
+              title="Offer Rejected (to buyer)"
+              vars="{{listingTitle}}, {{marketplaceUrl}}"
+              subjectKey="email.offer_rejected.subject"
+              bodyKey="email.offer_rejected.body"
+              defaultSubject='Your offer on {{listingTitle}} was declined'
+              defaultBody='Unfortunately, the seller declined your offer on "{{listingTitle}}". Browse the marketplace for more items.'
+              settings={settings}
+              onSave={updateSetting}
+              saving={saving}
+            />
+            <EmailTemplate
+              title="Counter Offer (to buyer)"
+              vars="{{listingTitle}}, {{counterAmount}}, {{offersUrl}}"
+              subjectKey="email.offer_countered.subject"
+              bodyKey="email.offer_countered.body"
+              defaultSubject='Counter offer on {{listingTitle}}'
+              defaultBody='The seller countered with {{counterAmount}} on "{{listingTitle}}". Review the counter offer and decide.'
+              settings={settings}
+              onSave={updateSetting}
+              saving={saving}
+            />
+          </div>
+        </Card>
+
         {/* Environment info */}
         <Card className="p-6">
           <h2 className="text-lg font-bold text-text-primary mb-1">Environment</h2>
@@ -176,5 +230,115 @@ export default function AdminSettingsPage() {
         </Card>
       </div>
     </main>
+  )
+}
+
+// ─── Email Template Editor ──────────────────────────────────────────────────
+
+function EmailTemplate({
+  title,
+  vars,
+  subjectKey,
+  bodyKey,
+  defaultSubject,
+  defaultBody,
+  settings,
+  onSave,
+  saving,
+}: {
+  title: string
+  vars: string
+  subjectKey: string
+  bodyKey: string
+  defaultSubject: string
+  defaultBody: string
+  settings: SettingsMap
+  onSave: (key: string, value: string) => Promise<void>
+  saving: string | null
+}) {
+  const [expanded, setExpanded] = useState(false)
+  const [subject, setSubject] = useState(settings[subjectKey] ?? '')
+  const [body, setBody] = useState(settings[bodyKey] ?? '')
+
+  const hasCustom = !!settings[subjectKey] || !!settings[bodyKey]
+
+  async function save() {
+    await onSave(subjectKey, subject || defaultSubject)
+    await onSave(bodyKey, body || defaultBody)
+  }
+
+  async function reset() {
+    await onSave(subjectKey, defaultSubject)
+    await onSave(bodyKey, defaultBody)
+    setSubject(defaultSubject)
+    setBody(defaultBody)
+  }
+
+  return (
+    <div className="rounded-xl border border-surface-border bg-surface-raised overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-surface-overlay transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-semibold text-text-primary">{title}</span>
+          {hasCustom && (
+            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
+              Custom
+            </span>
+          )}
+        </div>
+        <svg
+          className={`h-4 w-4 text-text-muted transition-transform ${expanded ? 'rotate-180' : ''}`}
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {expanded && (
+        <div className="border-t border-surface-border p-4 space-y-3">
+          <p className="text-xs text-text-muted">
+            Variables: <code className="text-nimbus-600">{vars}</code>
+          </p>
+          <div>
+            <label className="text-xs font-semibold text-text-muted block mb-1">Subject</label>
+            <input
+              value={subject || defaultSubject}
+              onChange={(e) => setSubject(e.target.value)}
+              className="w-full rounded-lg border border-surface-border bg-white px-3 py-2 text-sm outline-none focus:border-nimbus-500 focus:ring-2 focus:ring-nimbus-500/20"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-text-muted block mb-1">Body</label>
+            <textarea
+              value={body || defaultBody}
+              onChange={(e) => setBody(e.target.value)}
+              rows={3}
+              className="w-full rounded-lg border border-surface-border bg-white px-3 py-2 text-sm outline-none resize-none focus:border-nimbus-500 focus:ring-2 focus:ring-nimbus-500/20"
+            />
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={save}
+              disabled={saving !== null}
+              className="rounded-lg bg-nimbus-500 px-4 py-2 text-xs font-bold text-white hover:bg-nimbus-600 transition-colors disabled:opacity-50"
+            >
+              {saving ? 'Saving…' : 'Save Template'}
+            </button>
+            <button
+              type="button"
+              onClick={reset}
+              disabled={saving !== null}
+              className="rounded-lg border border-surface-border bg-white px-4 py-2 text-xs font-bold text-text-secondary hover:bg-surface-overlay transition-colors disabled:opacity-50"
+            >
+              Reset to Default
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }

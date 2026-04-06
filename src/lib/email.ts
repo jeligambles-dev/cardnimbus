@@ -15,6 +15,8 @@ async function sendEmail(params: { from: string; to: string; subject: string; ht
   await resend.emails.send(params);
 }
 
+import { getSetting } from "@/services/settings.service";
+
 const ACCENT = "#f97316";
 const DARK_BG = "#1a1a25";
 const BODY_BG = "#f9f9fb";
@@ -272,4 +274,114 @@ export async function sendPasswordReset(
     subject: "Reset your Card Nimbus password",
     html: baseTemplate("Password Reset", body),
   });
+}
+
+// ─── Template interpolation ─────────────────────────────────────────────────
+
+function interpolate(template: string, vars: Record<string, string>): string {
+  return template.replace(/\{\{(\w+)\}\}/g, (_, key) => vars[key] ?? `{{${key}}}`);
+}
+
+async function getTemplate(
+  key: string,
+  defaultSubject: string,
+  defaultBody: string,
+  vars: Record<string, string>
+): Promise<{ subject: string; body: string }> {
+  const [customSubject, customBody] = await Promise.all([
+    getSetting(`email.${key}.subject`).catch(() => null),
+    getSetting(`email.${key}.body`).catch(() => null),
+  ]);
+  return {
+    subject: interpolate(customSubject ?? defaultSubject, vars),
+    body: interpolate(customBody ?? defaultBody, vars),
+  };
+}
+
+// ─── Offer emails ───────────────────────────────────────────────────────────
+
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXTAUTH_URL ?? "https://cardnimbus.com";
+
+export async function sendOfferReceivedEmail(
+  to: string,
+  { listingTitle, amount }: { listingTitle: string; amount: number }
+): Promise<void> {
+  const vars = { listingTitle, amount: `$${amount.toFixed(2)}`, offersUrl: `${SITE_URL}/sell/offers` };
+  const { subject, body: bodyText } = await getTemplate(
+    "offer_received",
+    "New offer on {{listingTitle}}",
+    "You received an offer of {{amount}} on your listing \"{{listingTitle}}\". Review it and respond to the buyer.",
+    vars
+  );
+
+  const body = `
+    ${heading("New Offer Received")}
+    ${subheading(bodyText)}
+    ${button("View Offers", vars.offersUrl)}
+  `;
+
+  await sendEmail({ from: FROM_ADDRESS, to, subject, html: baseTemplate("New Offer", body) });
+}
+
+export async function sendOfferAcceptedEmail(
+  to: string,
+  { listingTitle, amount }: { listingTitle: string; amount: number }
+): Promise<void> {
+  const vars = { listingTitle, amount: `$${amount.toFixed(2)}`, offersUrl: `${SITE_URL}/account/offers` };
+  const { subject, body: bodyText } = await getTemplate(
+    "offer_accepted",
+    "Your offer on {{listingTitle}} was accepted!",
+    "Great news! The seller accepted your offer of {{amount}} on \"{{listingTitle}}\". Complete the purchase to secure the item.",
+    vars
+  );
+
+  const body = `
+    ${heading("Offer Accepted!")}
+    ${subheading(bodyText)}
+    ${button("View My Offers", vars.offersUrl)}
+  `;
+
+  await sendEmail({ from: FROM_ADDRESS, to, subject, html: baseTemplate("Offer Accepted", body) });
+}
+
+export async function sendOfferRejectedEmail(
+  to: string,
+  { listingTitle }: { listingTitle: string }
+): Promise<void> {
+  const vars = { listingTitle, marketplaceUrl: `${SITE_URL}/marketplace?view=all` };
+  const { subject, body: bodyText } = await getTemplate(
+    "offer_rejected",
+    "Your offer on {{listingTitle}} was declined",
+    "Unfortunately, the seller declined your offer on \"{{listingTitle}}\". Browse the marketplace for more items.",
+    vars
+  );
+
+  const body = `
+    ${heading("Offer Declined")}
+    ${subheading(bodyText)}
+    ${button("Browse Marketplace", vars.marketplaceUrl)}
+  `;
+
+  await sendEmail({ from: FROM_ADDRESS, to, subject, html: baseTemplate("Offer Declined", body) });
+}
+
+export async function sendOfferCounteredEmail(
+  to: string,
+  { listingTitle, counterAmount }: { listingTitle: string; counterAmount: number }
+): Promise<void> {
+  const vars = { listingTitle, counterAmount: `$${counterAmount.toFixed(2)}`, offersUrl: `${SITE_URL}/account/offers` };
+  const { subject, body: bodyText } = await getTemplate(
+    "offer_countered",
+    "Counter offer on {{listingTitle}}",
+    "The seller countered with {{counterAmount}} on \"{{listingTitle}}\". Review the counter offer and decide.",
+    vars
+  );
+
+  const body = `
+    ${heading("Counter Offer Received")}
+    ${subheading(bodyText)}
+    ${button("Review Counter Offer", vars.offersUrl)}
+  `;
+
+  await sendEmail({ from: FROM_ADDRESS, to, subject, html: baseTemplate("Counter Offer", body) });
 }

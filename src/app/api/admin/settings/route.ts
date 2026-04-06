@@ -35,12 +35,11 @@ export async function PUT(request: Request) {
     }
 
     // Whitelist of editable keys
-    const ALLOWED = [
-      "payments.stripe.enabled",
-      "payments.paypal.enabled",
-      "payments.paypal.mode",
+    const ALLOWED_PREFIXES = [
+      "payments.",
+      "email.",
     ];
-    if (!ALLOWED.includes(key)) {
+    if (!ALLOWED_PREFIXES.some((p) => key.startsWith(p))) {
       throw new ValidationError(`Setting "${key}" is not configurable`);
     }
 

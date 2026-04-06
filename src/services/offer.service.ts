@@ -2,6 +2,12 @@ import { db } from "@/lib/db";
 import { OfferStatus, ListingSaleStatus, NotificationType } from "@prisma/client";
 import { NotFoundError, ValidationError, ForbiddenError } from "@/lib/errors";
 import { createNotification } from "./notification.service";
+import {
+  sendOfferReceivedEmail,
+  sendOfferAcceptedEmail,
+  sendOfferRejectedEmail,
+  sendOfferCounteredEmail,
+} from "@/lib/email";
 
 export async function createOffer(
   listingId: string,
@@ -11,7 +17,7 @@ export async function createOffer(
 ) {
   const listing = await db.listing.findUnique({
     where: { id: listingId },
-    include: { seller: true },
+    include: { seller: { include: { user: { select: { email: true } } } } },
   });
 
   if (!listing) {
@@ -62,6 +68,12 @@ export async function createOffer(
     `Someone offered $${amount.toFixed(2)} on "${listing.title}"`,
     `/sell/offers`
   ).catch(() => {});
+
+  // Email the seller (fire-and-forget)
+  sendOfferReceivedEmail(listing.seller.user.email, {
+    listingTitle: listing.title,
+    amount,
+  }).catch((err) => console.error("[offer] sendOfferReceivedEmail failed:", err));
 
   return offer;
 }
@@ -173,6 +185,7 @@ export async function respondToOffer(
       listing: {
         include: { seller: true },
       },
+      buyer: { select: { email: true } },
     },
   });
 
@@ -190,6 +203,7 @@ export async function respondToOffer(
 
   const listingTitle = offer.listing.title;
   const buyerId = offer.buyerId;
+  const buyerEmail = offer.buyer.email;
 
   const result = await db.$transaction(async (tx) => {
     if (action === "accept") {
@@ -283,6 +297,21 @@ export async function respondToOffer(
       n.msg,
       `/account/offers`
     ).catch(() => {});
+  }
+
+  // Email the buyer (fire-and-forget)
+  if (action === "accept") {
+    sendOfferAcceptedEmail(buyerEmail, { listingTitle, amount: offer.amount }).catch((err) =>
+      console.error("[offer] sendOfferAcceptedEmail failed:", err)
+    );
+  } else if (action === "reject") {
+    sendOfferRejectedEmail(buyerEmail, { listingTitle }).catch((err) =>
+      console.error("[offer] sendOfferRejectedEmail failed:", err)
+    );
+  } else if (action === "counter" && counterAmount) {
+    sendOfferCounteredEmail(buyerEmail, { listingTitle, counterAmount }).catch((err) =>
+      console.error("[offer] sendOfferCounteredEmail failed:", err)
+    );
   }
 
   return result;
