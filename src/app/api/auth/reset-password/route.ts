@@ -11,8 +11,14 @@ export async function POST(request: NextRequest) {
     if (!token || typeof token !== "string") {
       throw new ValidationError("Token is required");
     }
-    if (!password || typeof password !== "string" || password.length < 12) {
-      throw new ValidationError("Password must be at least 12 characters");
+    if (!password || typeof password !== "string" || password.length < 7) {
+      throw new ValidationError("Password must be at least 7 characters");
+    }
+    if (!/\d/.test(password)) {
+      throw new ValidationError("Password must include a number");
+    }
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+      throw new ValidationError("Password must include a special character");
     }
 
     const record = await db.passwordResetToken.findUnique({

@@ -13,15 +13,23 @@ export default function SignupPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [country, setCountry] = useState('')
-  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; country?: string; general?: string }>({})
+  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; confirmPassword?: string; country?: string; general?: string }>({})
   const [loading, setLoading] = useState(false)
 
   function validate() {
     const next: typeof errors = {}
     if (!name.trim()) next.name = 'Name is required'
     if (!email.trim()) next.email = 'Email is required'
-    if (password.length < 12) next.password = 'Password must be at least 12 characters'
+    if (password.length < 7) {
+      next.password = 'Password must be at least 7 characters'
+    } else if (!/\d/.test(password)) {
+      next.password = 'Password must include a number'
+    } else if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+      next.password = 'Password must include a special character'
+    }
+    if (password !== confirmPassword) next.confirmPassword = 'Passwords do not match'
     if (!country) next.country = 'Country is required'
     return next
   }
@@ -103,13 +111,23 @@ export default function SignupPage() {
             <Input
               label="Password"
               type="password"
-              placeholder="At least 12 characters"
+              placeholder="Min 7 chars, number + special character"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               error={errors.password}
               required
               autoComplete="new-password"
-              minLength={12}
+              minLength={7}
+            />
+            <Input
+              label="Confirm Password"
+              type="password"
+              placeholder="Re-enter your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              error={errors.confirmPassword}
+              required
+              autoComplete="new-password"
             />
             <div>
               <CountrySelect

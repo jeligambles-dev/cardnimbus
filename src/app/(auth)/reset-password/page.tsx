@@ -20,8 +20,16 @@ export default function ResetPasswordPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
-    if (password.length < 12) {
-      setError('Password must be at least 12 characters')
+    if (password.length < 7) {
+      setError('Password must be at least 7 characters')
+      return
+    }
+    if (!/\d/.test(password)) {
+      setError('Password must include a number')
+      return
+    }
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+      setError('Password must include a special character')
       return
     }
     if (password !== confirm) {

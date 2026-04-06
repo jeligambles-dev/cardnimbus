@@ -18,8 +18,14 @@ export async function POST(request: NextRequest) {
     if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       throw new ValidationError('A valid email address is required')
     }
-    if (!password || typeof password !== 'string' || password.length < 12) {
-      throw new ValidationError('Password must be at least 12 characters')
+    if (!password || typeof password !== 'string' || password.length < 7) {
+      throw new ValidationError('Password must be at least 7 characters')
+    }
+    if (!/\d/.test(password)) {
+      throw new ValidationError('Password must include a number')
+    }
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+      throw new ValidationError('Password must include a special character')
     }
 
     const normalizedEmail = email.trim().toLowerCase()
