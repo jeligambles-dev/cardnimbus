@@ -220,7 +220,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
                       Certified
                     </p>
                     <p className="text-sm font-bold text-text-primary">
-                      {slabInfo.gradingCompany} Graded
+                      {slabInfo.gradingCompany} Slab
                     </p>
                   </div>
                 </div>

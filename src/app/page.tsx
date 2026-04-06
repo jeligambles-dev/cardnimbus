@@ -17,7 +17,7 @@ function SellYourCardsCTA() {
           </h2>
           <p className="text-text-secondary text-base sm:text-lg max-w-xl leading-relaxed">
             Submit photos of your cards, receive a fair market offer, and get paid quickly.
-            We handle the grading, pricing, and listing — you just ship them in.
+            We handle the pricing and listing — you just ship them in.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <Link

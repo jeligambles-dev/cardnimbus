@@ -1,36 +1,30 @@
 import Link from 'next/link'
 
 const SHOP_LINKS = [
-  { label: 'All Products', href: '/shop' },
   { label: 'Marketplace', href: '/marketplace' },
   { label: 'Raffles', href: '/raffles' },
   { label: 'Mystery Packs', href: '/mystery' },
   { label: 'Packs', href: '/shop?category=PACK' },
   { label: 'Booster Boxes', href: '/shop?category=BOX' },
-  { label: 'Graded Slabs', href: '/shop?category=SLAB' },
+  { label: 'Slabs', href: '/shop?category=SLAB' },
   { label: 'Singles', href: '/shop?category=SINGLE' },
-  { label: 'New Arrivals', href: '/shop?sort=newest' },
-  { label: 'Deals', href: '/deals' },
   { label: 'Sell Your Cards', href: '/sell-your-cards' },
-  { label: 'Sell on Marketplace', href: '/account/seller' },
+  { label: 'Sell on Marketplace', href: '/sell' },
 ]
 
 const HELP_LINKS = [
-  { label: 'FAQ', href: '/help/faq' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'How Raffles Work', href: '/help/raffles' },
   { label: 'How Mystery Works', href: '/help/mystery' },
   { label: 'Shipping & Returns', href: '/help/shipping' },
-  { label: 'Grading Guide', href: '/help/grading' },
-  { label: 'Contact Us', href: '/help/contact' },
+  { label: 'Contact Us', href: '/contact' },
   { label: 'Track Order', href: '/account/orders' },
 ]
 
 const COMPANY_LINKS = [
   { label: 'About Us', href: '/about' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'Privacy Policy', href: '/legal/privacy' },
-  { label: 'Terms of Service', href: '/legal/terms' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Service', href: '/terms' },
 ]
 
 export function Footer() {
