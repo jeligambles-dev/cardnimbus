@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { MakeOfferModal } from './make-offer-modal'
 import { BuyNowButton } from './buy-now-button'
@@ -19,7 +20,10 @@ export function ListingDetailActions({
   listingId,
   listingTitle,
   listingPrice,
+  sellerUserId,
 }: ListingDetailActionsProps) {
+  const { data: session } = useSession()
+  const isOwnListing = session?.user?.id === sellerUserId
   const router = useRouter()
   const [offerOpen, setOfferOpen] = useState(false)
   const [messaging, setMessaging] = useState(false)
@@ -52,27 +56,40 @@ export function ListingDetailActions({
   return (
     <>
       <div className="mt-6 space-y-3">
-        <BuyNowButton listingId={listingId} size="md" />
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button
-            variant="primary"
-            size="lg"
-            className="flex-1"
-            onClick={() => setOfferOpen(true)}
-          >
-            🤝 Make an Offer
-          </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            className="flex-1"
-            onClick={handleMessageSeller}
-            disabled={messaging}
-          >
-            {messaging ? 'Starting chat...' : '💬 Message Seller'}
-          </Button>
-        </div>
-        <SaveListingButton listingId={listingId} />
+        {isOwnListing ? (
+          <div className="rounded-xl border border-surface-border bg-surface-overlay p-4 text-center">
+            <p className="text-sm font-semibold text-text-primary">This is your listing</p>
+            <p className="text-xs text-text-muted mt-1">
+              <a href="/sell/listings" className="text-nimbus-600 hover:text-nimbus-700 font-bold">
+                Manage your listings →
+              </a>
+            </p>
+          </div>
+        ) : (
+          <>
+            <BuyNowButton listingId={listingId} size="md" />
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                variant="primary"
+                size="lg"
+                className="flex-1"
+                onClick={() => setOfferOpen(true)}
+              >
+                🤝 Make an Offer
+              </Button>
+              <Button
+                variant="secondary"
+                size="lg"
+                className="flex-1"
+                onClick={handleMessageSeller}
+                disabled={messaging}
+              >
+                {messaging ? 'Starting chat...' : '💬 Message Seller'}
+              </Button>
+            </div>
+            <SaveListingButton listingId={listingId} />
+          </>
+        )}
       </div>
 
       <MakeOfferModal

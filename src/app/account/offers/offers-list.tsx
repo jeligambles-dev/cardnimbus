@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { formatCurrency } from '@/lib/utils'
 import type { OfferStatus } from '@prisma/client'
 
@@ -31,9 +33,10 @@ export function OffersList({ offers: initial }: { offers: Offer[] }) {
   const router = useRouter()
   const [offers, setOffers] = useState(initial)
   const [cancelling, setCancelling] = useState<string | null>(null)
+  const [confirmCancel, setConfirmCancel] = useState<Offer | null>(null)
 
   async function handleCancel(offerId: string) {
-    if (!confirm('Cancel this offer?')) return
+    setConfirmCancel(null)
     setCancelling(offerId)
     try {
       const res = await fetch(`/api/offers/${offerId}/cancel`, { method: 'POST' })
@@ -52,6 +55,7 @@ export function OffersList({ offers: initial }: { offers: Offer[] }) {
   }
 
   return (
+    <>
     <ul className="space-y-3">
       {offers.map((offer) => {
         const cfg = STATUS_MAP[offer.status] ?? { variant: 'default' as BadgeVariant, label: offer.status }
@@ -97,7 +101,7 @@ export function OffersList({ offers: initial }: { offers: Offer[] }) {
               <div className="mt-3 pt-3 border-t border-surface-border flex justify-end">
                 <button
                   type="button"
-                  onClick={() => handleCancel(offer.id)}
+                  onClick={() => setConfirmCancel(offer)}
                   disabled={cancelling === offer.id}
                   className="text-xs font-bold text-red-600 hover:text-red-700 disabled:opacity-50 transition-colors"
                 >
@@ -109,5 +113,59 @@ export function OffersList({ offers: initial }: { offers: Offer[] }) {
         )
       })}
     </ul>
+
+    {/* Cancel confirmation popup */}
+    <AnimatePresence>
+      {confirmCancel && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+          onClick={() => setConfirmCancel(null)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm rounded-2xl border border-surface-border bg-white p-6 shadow-2xl text-center"
+          >
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-600">
+              <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-bold text-text-primary mb-1">Cancel this offer?</h3>
+            <p className="text-sm text-text-muted mb-2">
+              Your offer of <span className="font-bold text-nimbus-600">{formatCurrency(confirmCancel.amount)}</span> on
+            </p>
+            <p className="text-sm font-semibold text-text-primary truncate mb-5">
+              &quot;{confirmCancel.listing.title}&quot;
+            </p>
+            <div className="flex gap-3">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="flex-1"
+                onClick={() => setConfirmCancel(null)}
+              >
+                Keep Offer
+              </Button>
+              <Button
+                variant="danger"
+                size="lg"
+                className="flex-1"
+                onClick={() => handleCancel(confirmCancel.id)}
+                loading={cancelling === confirmCancel.id}
+              >
+                Cancel Offer
+              </Button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   )
 }

@@ -166,11 +166,12 @@ function PhotoUpload({
       const uploaded: string[] = []
       for (const file of Array.from(files)) {
         const form = new FormData()
-        form.append('file', file)
+        form.append('files', file)
         const res = await fetch('/api/upload', { method: 'POST', body: form })
         if (!res.ok) throw new Error('Upload failed')
         const data = await res.json()
-        uploaded.push(data.url)
+        const upload = data.uploads?.[0]
+        if (upload?.url) uploaded.push(upload.url)
       }
       onImagesChange([...images, ...uploaded])
     } catch {
