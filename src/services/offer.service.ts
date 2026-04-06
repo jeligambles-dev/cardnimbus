@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
-import { OfferStatus, ListingSaleStatus } from "@prisma/client";
+import { OfferStatus, ListingSaleStatus, NotificationType } from "@prisma/client";
 import { NotFoundError, ValidationError, ForbiddenError } from "@/lib/errors";
+import { createNotification } from "./notification.service";
 
 export async function createOffer(
   listingId: string,
@@ -29,8 +30,8 @@ export async function createOffer(
     throw new ValidationError("Offer amount must be greater than zero");
   }
 
-  return db.$transaction(async (tx) => {
-    const offer = await tx.offer.create({
+  const offer = await db.$transaction(async (tx) => {
+    const o = await tx.offer.create({
       data: {
         listingId,
         buyerId,
@@ -42,7 +43,7 @@ export async function createOffer(
 
     await tx.offerEvent.create({
       data: {
-        offerId: offer.id,
+        offerId: o.id,
         actorId: buyerId,
         type: "CREATED",
         amount,
@@ -50,8 +51,19 @@ export async function createOffer(
       },
     });
 
-    return offer;
+    return o;
   });
+
+  // Notify the seller (fire-and-forget)
+  createNotification(
+    listing.seller.userId,
+    NotificationType.SYSTEM,
+    "New offer received",
+    `Someone offered $${amount.toFixed(2)} on "${listing.title}"`,
+    `/sell/offers`
+  ).catch(() => {});
+
+  return offer;
 }
 
 export async function getOffersByListing(listingId: string) {
@@ -176,7 +188,10 @@ export async function respondToOffer(
     throw new ValidationError(`Offer is already ${offer.status.toLowerCase()}`);
   }
 
-  return db.$transaction(async (tx) => {
+  const listingTitle = offer.listing.title;
+  const buyerId = offer.buyerId;
+
+  const result = await db.$transaction(async (tx) => {
     if (action === "accept") {
       const [updatedOffer] = await Promise.all([
         tx.offer.update({
@@ -243,4 +258,32 @@ export async function respondToOffer(
 
     throw new ValidationError("Invalid action");
   });
+
+  // Notify the buyer (fire-and-forget)
+  const notifications: Record<string, { title: string; msg: string }> = {
+    accept: {
+      title: "Offer accepted!",
+      msg: `Your offer on "${listingTitle}" was accepted`,
+    },
+    reject: {
+      title: "Offer declined",
+      msg: `Your offer on "${listingTitle}" was declined`,
+    },
+    counter: {
+      title: "Counter offer received",
+      msg: `The seller countered with $${counterAmount?.toFixed(2)} on "${listingTitle}"`,
+    },
+  };
+  const n = notifications[action];
+  if (n) {
+    createNotification(
+      buyerId,
+      NotificationType.SYSTEM,
+      n.title,
+      n.msg,
+      `/account/offers`
+    ).catch(() => {});
+  }
+
+  return result;
 }
