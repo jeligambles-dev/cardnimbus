@@ -34,6 +34,7 @@ interface ListingCardProps {
       user: {
         name: string | null
         avatar: string | null
+        country?: string | null
       }
     }
   }
@@ -140,15 +141,15 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
           {/* INFO STRIP — category + condition + seller (like card type/stats) */}
           <div className="flex items-center justify-between gap-2 px-1 py-1 border-y border-black">
             <div className="flex items-center gap-1.5 min-w-0">
-              <span className="rounded bg-nimbus-100 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-nimbus-700 shrink-0">
+              <span className="rounded-md bg-nimbus-100 px-2 py-0.5 text-[11px] font-black uppercase tracking-wide text-nimbus-700 shrink-0">
                 {listing.category.replace(/_/g, ' ')}
               </span>
               {listing.category === 'SLAB' && listing.gradingCompany && listing.grade != null ? (
-                <span className="rounded bg-nimbus-500 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shrink-0">
+                <span className="rounded-md bg-nimbus-500 px-2 py-0.5 text-[11px] font-black uppercase tracking-wide text-white shrink-0">
                   {listing.gradingCompany} {listing.grade.toFixed(1)}
                 </span>
               ) : listing.condition && (
-                <span className="rounded bg-surface-overlay px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-text-secondary shrink-0">
+                <span className="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-black uppercase tracking-wide text-text-secondary shrink-0">
                   {listing.condition}
                 </span>
               )}
@@ -158,9 +159,28 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
 
           {/* SELLER STRIP */}
           <div className="flex items-center justify-between gap-2 px-1 pb-1 border-b border-black">
-            <span className="text-[11px] text-text-secondary truncate font-semibold">
-              {sellerName}
-            </span>
+            <div className="flex items-center gap-1.5 min-w-0">
+              {listing.seller.user.avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={listing.seller.user.avatar}
+                  alt={sellerName}
+                  className="h-4 w-4 rounded-full object-cover shrink-0"
+                />
+              ) : (
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-nimbus-500 text-[7px] font-bold text-white shrink-0">
+                  {sellerName.charAt(0).toUpperCase()}
+                </span>
+              )}
+              <span className="text-[11px] text-text-secondary truncate font-semibold">
+                {sellerName}
+              </span>
+            </div>
+            {listing.seller.user.country && (
+              <span className="text-[9px] font-bold text-text-muted uppercase shrink-0">
+                {listing.seller.user.country}
+              </span>
+            )}
             {sellerBadges && sellerBadges.length > 0 && (
               <div className="flex items-center gap-0.5 shrink-0">
                 {sellerBadges.slice(0, 2).map((b) => (
