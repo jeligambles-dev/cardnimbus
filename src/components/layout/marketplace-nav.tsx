@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { motion } from "framer-motion";
 import { SearchBar } from "@/components/search/search-bar";
+import { NotificationBell } from "./notification-bell";
 
 const MARKETPLACE_LINKS = [
   { label: "Home", href: "/marketplace" },
@@ -210,6 +211,7 @@ export function MarketplaceNav() {
               </svg>
               Sell
             </Link>
+            <NotificationBell />
             <MarketplaceAuth />
             {/* Mobile menu button */}
             <button

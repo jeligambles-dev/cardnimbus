@@ -7,6 +7,7 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/stores/cart-store'
 import { SearchBar } from '@/components/search/search-bar'
+import { NotificationBell } from './notification-bell'
 
 const NAV_LINKS = [
   { label: 'Marketplace', href: '/marketplace' },
@@ -233,6 +234,7 @@ export function Navbar() {
         {/* Right actions */}
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
           <CartIcon />
+          <NotificationBell />
           <AuthButton />
           {/* Mobile menu button */}
           <button
