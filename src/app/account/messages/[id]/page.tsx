@@ -157,9 +157,9 @@ export default function ChatThreadPage() {
   }
 
   return (
-    <main className="flex flex-col h-screen bg-surface">
+    <main className="flex flex-col h-[100dvh] bg-surface">
       {/* Header */}
-      <div className="shrink-0 border-b border-surface-border bg-surface-raised px-4 py-3 flex items-center gap-3">
+      <div className="shrink-0 border-b border-surface-border bg-surface-raised px-4 py-2.5 flex items-center gap-3">
         <Link
           href="/account/messages"
           className="text-text-muted hover:text-text-primary mr-1"
@@ -204,7 +204,7 @@ export default function ChatThreadPage() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+      <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2">
         {messages.length === 0 && (
           <p className="text-center text-sm text-text-muted py-8">
             No messages yet. Say hello!
@@ -240,7 +240,7 @@ export default function ChatThreadPage() {
               {/* Bubble */}
               <div
                 className={[
-                  'max-w-[70%] rounded-2xl px-4 py-2.5 text-sm',
+                  'max-w-[75%] rounded-2xl px-3 py-2 text-sm',
                   isOwn
                     ? 'bg-nimbus-500 text-white rounded-br-sm'
                     : 'bg-surface-overlay text-text-primary border border-surface-border rounded-bl-sm',
@@ -259,9 +259,10 @@ export default function ChatThreadPage() {
       </div>
 
       {/* Input */}
+      {/* Input — pinned to bottom */}
       <form
         onSubmit={handleSend}
-        className="shrink-0 border-t border-surface-border bg-surface-raised px-4 py-3 flex items-end gap-3"
+        className="shrink-0 border-t border-surface-border bg-surface-raised px-4 py-2 flex items-end gap-2"
       >
         <textarea
           value={input}

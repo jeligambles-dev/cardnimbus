@@ -5,6 +5,7 @@ import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { SmartNav } from "@/components/layout/smart-nav";
 import { Footer } from "@/components/layout/footer";
+import { LayoutShell } from "@/components/layout/layout-shell";
 import { Toaster } from "@/components/ui/toast";
 import { ChatWidget } from "@/components/support/chat-widget";
 import { EmailDiscountPopup } from "@/components/email-discount-popup";
@@ -40,12 +41,10 @@ export default function RootLayout({
     >
       <body className="font-body flex min-h-screen flex-col bg-surface text-text-primary antialiased">
         <SessionProvider>
-          <SmartNav />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <LayoutShell>
+            {children}
+          </LayoutShell>
           <Toaster />
-          <ChatWidget />
-          <EmailDiscountPopup />
         </SessionProvider>
       </body>
     </html>

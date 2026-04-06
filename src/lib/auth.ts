@@ -77,14 +77,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async jwt({ token, user }) {
       if (user) {
-        // First sign-in: fetch role from DB and embed in token
-        const dbUser = await db.user.findUnique({
-          where: { id: user.id },
-          select: { id: true, role: true },
-        });
-        if (dbUser) {
-          token.id = dbUser.id;
-          token.role = dbUser.role;
+        token.id = user.id;
+      }
+      // Always refresh role from DB so admin changes take effect immediately
+      if (token.id) {
+        try {
+          const dbUser = await db.user.findUnique({
+            where: { id: token.id as string },
+            select: { role: true },
+          });
+          if (dbUser) token.role = dbUser.role;
+        } catch {
+          // keep existing token.role
         }
       }
       return token;
