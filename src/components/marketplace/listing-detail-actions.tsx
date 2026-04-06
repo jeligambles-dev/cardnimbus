@@ -60,7 +60,7 @@ export function ListingDetailActions({
             className="flex-1"
             onClick={() => setOfferOpen(true)}
           >
-            Make an Offer
+            🤝 Make an Offer
           </Button>
           <Button
             variant="secondary"
@@ -69,7 +69,7 @@ export function ListingDetailActions({
             onClick={handleMessageSeller}
             disabled={messaging}
           >
-            {messaging ? 'Starting chat...' : 'Message Seller'}
+            {messaging ? 'Starting chat...' : '💬 Message Seller'}
           </Button>
         </div>
         <SaveListingButton listingId={listingId} />

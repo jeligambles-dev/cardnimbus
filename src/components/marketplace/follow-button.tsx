@@ -67,7 +67,7 @@ export function FollowButton({
           : "text-white bg-gradient-to-b from-nimbus-500 to-nimbus-600 shadow-[0_1px_0_0_rgba(255,255,255,0.25)_inset,0_4px_12px_-2px_rgba(255,0,0,0.35)] ring-1 ring-inset ring-white/10 hover:from-nimbus-400 hover:to-nimbus-500 hover:-translate-y-px active:translate-y-0"
       }`}
     >
-      {following ? "Following" : "Follow"}
+      {following ? "✅ Following" : "👤 Follow"}
       {count > 0 && <span className="ml-1 opacity-80">· {count}</span>}
     </button>
   );
