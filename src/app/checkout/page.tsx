@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useCartStore } from '@/stores/cart-store'
@@ -37,6 +37,18 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Partial<ShippingForm>>({})
   const [loading, setLoading] = useState(false)
   const [apiError, setApiError] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'paypal'>('stripe')
+  const [availableMethods, setAvailableMethods] = useState({ stripe: true, paypal: false })
+
+  useEffect(() => {
+    fetch('/api/checkout/payment-methods')
+      .then((r) => r.json())
+      .then((data) => {
+        setAvailableMethods({ stripe: data.stripe ?? true, paypal: data.paypal ?? false })
+        if (!data.stripe && data.paypal) setPaymentMethod('paypal')
+      })
+      .catch(() => {})
+  }, [])
 
   const subtotal = total()
 
@@ -64,7 +76,8 @@ export default function CheckoutPage() {
     setLoading(true)
     setApiError('')
     try {
-      const res = await fetch('/api/checkout/stripe', {
+      const endpoint = paymentMethod === 'paypal' ? '/api/checkout/paypal' : '/api/checkout/stripe'
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -177,13 +190,55 @@ export default function CheckoutPage() {
             {/* Payment Method */}
             <Card className="p-6">
               <h2 className="text-lg font-bold text-text-primary mb-5">Payment Method</h2>
-              <div className="flex items-center gap-4 p-4 rounded-xl border border-nimbus-500 bg-nimbus-500/10">
-                <div>
-                  <p className="font-semibold text-text-primary">Credit / Debit Card</p>
-                  <p className="text-xs text-text-secondary mt-0.5">
-                    Powered by Stripe — all major cards accepted
-                  </p>
-                </div>
+              <div className="space-y-3">
+                {availableMethods.stripe && (
+                  <label
+                    className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-colors ${
+                      paymentMethod === 'stripe'
+                        ? 'border-nimbus-500 bg-nimbus-500/10'
+                        : 'border-surface-border hover:border-nimbus-300'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="stripe"
+                      checked={paymentMethod === 'stripe'}
+                      onChange={() => setPaymentMethod('stripe')}
+                      className="h-4 w-4 text-nimbus-500 focus:ring-nimbus-500"
+                    />
+                    <div className="flex-1">
+                      <p className="font-semibold text-text-primary">💳 Credit / Debit Card</p>
+                      <p className="text-xs text-text-secondary mt-0.5">
+                        Powered by Stripe — all major cards accepted
+                      </p>
+                    </div>
+                  </label>
+                )}
+                {availableMethods.paypal && (
+                  <label
+                    className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-colors ${
+                      paymentMethod === 'paypal'
+                        ? 'border-[#0070BA] bg-[#0070BA]/10'
+                        : 'border-surface-border hover:border-[#0070BA]/50'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="paypal"
+                      checked={paymentMethod === 'paypal'}
+                      onChange={() => setPaymentMethod('paypal')}
+                      className="h-4 w-4 text-[#0070BA] focus:ring-[#0070BA]"
+                    />
+                    <div className="flex-1">
+                      <p className="font-semibold text-text-primary">🅿️ PayPal</p>
+                      <p className="text-xs text-text-secondary mt-0.5">
+                        Pay with your PayPal account
+                      </p>
+                    </div>
+                  </label>
+                )}
               </div>
             </Card>
 

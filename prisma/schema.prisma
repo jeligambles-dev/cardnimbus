@@ -448,6 +448,16 @@ enum NotificationType {
   SYSTEM
 }
 
+// Site Settings (key-value store for admin-managed config)
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
 // Admin
 
 model AuditLog {
