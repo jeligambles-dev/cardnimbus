@@ -42,7 +42,7 @@ export default async function AccountOrdersPage({ searchParams }: OrdersPageProp
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <BackHeader title="Orders" href="/marketplace/account" />
+        <BackHeader title="Orders" crumbs={[{ label: "Marketplace Account", href: "/marketplace/account" }]} />
         <div className="hidden md:flex items-center gap-3 mb-8">
           <Link
             href="/account"

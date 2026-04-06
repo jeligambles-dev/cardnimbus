@@ -50,7 +50,7 @@ export default async function SellerListingsPage({ searchParams }: ListingsPageP
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <BackHeader title="My Listings" href="/marketplace/account" />
+        <BackHeader title="My Listings" crumbs={[{ label: "Marketplace Account", href: "/marketplace/account" }]} />
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>

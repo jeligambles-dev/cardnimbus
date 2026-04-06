@@ -64,7 +64,7 @@ export default async function SubmissionDetailPage({ params }: Props) {
   return (
     <main className="min-h-screen bg-surface">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-        <BackHeader title={title} href="/sell-your-cards/submissions" subtitle="My Submissions" />
+        <BackHeader title={title} crumbs={[{ label: "Account", href: "/account" }, { label: "My Submissions", href: "/sell-your-cards/submissions" }]} />
 
         {/* Breadcrumb — desktop */}
         <nav className="mb-6 hidden md:flex items-center gap-2 text-sm text-text-secondary">

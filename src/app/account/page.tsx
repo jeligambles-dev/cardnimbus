@@ -21,7 +21,7 @@ export default async function AccountPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <BackHeader title="My Account" href="/" />
+        <BackHeader title="My Account" crumbs={[{ label: "Home", href: "/" }]} />
         <h1 className="text-3xl font-bold text-text-primary mb-2 tracking-tight hidden md:block">
           My Account
         </h1>

@@ -32,7 +32,7 @@ export default async function MyOffersPage({ searchParams }: OffersPageProps) {
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <BackHeader title="My Offers" href="/marketplace/account" />
+        <BackHeader title="My Offers" crumbs={[{ label: "Marketplace Account", href: "/marketplace/account" }]} />
 
         <div className="hidden mb-8">
           <h1 className="text-2xl font-bold text-text-primary">My Offers</h1>

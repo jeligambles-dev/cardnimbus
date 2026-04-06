@@ -42,7 +42,7 @@ export default async function WishlistPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-        <BackHeader title="Wishlist" href="/account" />
+        <BackHeader title="Wishlist" crumbs={[{ label: "Account", href: "/account" }]} />
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-text-secondary">
           <Link href="/account" className="hover:text-text-primary transition-colors">Account</Link>

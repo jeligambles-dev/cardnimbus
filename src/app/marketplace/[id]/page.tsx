@@ -114,7 +114,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
     <main className="min-h-screen bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Mobile back header */}
-        <BackHeader title={listing.title} href="/marketplace" subtitle="Marketplace" />
+        <BackHeader title={listing.title} crumbs={[{ label: "Marketplace", href: "/marketplace" }]} />
 
         {/* Desktop breadcrumb */}
         <nav className="hidden items-center gap-2 text-sm text-text-muted mb-6">

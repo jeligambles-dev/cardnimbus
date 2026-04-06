@@ -14,7 +14,7 @@ export default async function LikedItemsPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <BackHeader title="Liked Items" href="/marketplace/account" />
+        <BackHeader title="Liked Items" crumbs={[{ label: "Marketplace Account", href: "/marketplace/account" }]} />
         <h1 className="hidden text-2xl font-bold text-text-primary mb-2">Liked Items</h1>
         <p className="text-sm text-text-secondary mb-8">
           {total} item{total !== 1 ? "s" : ""}

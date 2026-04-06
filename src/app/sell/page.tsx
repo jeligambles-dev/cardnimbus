@@ -339,7 +339,7 @@ export default function CreateListingPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
-        <BackHeader title="Create Listing" href="/marketplace" />
+        <BackHeader title="Create Listing" crumbs={[{ label: "Marketplace", href: "/marketplace" }]} />
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-text-primary hidden md:block">Create Listing</h1>
           <p className="mt-1 text-sm text-text-secondary">

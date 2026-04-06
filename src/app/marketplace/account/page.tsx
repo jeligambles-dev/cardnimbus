@@ -23,7 +23,7 @@ export default async function MarketplaceAccountPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <BackHeader title="Marketplace Account" href="/marketplace" />
+        <BackHeader title="Marketplace Account" crumbs={[{ label: "Marketplace", href: "/marketplace" }]} />
         <h1 className="text-3xl font-bold text-text-primary mb-2 tracking-tight hidden md:block">
           Marketplace Account
         </h1>

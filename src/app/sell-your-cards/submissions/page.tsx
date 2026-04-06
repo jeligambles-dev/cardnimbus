@@ -31,7 +31,7 @@ export default async function MySubmissionsPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-        <BackHeader title="Sell Cards to Us" href="/account" />
+        <BackHeader title="Sell Cards to Us" crumbs={[{ label: "Account", href: "/account" }]} />
 
         {/* Breadcrumb — desktop */}
         <nav className="mb-6 hidden md:flex items-center gap-2 text-sm text-text-secondary">
