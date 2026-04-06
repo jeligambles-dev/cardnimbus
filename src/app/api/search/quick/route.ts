@@ -7,15 +7,18 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const query = (searchParams.get("q") ?? "").trim();
     const limit = Math.min(parseInt(searchParams.get("limit") ?? "6"), 20);
+    const type = searchParams.get("type"); // "product" | "listing" | null (both)
 
     if (!query) {
       return Response.json({ hits: [] });
     }
 
-    const halfLimit = Math.ceil(limit / 2);
+    const searchProducts = type !== "listing";
+    const searchListings = type !== "product";
+    const perType = type ? limit : Math.ceil(limit / 2);
 
     const [products, listings] = await Promise.all([
-      db.product.findMany({
+      searchProducts ? db.product.findMany({
         where: {
           isActive: true,
           OR: [
@@ -24,7 +27,7 @@ export async function GET(request: NextRequest) {
           ],
         },
         orderBy: { createdAt: "desc" },
-        take: halfLimit,
+        take: perType,
         select: {
           id: true,
           name: true,
@@ -34,15 +37,15 @@ export async function GET(request: NextRequest) {
           category: true,
           condition: true,
         },
-      }),
-      db.listing.findMany({
+      }) : Promise.resolve([]),
+      searchListings ? db.listing.findMany({
         where: {
           moderationStatus: "APPROVED",
           saleStatus: "ACTIVE",
           title: { contains: query, mode: "insensitive" },
         },
         orderBy: { createdAt: "desc" },
-        take: halfLimit,
+        take: perType,
         select: {
           id: true,
           title: true,
@@ -51,7 +54,7 @@ export async function GET(request: NextRequest) {
           category: true,
           condition: true,
         },
-      }),
+      }) : Promise.resolve([]),
     ]);
 
     const productHits = products.map((p) => ({

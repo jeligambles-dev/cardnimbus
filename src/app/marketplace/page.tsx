@@ -18,6 +18,7 @@ interface MarketplacePageProps {
     view?: string
     minGrade?: string
     gradingCompany?: string
+    q?: string
   }>
 }
 
@@ -40,6 +41,7 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
   const minPrice = params.minPrice ? parseFloat(params.minPrice) : undefined
   const maxPrice = params.maxPrice ? parseFloat(params.maxPrice) : undefined
   const view = params.view ?? ''
+  const searchQuery = (params.q ?? '').trim()
   const rawMinGrade = params.minGrade ?? ''
   const rawGradingCompany = params.gradingCompany ?? ''
   const ALLOWED_GRADING_COMPANIES = ['PSA', 'BGS', 'ACE', 'CGC', 'TAG']
@@ -48,7 +50,7 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
     ? rawGradingCompany
     : undefined
 
-  // Show listings only if any filter, view=all, or a non-default sort is set
+  // Show listings only if any filter, view=all, search query, or a non-default sort is set
   const hasFiltering =
     !!rawCategory ||
     !!rawCondition ||
@@ -56,6 +58,7 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
     !!maxPrice ||
     !!minGrade ||
     !!gradingCompany ||
+    !!searchQuery ||
     view === 'all' ||
     rawSort !== 'newest' ||
     page > 1
@@ -79,6 +82,7 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
         maxPrice,
         minGrade: applySlabFilters ? minGrade : undefined,
         gradingCompany: applySlabFilters ? gradingCompany : undefined,
+        search: searchQuery || undefined,
       },
       page,
       20
@@ -111,7 +115,9 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-text-primary tracking-tight">
-            Marketplace
+            {searchQuery
+              ? <>Results for <span className="text-nimbus-600">&ldquo;{searchQuery}&rdquo;</span></>
+              : 'Marketplace'}
           </h1>
           <p className="mt-1 text-text-secondary text-sm">
             {total === 0

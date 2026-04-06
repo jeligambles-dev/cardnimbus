@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -30,12 +30,20 @@ function useDebounce<T>(value: T, delay: number): T {
 
 export function SearchBar() {
   const router = useRouter()
+  const pathname = usePathname()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchResult[]>([])
   const [isFocused, setIsFocused] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  // Detect context: marketplace pages search listings, shop pages search products
+  const isMarketplace =
+    pathname.startsWith('/marketplace') ||
+    pathname.startsWith('/seller') ||
+    pathname.startsWith('/sell')
+  const searchType = isMarketplace ? 'listing' : 'product'
 
   const debouncedQuery = useDebounce(query, 120)
 
@@ -46,7 +54,7 @@ export function SearchBar() {
     }
     setIsLoading(true)
     try {
-      const res = await fetch(`/api/search/quick?q=${encodeURIComponent(q)}&limit=6`)
+      const res = await fetch(`/api/search/quick?q=${encodeURIComponent(q)}&limit=6&type=${searchType}`)
       if (res.ok) {
         const data: SearchResponse = await res.json()
         setResults(data.hits ?? [])
@@ -56,7 +64,7 @@ export function SearchBar() {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [searchType])
 
   useEffect(() => {
     fetchResults(debouncedQuery)
@@ -77,7 +85,11 @@ export function SearchBar() {
     e.preventDefault()
     if (query.trim()) {
       setIsFocused(false)
-      router.push(`/search?q=${encodeURIComponent(query.trim())}`)
+      if (isMarketplace) {
+        router.push(`/marketplace?view=all&q=${encodeURIComponent(query.trim())}`)
+      } else {
+        router.push(`/search?q=${encodeURIComponent(query.trim())}`)
+      }
     }
   }
 
