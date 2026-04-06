@@ -12,6 +12,7 @@ export function SmartNav() {
     "/account/messages",
     "/account/orders",
     "/account/disputes",
+    "/account/offers",
   ];
 
   const isMarketplace =

@@ -316,3 +316,48 @@ export async function respondToOffer(
 
   return result;
 }
+
+export async function cancelOffer(offerId: string, userId: string) {
+  const offer = await db.offer.findUnique({
+    where: { id: offerId },
+    include: {
+      listing: {
+        include: { seller: { include: { user: { select: { email: true } } } } },
+      },
+    },
+  });
+
+  if (!offer) throw new NotFoundError("Offer");
+  if (offer.buyerId !== userId) throw new ForbiddenError("Only the buyer can cancel this offer");
+  if (offer.status !== OfferStatus.PENDING) {
+    throw new ValidationError("Only pending offers can be cancelled");
+  }
+
+  const updated = await db.$transaction(async (tx) => {
+    const [o] = await Promise.all([
+      tx.offer.update({
+        where: { id: offerId },
+        data: { status: OfferStatus.CANCELLED },
+      }),
+      tx.offerEvent.create({
+        data: {
+          offerId,
+          actorId: userId,
+          type: "CANCELLED",
+        },
+      }),
+    ]);
+    return o;
+  });
+
+  // Notify seller
+  createNotification(
+    offer.listing.seller.userId,
+    NotificationType.SYSTEM,
+    "Offer cancelled",
+    `A buyer cancelled their offer of $${offer.amount.toFixed(2)} on "${offer.listing.title}"`,
+    `/sell/offers`
+  ).catch(() => {});
+
+  return updated;
+}

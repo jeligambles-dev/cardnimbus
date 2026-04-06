@@ -18,6 +18,7 @@ const STATUS_MAP: Record<OfferStatus, { variant: BadgeVariant; label: string }> 
   REJECTED:  { variant: 'danger',   label: 'Rejected' },
   COUNTERED: { variant: 'nimbus',   label: 'Countered' },
   EXPIRED:   { variant: 'default',  label: 'Expired' },
+  CANCELLED: { variant: 'default',  label: 'Cancelled' },
 }
 
 interface OffersPageProps {
@@ -34,7 +35,7 @@ export default async function SellerOffersPage({ searchParams }: OffersPageProps
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <BackHeader title="Incoming Offers" href="/sell/listings" />
+        <BackHeader title="Incoming Offers" href="/marketplace/account" />
 
         <div className="hidden md:block mb-8">
           <h1 className="text-2xl font-bold text-text-primary">Incoming Offers</h1>

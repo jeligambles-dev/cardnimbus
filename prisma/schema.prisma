@@ -684,6 +684,7 @@ enum OfferStatus {
   REJECTED
   COUNTERED
   EXPIRED
+  CANCELLED
 }
 
 enum EscrowStatus {
