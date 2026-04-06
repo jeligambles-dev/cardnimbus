@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { requireAuth } from '@/lib/auth-guard'
 import { getUserSubmissions } from '@/services/submission.service'
 import { Badge } from '@/components/ui/badge'
+import { BackHeader } from '@/components/ui/back-header'
 import { formatCurrency } from '@/lib/utils'
 import { SubmissionStatus } from '@prisma/client'
 
@@ -30,8 +31,10 @@ export default async function MySubmissionsPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        <nav className="mb-6 flex items-center gap-2 text-sm text-text-secondary">
+        <BackHeader title="Sell Cards to Us" href="/account" />
+
+        {/* Breadcrumb — desktop */}
+        <nav className="mb-6 hidden md:flex items-center gap-2 text-sm text-text-secondary">
           <Link href="/account" className="hover:text-text-primary transition-colors">Account</Link>
           <span>/</span>
           <Link href="/sell-your-cards" className="hover:text-text-primary transition-colors">Sell Your Cards</Link>
@@ -104,11 +107,27 @@ export default async function MySubmissionsPage() {
                       </p>
                     </div>
 
-                    <div className="flex flex-col items-end gap-1.5">
+                    <div className="flex flex-col items-end gap-1.5 shrink-0">
                       <Badge variant={cfg.variant}>{cfg.label}</Badge>
                       {sub.offeredPrice != null && (
                         <span className="text-sm font-bold text-nimbus-600">
-                          {formatCurrency(sub.offeredPrice)}
+                          Offer: {formatCurrency(sub.offeredPrice)}
+                        </span>
+                      )}
+                      {sub.counterOfferPrice != null && (
+                        <span className="text-xs font-semibold text-amber-600">
+                          Counter: {formatCurrency(sub.counterOfferPrice)}
+                        </span>
+                      )}
+                      {sub.finalAcceptedPrice != null && (
+                        <span className="text-xs font-bold text-emerald-600">
+                          Final: {formatCurrency(sub.finalAcceptedPrice)}
+                        </span>
+                      )}
+                      {sub.status === 'OFFER_SENT' && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-600">
+                          <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+                          Action needed
                         </span>
                       )}
                     </div>

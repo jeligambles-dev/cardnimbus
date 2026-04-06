@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { requireAuth } from '@/lib/auth-guard'
 import { getSubmissionById } from '@/services/submission.service'
 import { Badge } from '@/components/ui/badge'
+import { BackHeader } from '@/components/ui/back-header'
 import { formatCurrency } from '@/lib/utils'
 import { SubmissionStatus } from '@prisma/client'
 import { OfferActions } from './offer-actions'
@@ -63,8 +64,10 @@ export default async function SubmissionDetailPage({ params }: Props) {
   return (
     <main className="min-h-screen bg-surface">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        <nav className="mb-6 flex items-center gap-2 text-sm text-text-secondary">
+        <BackHeader title={title} href="/sell-your-cards/submissions" subtitle="My Submissions" />
+
+        {/* Breadcrumb — desktop */}
+        <nav className="mb-6 hidden md:flex items-center gap-2 text-sm text-text-secondary">
           <Link href="/sell-your-cards/submissions" className="hover:text-text-primary transition-colors">My Submissions</Link>
           <span>/</span>
           <span className="truncate text-text-primary">{title}</span>
