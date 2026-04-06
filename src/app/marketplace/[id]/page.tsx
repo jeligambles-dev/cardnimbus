@@ -13,6 +13,7 @@ import { FollowButton } from '@/components/marketplace/follow-button'
 import { PriceTrend } from '@/components/marketplace/price-trend'
 import { ProductDetails } from '@/components/marketplace/product-details'
 import { ShippingInfo } from '@/components/marketplace/shipping-info'
+import { BackHeader } from '@/components/ui/back-header'
 import type { DealScoreBand } from '@/services/deal-score.service'
 
 interface ListingPageProps {
@@ -112,8 +113,11 @@ export default async function ListingPage({ params }: ListingPageProps) {
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-text-muted mb-6">
+        {/* Mobile back header */}
+        <BackHeader title={listing.title} href="/marketplace" subtitle="Marketplace" />
+
+        {/* Desktop breadcrumb */}
+        <nav className="hidden md:flex items-center gap-2 text-sm text-text-muted mb-6">
           <Link href="/marketplace" className="hover:text-nimbus-600 transition-colors">
             Marketplace
           </Link>
@@ -188,7 +192,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
                 )}
               </div>
 
-              <h1 className="text-3xl font-bold text-text-primary leading-tight mb-1">
+              <h1 className="text-3xl font-black text-gold-600 leading-tight mb-1">
                 {listing.title}
               </h1>
               {card?.setName && (

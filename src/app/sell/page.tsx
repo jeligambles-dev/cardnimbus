@@ -10,6 +10,7 @@ import { toast } from '@/components/ui/toast'
 import { formatCurrency } from '@/lib/utils'
 import { CountrySelector } from '@/components/country-selector'
 import { CountrySelect } from '@/components/country-select'
+import { BackHeader } from '@/components/ui/back-header'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -337,8 +338,9 @@ export default function CreateListingPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
+        <BackHeader title="Create Listing" href="/marketplace" />
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-text-primary">Create Listing</h1>
+          <h1 className="text-2xl font-bold text-text-primary hidden md:block">Create Listing</h1>
           <p className="mt-1 text-sm text-text-secondary">
             List a card or item for sale in the marketplace.
           </p>

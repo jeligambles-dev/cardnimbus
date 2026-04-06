@@ -3,6 +3,7 @@ import { requireAuth } from '@/lib/auth-guard'
 import { Card } from '@/components/ui/card'
 import { AvatarUpload } from '@/components/account/avatar-upload'
 import { CountryEditor } from '@/components/account/country-editor'
+import { BackHeader } from '@/components/ui/back-header'
 import { db } from '@/lib/db'
 
 export const metadata = {
@@ -22,7 +23,8 @@ export default async function MarketplaceAccountPage() {
   return (
     <main className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h1 className="text-3xl font-bold text-text-primary mb-2 tracking-tight">
+        <BackHeader title="Marketplace Account" href="/marketplace" />
+        <h1 className="text-3xl font-bold text-text-primary mb-2 tracking-tight hidden md:block">
           Marketplace Account
         </h1>
         <p className="text-text-secondary text-sm mb-8">

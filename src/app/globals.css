@@ -14,6 +14,12 @@
   --color-nimbus-900: #660000;
   --color-nimbus-950: #330000;
 
+  /* ── Gold (logo) palette ── */
+  --color-gold-400: #F5D06E;
+  --color-gold-500: #D4AF37;
+  --color-gold-600: #B8942E;
+  --color-gold-700: #9A7B25;
+
   /* ── Volt (emerald) accent ── */
   --color-volt-400: #34d399;
   --color-volt-500: #10b981;

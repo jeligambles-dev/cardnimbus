@@ -86,7 +86,7 @@ export function ListingCard({ listing, index = 0, sellerBadges }: ListingCardPro
         >
           {/* HEADER — Title + Price (like Pokemon card name + HP) */}
           <div className="flex items-start justify-between gap-2 px-1 pt-0.5">
-            <h3 className="text-[13px] font-black text-text-primary leading-tight line-clamp-2 flex-1 min-h-[2rem]">
+            <h3 className="text-[13px] font-black text-gold-600 leading-tight line-clamp-2 flex-1 min-h-[2rem]">
               {listing.title}
             </h3>
             <div className="flex items-baseline gap-0.5 shrink-0">
