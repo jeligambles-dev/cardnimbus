@@ -64,6 +64,10 @@ function MarketplaceAuth() {
               </svg>
               Messages
             </Link>
+            <Link href="/account/offers" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-text-primary hover:bg-surface-overlay">
+              <span className="text-base">🤝</span>
+              My Offers
+            </Link>
             <Link href="/account/orders?type=MARKETPLACE" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-text-primary hover:bg-surface-overlay">
               <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -81,6 +85,10 @@ function MarketplaceAuth() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               List an Item
+            </Link>
+            <Link href="/sell/offers" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-text-primary hover:bg-surface-overlay">
+              <span className="text-base">📩</span>
+              Incoming Offers
             </Link>
             <Link href="/sell/listings" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-text-primary hover:bg-surface-overlay">
               <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

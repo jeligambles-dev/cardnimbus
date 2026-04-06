@@ -95,6 +95,38 @@ export async function getOffersByBuyer(
   };
 }
 
+export async function getOffersBySeller(
+  sellerUserId: string,
+  page: number = 1,
+  limit: number = 20
+) {
+  const skip = (page - 1) * limit;
+
+  const [offers, total] = await Promise.all([
+    db.offer.findMany({
+      where: { listing: { seller: { userId: sellerUserId } } },
+      include: {
+        listing: { select: { id: true, title: true, price: true, images: true } },
+        buyer: { select: { id: true, name: true, email: true, avatar: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
+    }),
+    db.offer.count({
+      where: { listing: { seller: { userId: sellerUserId } } },
+    }),
+  ]);
+
+  return {
+    offers,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
+}
+
 export async function getOfferById(id: string) {
   const offer = await db.offer.findUnique({
     where: { id },

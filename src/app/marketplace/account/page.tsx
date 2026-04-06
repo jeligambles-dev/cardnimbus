@@ -72,6 +72,20 @@ export default async function MarketplaceAccountPage() {
               </Card>
             </Link>
 
+            <Link href="/account/offers">
+              <Card hover className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-300 flex items-center justify-center text-2xl">
+                    🤝
+                  </div>
+                  <div>
+                    <p className="font-bold text-text-primary">My Offers</p>
+                    <p className="text-text-secondary text-sm">Track offers you&apos;ve made</p>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+
             <Link href="/account/likes">
               <Card hover className="p-6">
                 <div className="flex items-center gap-4">
@@ -143,6 +157,20 @@ export default async function MarketplaceAccountPage() {
                   <div>
                     <p className="font-bold text-text-primary">List an Item</p>
                     <p className="text-text-secondary text-sm">Create a new listing</p>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+
+            <Link href="/sell/offers">
+              <Card hover className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-300 flex items-center justify-center text-2xl">
+                    📩
+                  </div>
+                  <div>
+                    <p className="font-bold text-text-primary">Incoming Offers</p>
+                    <p className="text-text-secondary text-sm">Offers from buyers on your listings</p>
                   </div>
                 </div>
               </Card>
