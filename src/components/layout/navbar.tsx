@@ -190,7 +190,7 @@ export function Navbar() {
             alt="Card Nimbus"
             className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-11 sm:h-20 lg:h-24'}`}
           />
-          <div className="hidden sm:block ml-1 mt-auto mb-1">
+          <div className="ml-1 mt-auto mb-1">
             <StoreRating />
           </div>
         </Link>
