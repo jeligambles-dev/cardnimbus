@@ -77,6 +77,20 @@ export async function search(
   const limit = options.limit ?? 20;
   const offset = options.offset ?? 0;
 
+  try {
+    return await searchViaMeilisearch(query, options, limit, offset);
+  } catch (err) {
+    console.error("[search] Meilisearch unavailable, falling back to DB:", (err as Error).message);
+    return searchViaDatabase(query, options, limit, offset);
+  }
+}
+
+async function searchViaMeilisearch(
+  query: string,
+  options: SearchOptions,
+  limit: number,
+  offset: number
+): Promise<SearchResponse> {
   const perIndex = Math.ceil(limit / 3);
 
   const productFilter = buildProductFilter(options);
@@ -88,30 +102,16 @@ export async function search(
       limit: perIndex,
       offset,
       attributesToRetrieve: [
-        "id",
-        "name",
-        "description",
-        "images",
-        "price",
-        "condition",
-        "category",
-        "slug",
-        "cardName",
-        "setName",
+        "id", "name", "description", "images", "price",
+        "condition", "category", "slug", "cardName", "setName",
       ],
     }),
-    // Only search cards when no product-specific filters are active
     !options.category && !options.minPrice && !options.maxPrice
       ? meili.index(INDEXES.cards).search(query, {
           limit: perIndex,
           offset,
           attributesToRetrieve: [
-            "id",
-            "name",
-            "setName",
-            "imageUrl",
-            "tcgPriceMarket",
-            "rarity",
+            "id", "name", "setName", "imageUrl", "tcgPriceMarket", "rarity",
           ],
         })
       : Promise.resolve({ hits: [], estimatedTotalHits: 0 }),
@@ -120,16 +120,8 @@ export async function search(
       limit: perIndex,
       offset,
       attributesToRetrieve: [
-        "id",
-        "title",
-        "description",
-        "images",
-        "price",
-        "condition",
-        "category",
-        "setName",
-        "sellerName",
-        "dealScoreBand",
+        "id", "title", "description", "images", "price",
+        "condition", "category", "setName", "sellerName", "dealScoreBand",
       ],
     }),
   ]);
@@ -141,9 +133,7 @@ export async function search(
     subtitle: hit.cardName
       ? `${String(hit.cardName)} — ${String(hit.setName ?? "")}`
       : String(hit.description ?? ""),
-    image: Array.isArray(hit.images) && hit.images.length > 0
-      ? String(hit.images[0])
-      : null,
+    image: Array.isArray(hit.images) && hit.images.length > 0 ? String(hit.images[0]) : null,
     price: typeof hit.price === "number" ? hit.price : null,
     condition: hit.condition ? String(hit.condition) : null,
     url: `/shop/${String(hit.slug)}`,
@@ -167,9 +157,7 @@ export async function search(
     subtitle: hit.sellerName
       ? `Sold by ${String(hit.sellerName)}`
       : String(hit.setName ?? ""),
-    image: Array.isArray(hit.images) && hit.images.length > 0
-      ? String(hit.images[0])
-      : null,
+    image: Array.isArray(hit.images) && hit.images.length > 0 ? String(hit.images[0]) : null,
     price: typeof hit.price === "number" ? hit.price : null,
     condition: hit.condition ? String(hit.condition) : null,
     url: `/marketplace/${String(hit.id)}`,
@@ -182,6 +170,69 @@ export async function search(
     (listingResults.estimatedTotalHits ?? 0);
 
   return { results, total, limit, offset };
+}
+
+async function searchViaDatabase(
+  query: string,
+  options: SearchOptions,
+  limit: number,
+  offset: number
+): Promise<SearchResponse> {
+  const halfLimit = Math.ceil(limit / 2);
+
+  const [products, listings] = await Promise.all([
+    db.product.findMany({
+      where: {
+        isActive: true,
+        name: { contains: query, mode: "insensitive" },
+        ...(options.category && { category: options.category }),
+      },
+      select: { id: true, name: true, slug: true, images: true, price: true, condition: true },
+      take: halfLimit,
+      skip: offset,
+      orderBy: { createdAt: "desc" },
+    }),
+    db.listing.findMany({
+      where: {
+        moderationStatus: "APPROVED",
+        saleStatus: "ACTIVE",
+        title: { contains: query, mode: "insensitive" },
+        ...(options.category && { category: options.category }),
+      },
+      select: {
+        id: true, title: true, images: true, price: true, condition: true,
+        seller: { select: { user: { select: { name: true } } } },
+      },
+      take: halfLimit,
+      skip: offset,
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
+
+  const productItems: SearchResult[] = products.map((p) => ({
+    type: "product",
+    id: p.id,
+    title: p.name,
+    subtitle: "",
+    image: p.images[0] ?? null,
+    price: p.price,
+    condition: p.condition ?? null,
+    url: `/shop/${p.slug}`,
+  }));
+
+  const listingItems: SearchResult[] = listings.map((l) => ({
+    type: "listing",
+    id: l.id,
+    title: l.title,
+    subtitle: l.seller?.user?.name ? `Sold by ${l.seller.user.name}` : "",
+    image: l.images[0] ?? null,
+    price: l.price,
+    condition: l.condition ?? null,
+    url: `/marketplace/${l.id}`,
+  }));
+
+  const results = [...productItems, ...listingItems].slice(0, limit);
+  return { results, total: results.length, limit, offset };
 }
 
 export async function syncProductToIndex(productId: string): Promise<void> {

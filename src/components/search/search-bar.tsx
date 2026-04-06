@@ -8,10 +8,11 @@ import { AnimatePresence, motion } from 'framer-motion'
 interface SearchResult {
   id: string
   name: string
-  slug: string
+  slug: string | null
   subtitle?: string
   price: number
   images: string[]
+  type?: 'product' | 'listing'
 }
 
 interface SearchResponse {
@@ -80,10 +81,14 @@ export function SearchBar() {
     }
   }
 
-  const handleResultClick = (slug: string) => {
+  const handleResultClick = (result: SearchResult) => {
     setIsFocused(false)
     setQuery('')
-    router.push(`/shop/${slug}`)
+    if (result.type === 'listing') {
+      router.push(`/marketplace/${result.id}`)
+    } else {
+      router.push(`/shop/${result.slug}`)
+    }
   }
 
   const showDropdown = isFocused && results.length > 0
@@ -144,7 +149,7 @@ export function SearchBar() {
                 <li key={result.id}>
                   <button
                     type="button"
-                    onClick={() => handleResultClick(result.slug)}
+                    onClick={() => handleResultClick(result)}
                     className={`flex w-full items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-nimbus-50 ${
                       i < results.length - 1 ? 'border-b border-surface-border' : ''
                     }`}
