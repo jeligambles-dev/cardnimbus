@@ -109,7 +109,7 @@ export default function NotificationSettingsPage() {
         </nav>
 
         <div className="mb-8">
-          <h1 className="hidden md:block text-2xl font-bold text-text-primary">Notification Settings</h1>
+          <h1 className="hidden text-2xl font-bold text-text-primary">Notification Settings</h1>
           <p className="mt-1 text-text-secondary">
             Choose how and where you receive notifications.
           </p>

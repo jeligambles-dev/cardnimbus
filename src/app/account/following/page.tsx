@@ -14,7 +14,7 @@ export default async function FollowingPage() {
     <main className="min-h-screen bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <BackHeader title="Following" href="/marketplace/account" />
-        <h1 className="hidden md:block text-2xl font-bold text-text-primary mb-2">Following</h1>
+        <h1 className="hidden text-2xl font-bold text-text-primary mb-2">Following</h1>
         <p className="text-sm text-text-secondary mb-8">
           {total} seller{total !== 1 ? "s" : ""}
         </p>

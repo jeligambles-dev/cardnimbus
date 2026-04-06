@@ -54,7 +54,7 @@ export default async function SellerListingsPage({ searchParams }: ListingsPageP
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="hidden md:block text-2xl font-bold text-text-primary">My Listings</h1>
+            <h1 className="hidden text-2xl font-bold text-text-primary">My Listings</h1>
             <p className="text-sm text-text-muted mt-1">
               {total} listing{total !== 1 ? 's' : ''} total
             </p>

@@ -50,7 +50,7 @@ export default async function SellerPayoutsPage({ searchParams }: PayoutsPagePro
         <BackHeader title="Payouts" href="/marketplace/account" />
         {/* Header */}
         <div className="mb-8">
-          <h1 className="hidden md:block text-2xl font-bold text-text-primary">Payouts</h1>
+          <h1 className="hidden text-2xl font-bold text-text-primary">Payouts</h1>
           <p className="text-sm text-text-muted mt-1">
             Your payout history and earnings summary.
           </p>

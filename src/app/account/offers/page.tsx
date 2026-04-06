@@ -34,7 +34,7 @@ export default async function MyOffersPage({ searchParams }: OffersPageProps) {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <BackHeader title="My Offers" href="/marketplace/account" />
 
-        <div className="hidden md:block mb-8">
+        <div className="hidden mb-8">
           <h1 className="text-2xl font-bold text-text-primary">My Offers</h1>
           <p className="text-sm text-text-muted mt-1">
             {total} offer{total !== 1 ? 's' : ''} you&apos;ve made on marketplace listings

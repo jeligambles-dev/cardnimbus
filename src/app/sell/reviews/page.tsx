@@ -72,7 +72,7 @@ export default async function SellerReviewsPage({ searchParams }: ReviewsPagePro
         <BackHeader title="Reviews" href="/marketplace/account" />
         {/* Header */}
         <div className="mb-8">
-          <h1 className="hidden md:block text-2xl font-bold text-text-primary">Reviews</h1>
+          <h1 className="hidden text-2xl font-bold text-text-primary">Reviews</h1>
           <p className="text-sm text-text-muted mt-1">
             Reviews you&apos;ve received and orders awaiting your review.
           </p>

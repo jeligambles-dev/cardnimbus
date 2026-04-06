@@ -83,7 +83,7 @@ export default function NotificationsPage() {
               </Link>
               <span className="text-surface-border">/</span>
             </div>
-            <h1 className="hidden md:block text-3xl font-bold text-text-primary tracking-tight">
+            <h1 className="hidden text-3xl font-bold text-text-primary tracking-tight">
               Notifications
             </h1>
             {unreadCount > 0 && (

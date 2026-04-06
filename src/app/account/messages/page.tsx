@@ -30,7 +30,7 @@ export default async function MessagesPage() {
     <main className="min-h-screen bg-surface">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <BackHeader title="Messages" href="/marketplace/account" />
-        <h1 className="hidden md:block text-3xl font-bold text-text-primary mb-8 tracking-tight">Messages</h1>
+        <h1 className="hidden text-3xl font-bold text-text-primary mb-8 tracking-tight">Messages</h1>
 
         {conversations.length === 0 ? (
           <Card className="p-12 text-center">

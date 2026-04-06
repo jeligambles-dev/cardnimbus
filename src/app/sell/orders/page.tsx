@@ -70,7 +70,7 @@ export default async function SellerOrdersPage({ searchParams }: OrdersPageProps
         <BackHeader title="Sales & Payouts" href="/marketplace/account" />
         {/* Header */}
         <div className="mb-8">
-          <h1 className="hidden md:block text-2xl font-bold text-text-primary">Seller Orders</h1>
+          <h1 className="hidden text-2xl font-bold text-text-primary">Seller Orders</h1>
           <p className="text-sm text-text-muted mt-1">
             Incoming orders to fulfill.
           </p>

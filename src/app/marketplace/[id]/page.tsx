@@ -117,7 +117,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
         <BackHeader title={listing.title} href="/marketplace" subtitle="Marketplace" />
 
         {/* Desktop breadcrumb */}
-        <nav className="hidden md:flex items-center gap-2 text-sm text-text-muted mb-6">
+        <nav className="hidden items-center gap-2 text-sm text-text-muted mb-6">
           <Link href="/marketplace" className="hover:text-nimbus-600 transition-colors">
             Marketplace
           </Link>

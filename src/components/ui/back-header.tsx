@@ -21,7 +21,7 @@ export function BackHeader({ title, subtitle, href }: BackHeaderProps) {
   };
 
   return (
-    <div className="sticky top-0 z-30 flex items-center gap-3 border-b border-surface-border bg-white/95 backdrop-blur-md px-4 py-3 -mx-4 sm:-mx-6 lg:-mx-8 sm:px-6 lg:px-8 md:hidden">
+    <div className="sticky top-0 z-30 flex items-center gap-3 border-b border-surface-border bg-white/95 backdrop-blur-md px-4 py-3 -mx-4 sm:-mx-6 lg:-mx-8 sm:px-6 lg:px-8 mb-6">
       {href ? (
         <Link
           href={href}
