@@ -57,7 +57,7 @@ export function NotificationBell() {
       <Link
         href="/account/notifications"
         aria-label="Notifications"
-        className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white transition-colors hover:bg-white hover:text-nimbus-600"
+        className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-black text-white transition-colors hover:bg-black/80"
       >
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
           <path

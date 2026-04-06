@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/stores/cart-store'
 import { SearchBar } from '@/components/search/search-bar'
 import { NotificationBell } from './notification-bell'
+import { StoreRating } from './store-rating'
 
 const NAV_LINKS = [
   { label: 'Marketplace', href: '/marketplace' },
@@ -79,7 +80,7 @@ function AuthButton() {
         <Link
           href="/account"
           aria-label="Account"
-          className="flex h-9 items-center gap-2 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-2 sm:px-3 text-sm font-bold text-white transition-colors group-hover:bg-white group-hover:text-nimbus-600"
+          className="flex h-9 items-center gap-2 rounded-xl bg-black px-2 sm:px-3 text-sm font-bold text-white transition-colors hover:bg-black/80"
         >
           {session.user.image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -189,6 +190,9 @@ export function Navbar() {
             alt="Card Nimbus"
             className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-11 sm:h-20 lg:h-24'}`}
           />
+          <div className="hidden sm:block ml-1 mt-auto mb-1">
+            <StoreRating />
+          </div>
         </Link>
 
         {/* Desktop nav links */}
@@ -242,7 +246,7 @@ export function Navbar() {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menu"
             aria-expanded={mobileOpen}
-            className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white transition-colors hover:bg-white hover:text-nimbus-600"
+            className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl bg-black text-white transition-colors hover:bg-black/80"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               {mobileOpen ? (

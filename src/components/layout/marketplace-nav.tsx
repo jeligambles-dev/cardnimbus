@@ -7,6 +7,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { motion } from "framer-motion";
 import { SearchBar } from "@/components/search/search-bar";
 import { NotificationBell } from "./notification-bell";
+import { StoreRating } from "./store-rating";
 
 const MARKETPLACE_LINKS = [
   { label: "Home", href: "/marketplace" },
@@ -31,7 +32,7 @@ function MarketplaceAuth() {
         <Link
           href="/marketplace/account"
           aria-label="Account"
-          className="flex h-9 items-center gap-2 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-2 sm:px-3 text-sm font-medium text-white group-hover:border-white group-hover:bg-white group-hover:text-nimbus-600"
+          className="flex h-9 items-center gap-2 rounded-xl bg-black px-2 sm:px-3 text-sm font-medium text-white hover:bg-black/80"
         >
           {session.user.image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -187,6 +188,9 @@ export function MarketplaceNav() {
               alt="Card Nimbus"
               className={`w-auto object-contain drop-shadow-md transition-all duration-200 ${isHome ? 'h-32 sm:h-40 lg:h-48' : 'h-11 sm:h-20 lg:h-24'}`}
             />
+            <div className="hidden sm:flex flex-col ml-1 mt-auto mb-1">
+              <StoreRating />
+            </div>
             {isHome ? (
               <div className="ml-3 flex flex-col items-start">
                 <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-nimbus-600 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.25)]">
@@ -207,7 +211,7 @@ export function MarketplaceNav() {
             <Link
               href="/"
               aria-label="Back to store"
-              className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-xl border border-white/30 bg-white/10 backdrop-blur px-3.5 text-xs font-semibold text-white transition-all duration-150 hover:border-white hover:bg-white hover:text-nimbus-600 hover:-translate-y-px"
+              className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-xl bg-black px-3.5 text-xs font-semibold text-white transition-all duration-150 hover:bg-black/80 hover:-translate-y-px"
             >
               <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -232,7 +236,7 @@ export function MarketplaceNav() {
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Menu"
               aria-expanded={mobileOpen}
-              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white transition-colors hover:bg-white hover:text-nimbus-600"
+              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl bg-black text-white transition-colors hover:bg-black/80"
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 {mobileOpen ? (
